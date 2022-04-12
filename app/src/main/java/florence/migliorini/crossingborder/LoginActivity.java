@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     //Mensagem de login failed
                 }
-                /* mAuth.signInWithEmailAndPassword(sEmail, sPassword)
+                 mAuth.signInWithEmailAndPassword(sEmail, sPassword)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // ...
                             }
-                        });*/
+                        });
             }
         });
 

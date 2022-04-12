@@ -17,9 +17,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+
+import florence.migliorini.crossingborder.databinding.ActivityMapsBinding;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
@@ -30,22 +33,32 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private final long MIN_TIME = 5;
     private final long MIN_DIST = 5;
     private LatLng latLng;
+    private ActivityMapsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route);
+        setContentView(R.layout.activity_maps);
         btn_search = findViewById(R.id.btn_search);
-       // MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag);
-        //mapFragment.getMapAsync(this);
-
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+//       // MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag);
+//        //mapFragment.getMapAsync(this);
+//
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        // Get a handle to the fragment and register the callback.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
 
         locationListener = new LocationListener() {
             @Override

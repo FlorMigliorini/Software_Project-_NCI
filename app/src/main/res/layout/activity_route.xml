@@ -43,7 +43,12 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         app:cardCornerRadius="4dp"
-        app:cardElevation="6dp" />
+        app:cardElevation="6dp" >
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="647dp" />
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

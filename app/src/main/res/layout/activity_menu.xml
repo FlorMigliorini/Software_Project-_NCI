@@ -18,16 +18,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="308dp"
-        android:layout_height="345dp"
+        android:layout_width="wrap_content"
+        android:layout_height="491dp"
         android:layout_below="@+id/buttonHideMenu"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="309dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="178dp"
         android:orientation="vertical">
 
         <Button
@@ -96,16 +96,14 @@
             android:padding="5dp"
             android:text="@string/log_out"
             android:textColor="@color/cyan_blue_dark" />
-
-        <TextView
-            android:id="@+id/txtViewEmail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtViewName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--    <TextView-->
+<!--        android:id="@+id/txtViewEmail"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+<!--    <TextView-->
+<!--        android:id="@+id/txtViewName"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 </RelativeLayout>
