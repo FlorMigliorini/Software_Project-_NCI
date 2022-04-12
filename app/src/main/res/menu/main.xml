@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="100"
+        android:title="@string/favorite"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_Route"
+        android:orderInCategory="100"
+        android:title="@string/route"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_Plan"
+        android:orderInCategory="100"
+        android:title="@string/plan_trip"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_History"
+        android:orderInCategory="100"
+        android:title="History"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_ticket"
+        android:orderInCategory="100"
+        android:title="@string/get_ticket"
+        app:showAsAction="never"/>
+
+</menu>

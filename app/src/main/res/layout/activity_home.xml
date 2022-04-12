@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeActivity"
+    android:background="@drawable/bg9"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="70dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/rbOneWay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_one_way"
+                        android:textSize="15dp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <RadioButton
+                        android:id="@+id/rbReturn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/txt_return"
+                        android:textSize="15dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_passagers"
+                        android:layout_width="170dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintStart_toEndOf="@id/etLocation"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/txtVAddFav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/add_to_favorites"
+                    app:layout_constraintEnd_toEndOf="@+id/radio_group"
+                    app:layout_constraintStart_toStartOf="@+id/textView33"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+
+                <Button
+                    android:id="@+id/btn_Add_Fav"
+                    android:layout_width="38dp"
+                    android:layout_height="29dp"
+                    android:drawableStart="@drawable/ic_favorite"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtVAddFav"
+                    app:layout_constraintEnd_toStartOf="@+id/txtVAddFav"
+                    app:layout_constraintHorizontal_bias="0.939"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txtVAddFav"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <EditText
+                    android:id="@+id/etLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginEnd="32dp"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="12dp"
+                    android:ems="10"
+                    android:hint="@string/hint_location"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+
+                <EditText
+                    android:id="@+id/etDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:drawableStart="@drawable/ic_location2"
+                    android:drawablePadding="12dp"
+                    android:ems="10"
+                    android:hint="@string/txt_destination"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_date"
+                    app:layout_constraintStart_toStartOf="@+id/etDestination"
+                    app:layout_constraintTop_toBottomOf="@+id/etDestination" />
+
+                <Button
+                    android:id="@+id/buttonPickDate"
+                    style="?android:spinnerStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/btn_design2"
+                    android:drawableStart="@drawable/ic_date"
+                    android:drawablePadding="12dp"
+                    android:onClick="openDatePicker"
+                    android:padding="10dp"
+                    android:text="Jan 01 2021"
+                    android:textColor="@color/madison"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.122"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Time"
+                    app:layout_constraintStart_toStartOf="@+id/btnSelectTime"
+                    app:layout_constraintTop_toBottomOf="@+id/etDestination" />
+
+
+                <Button
+                    android:id="@+id/btnSelectTime"
+                    style="?android:spinnerStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/btn_design2"
+                    android:drawableStart="@drawable/ic_time"
+                    android:drawablePadding="12dp"
+                    android:onClick="openTimePicker"
+                    android:padding="10dp"
+                    android:text="Select Time"
+                    android:textColor="@color/madison"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/etDestination"
+                    app:layout_constraintHorizontal_bias="0.923"
+                    app:layout_constraintStart_toEndOf="@+id/buttonPickDate"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_design"
+                    android:text="Search"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.866"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSelectTime"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <Button
+                    android:id="@+id/btnHide"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_design2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:id="@+id/LV_list"
+                android:layout_width="match_parent"
+                android:layout_height="329dp">
+
+            </ListView>>
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>
+
+

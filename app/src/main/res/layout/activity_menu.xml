@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuActivity"
+    android:background="@drawable/menu_">
+
+    <Button
+        android:id="@+id/buttonHideMenu"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="3dp"
+        android:text=""
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="308dp"
+        android:layout_height="345dp"
+        android:layout_below="@+id/buttonHideMenu"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="309dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnFavTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_favorite"
+            android:padding="5dp"
+            android:text="Favorite Trips"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <Button
+            android:id="@+id/btnRoutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_location"
+            android:padding="5dp"
+            android:text="Route"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <Button
+            android:id="@+id/btnPlanTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_plan"
+            android:padding="5dp"
+            android:text="Plan trip"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <Button
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_list"
+            android:padding="5dp"
+            android:text="History"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <Button
+            android:id="@+id/btnGetTicket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_ticket"
+            android:padding="5dp"
+            android:text="Get ticket"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_design2"
+            android:drawableStart="@drawable/ic_logout"
+            android:padding="5dp"
+            android:text="@string/log_out"
+            android:textColor="@color/cyan_blue_dark" />
+
+        <TextView
+            android:id="@+id/txtViewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtViewName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

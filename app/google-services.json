@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "496504434228",
+    "project_id": "crossingborder-138e9",
+    "storage_bucket": "crossingborder-138e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496504434228:android:97f257b71f1b31f8eae461",
+        "android_client_info": {
+          "package_name": "florence.migliorini.crossingborder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496504434228-lqos6k5kasbk6916dpfahg9o5vgolaqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD1O8NDNV3iBVnf4ZIVeyInGLy_JZkHVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496504434228-lqos6k5kasbk6916dpfahg9o5vgolaqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

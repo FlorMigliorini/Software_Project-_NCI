@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Login -->
+    <string name="app_name">CrossingBorder</string>
+    <string name="email">Email</string>
+    <string name="Password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="info">Info</string>
+
+    <!-- Test -->
+    <string name="navigation_drawer_open">Open nav drawer</string>
+    <string name="navigation_drawer_close">Close nav drawer</string>
+
+    <!-- Menu drawer -->
+    <string name="favorite">Favorite</string>
+    <string name="history">History</string>
+    <string name="route">Route</string>
+    <string name="action_settings">Action Settings</string>
+    <string name="plan_trip">Plan trip</string>
+    <string name="get_ticket">Get ticket</string>
+    <string name="txt_get_direction">Get Direction</string>
+    <string name="title_activity_route1">Route1Activity</string>
+
+    <!-- Home-->
+    <string name="txt_one_way">One Way</string>
+    <string name="txt_return">Return</string>
+    <string name="hint_destination">Destination</string>
+    <string name="txt_date">Date</string>
+    <string name="btn_add_to_favorite">Add to Favorite</string>
+    <string name="hint_passengers">Passengers</string>
+    <string name="et_location">Location</string>
+    <string name="et_destination">Destination</string>
+
+    <!-- Favorite -->
+    <string name="btn_delete">Delete</string>
+    <string name="hint_location">Location</string>
+    <string name="txt_destination">Destination</string>
+    <string name="log_out">Log out</string>
+    <string name="Time">Time</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+
+    <!-- Spinner Passagers -->
+    <string-array name="passagers">
+        <item>1 passager</item>
+        <item>2 passagers</item>
+        <item>3 passagers</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="full_name">full_name</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="create_account">create_account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="enter_address">Enter Address</string>
+</resources>

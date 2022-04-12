@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">-->
+<!--        &lt;!&ndash; Customize theme  &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/design_default_color_primary</item>-->
+<!--        <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>-->
+<!--        <item name="colorAccent">@color/cyan_blue_dark</item>-->
+<!--    </style>-->
+<!--    <style name="AppTheme.NoActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--    </style>-->
+<!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+<!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+</resources>
