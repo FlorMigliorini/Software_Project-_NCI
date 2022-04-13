@@ -224,7 +224,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 //        switch (requestCode) {
 //            case REQ_ONE_TAP:
 //                try {
@@ -263,7 +262,8 @@ public class LoginActivity extends AppCompatActivity {
         if (result.isSuccess()){
             //Signed in successfully, show authenticated UI
             GoogleSignInAccount account = result.getSignInAccount();
-            statusTextView.setText("Hello, " + account.getDisplayName());
+            //statusTextView.setText("Hello, " + account.getDisplayName());
+            startHome();
         }else{
 
         }
@@ -344,6 +344,10 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
         /*
             // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.

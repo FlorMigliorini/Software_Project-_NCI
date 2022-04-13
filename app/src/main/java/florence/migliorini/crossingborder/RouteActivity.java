@@ -38,60 +38,21 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        btn_search = findViewById(R.id.btn_search);
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-//       // MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag);
-//        //mapFragment.getMapAsync(this);
-//
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        // Set the layout file as the content view.
+        setContentView(R.layout.activity_route);
+
         // Get a handle to the fragment and register the callback.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
+    // Get a handle to the GoogleMap object and display marker.
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                try {
-                    latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                }catch(SecurityException e){
-                    e.printStackTrace();
-                }
-
-            }
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, locationListener);
-        }catch (SecurityException e){
-            e.printStackTrace();
-        }
-
-
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,17 +9,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:visibility="visible"
-        android:orientation="horizontal">
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:id="@+id/linearLayoutTopo"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
         <EditText
             android:id="@+id/TF_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:hint="@string/enter_address"
             android:layout_weight="1.01"
             android:ems="10"
+            android:hint="@string/enter_address"
             android:inputType="textPersonName" />
 
         <Button
@@ -26,29 +32,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
-            android:text="Search"/>
+            android:text="Search" />
+
         <Button
             android:id="@+id/btn_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
-            android:text="Clear"/>
+            android:text="Clear" />
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="397dp"
-        android:layout_height="707dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="6dp" >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="646dp"
+        android:layout_below="@+id/linearLayoutTopo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="5dp">
 
         <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="647dp" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".Route1Activity" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>
