@@ -175,13 +175,13 @@ public class HomeActivity extends AppCompatActivity {
         return makeDateString(day, month, year);
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         Intent intent = new Intent(HomeActivity.this, MenuActivity.class);
         startActivity(intent);
         finish();
-    }
+    }*/
 
     private String makeDateString(int day, int month, int year){
         return getMonthFormat(month) + " " + day + " " + year;
