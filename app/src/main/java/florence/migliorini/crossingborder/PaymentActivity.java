@@ -1,5 +1,7 @@
 package florence.migliorini.crossingborder;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -29,7 +31,9 @@ public class PaymentActivity extends AppCompatActivity {
     Gson gson = new Gson();
     StripeKeyDTO strpe = gson.fromJson(config.getKey(),StripeKeyDTO.class);
     private Button btnStripe, btnGooglePlayPay;
-    private TextView titleTicket, locationName, locationTime, destinationName, destinationTime, TimeTicket, numberPersons;
+    private TextView titleTicket, locationName, locationTime, destinationName,
+            destinationTime, TimeTicket, numberPersons;
+    private Integer typeTransport = 1;
     private ImageView imgTypeTransport;
 
     @Override
@@ -50,6 +54,7 @@ public class PaymentActivity extends AppCompatActivity {
         btnGooglePlayPay = findViewById(R.id.btnPaymentGooglePlay);
         configPaymentWithGooglePlay();
     }
+
     public void configPaymentWithGooglePlay(){
         final GooglePayLauncher googlePayLauncher = new GooglePayLauncher(
                 this,
@@ -75,9 +80,6 @@ public class PaymentActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        /*Intent intent = new Intent(PaymentActivity.this,PlanActivity.class);
-        startActivity(intent);
-        finish();*/
         PaymentActivity instance = this;
         btnStripe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +116,32 @@ public class PaymentActivity extends AppCompatActivity {
         if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
             Log.d("Stripe","Canceled");
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
+            showAlert("Erro","Ocorreu um erro inesperado ao tentar executar o pagamento");
             Log.e("Stripe", "Got error: ", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            // Display for example, an order confirmation screen
-            Log.d("Stripe","Completed");
+            Intent intent = new Intent(PaymentActivity.this,PlanActivity.class);
+            intent.putExtra("titleTicket",titleTicket.getText());
+            intent.putExtra("locationName",locationName.getText());
+            intent.putExtra("locationTime",locationTime.getText());
+            intent.putExtra("destinationName",destinationName.getText());
+            intent.putExtra("destinationTime",destinationTime.getText());
+            intent.putExtra("TimeTicket",TimeTicket.getText());
+            intent.putExtra("numberPersons",numberPersons.getText());
+            intent.putExtra("imgTypeTransport",typeTransport);
+            startActivity(intent);
+            finish();
         }
+    }
+    public String convertIconTypeTransport(Integer type){
+        switch (type){
+            case 1:
+                return "bus";
+            case 2:
+                return "train";
+            case 3:
+                return "luas";
+        }
+        return null;
     }
     private void presentPaymentSheet() {
         final PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("Example, Inc.")
@@ -135,4 +158,14 @@ public class PaymentActivity extends AppCompatActivity {
         );
     }
 
+    private void showAlert(String title, @Nullable String message) {
+        runOnUiThread(() -> {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton("Ok", null)
+                    .create();
+            dialog.show();
+        });
+    }
 }

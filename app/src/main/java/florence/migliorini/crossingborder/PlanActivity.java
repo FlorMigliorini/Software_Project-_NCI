@@ -19,6 +19,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class PlanActivity extends AppCompatActivity {
     private Button btnBack;
+    private String qrCodeCoded;
     private TextView titleTicket,locationName,locationTime,destinationName,destinationTime,TimeTicket,numberPersons;
     private ImageView imgQr,imgTypeTransport;
 
@@ -36,15 +37,42 @@ public class PlanActivity extends AppCompatActivity {
         destinationTime = findViewById(R.id.destinationTime);
         TimeTicket = findViewById(R.id.timeTicket);
         numberPersons = findViewById(R.id.numberOfPerson);
-    }
+        Intent in = getIntent();
+        titleTicket.setText(in.getStringExtra("titleTicket"));
+        locationName.setText(in.getStringExtra("locationName"));
+        locationTime.setText(in.getStringExtra("locationTime"));
+        destinationName.setText(in.getStringExtra("destinationName"));
+        destinationTime.setText(in.getStringExtra("destinationTime"));
+        TimeTicket.setText(in.getStringExtra("TimeTicket"));
+        numberPersons.setText(in.getStringExtra("numberPersons"));
 
+        qrCodeCoded = "";
+        qrCodeCoded += in.getStringExtra("titleTicket");
+        qrCodeCoded += in.getStringExtra("locationName");
+        qrCodeCoded += in.getStringExtra("locationTime");
+        qrCodeCoded += in.getStringExtra("destinationName");
+        qrCodeCoded += in.getStringExtra("destinationTime");
+        qrCodeCoded += in.getStringExtra("TimeTicket");
+        qrCodeCoded += in.getStringExtra("numberPersons");
+
+    }
+    public String convertIconTypeTransport(Integer type){
+        switch (type){
+            case 1:
+                return "bus";
+            case 2:
+                return "train";
+            case 3:
+                return "luas";
+        }
+        return null;
+    }
     @Override
     protected void onStart() {
         super.onStart();
-        String texto = "Exemplo";
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
-            BitMatrix bitMatrix = multiFormatWriter.encode(texto, BarcodeFormat.QR_CODE,200,200);
+            BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeCoded, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder brEncod = new BarcodeEncoder();
             Bitmap bit = brEncod.createBitmap(bitMatrix);
             imgQr.setImageBitmap(bit);
@@ -55,6 +83,11 @@ public class PlanActivity extends AppCompatActivity {
 
     public void menuButton(View view) {
         Intent intent = new Intent(PlanActivity.this, MenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    public void backButton(View view) {
+        Intent intent = new Intent(PlanActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
