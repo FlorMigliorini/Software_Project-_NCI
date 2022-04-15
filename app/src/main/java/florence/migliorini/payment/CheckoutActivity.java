@@ -1,4 +1,4 @@
-package florence.migliorini.crossingborder;
+package florence.migliorini.payment;
 
 import android.content.Context;
 import android.os.Bundle;

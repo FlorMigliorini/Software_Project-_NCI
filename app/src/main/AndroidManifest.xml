@@ -27,7 +27,7 @@
             android:name=".RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".CheckoutActivity"
+            android:name="florence.migliorini.payment.CheckoutActivity"
             android:exported="true" />
         <meta-data
             android:name="com.google.android.gms.version"

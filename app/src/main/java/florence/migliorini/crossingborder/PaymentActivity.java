@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
 import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment;
+import com.stripe.android.googlepaylauncher.GooglePayLauncher;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
@@ -22,7 +25,9 @@ public class PaymentActivity extends AppCompatActivity {
     PaymentSheet paymentSheet;
     String paymentIntentClientSecret;
     PaymentSheet.CustomerConfiguration customerConfig;
-
+    ConfigStripe config = new ConfigStripe();
+    Gson gson = new Gson();
+    StripeKeyDTO strpe = gson.fromJson(config.getKey(),StripeKeyDTO.class);
     private Button btnStripe, btnGooglePlayPay;
     private TextView titleTicket, locationName, locationTime, destinationName, destinationTime, TimeTicket, numberPersons;
     private ImageView imgTypeTransport;
@@ -32,6 +37,7 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
+        PaymentConfiguration.init(this, strpe.getPublishableKey());
         imgTypeTransport = findViewById(R.id.iconTypeTransport);
         titleTicket = findViewById(R.id.TitleTicket);
         locationName = findViewById(R.id.locationName);
@@ -42,8 +48,30 @@ public class PaymentActivity extends AppCompatActivity {
         numberPersons = findViewById(R.id.numberOfPerson);
         btnStripe = findViewById(R.id.btnPaymentStripe);
         btnGooglePlayPay = findViewById(R.id.btnPaymentGooglePlay);
+        configPaymentWithGooglePlay();
+    }
+    public void configPaymentWithGooglePlay(){
+        final GooglePayLauncher googlePayLauncher = new GooglePayLauncher(
+                this,
+                new GooglePayLauncher.Config(
+                        GooglePayEnvironment.Test,
+                        "US",
+                        "Widget Store"
+                ),
+                this::onGooglePayReady,
+                this::onGooglePayResult
+        );
+        btnGooglePlayPay.setOnClickListener(
+                v -> googlePayLauncher.presentForPaymentIntent(strpe.getPaymentIntentClientSecret())
+        );
+    }
+    private void onGooglePayReady(boolean isReady) {
+        // implemented below
     }
 
+    private void onGooglePayResult(@NotNull GooglePayLauncher.Result result) {
+        // implemented below
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -70,11 +98,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void fetchPaymentIntent() {
         final String shoppingCartContent = "{\"items\": [ {\"id\":\"xl-tshirt\"}]}";
-        Gson gson = new Gson();
-        ConfigStripe config = new ConfigStripe();
-        StripeKeyDTO strpe = gson.fromJson(config.getKey(),StripeKeyDTO.class);
         paymentIntentClientSecret = strpe.getPaymentIntentClientSecret();
-
         customerConfig = new PaymentSheet.CustomerConfiguration(
                 strpe.getCustomer(),
                 strpe.getEphemeralKey()
