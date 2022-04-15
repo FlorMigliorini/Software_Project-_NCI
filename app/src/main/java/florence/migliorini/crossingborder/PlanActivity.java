@@ -26,25 +26,21 @@ public class PlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan);
+        img = findViewById(R.id.imgBlockQrCode);
+    }
 
-        bt = findViewById(R.id.button);
-        tx = findViewById(R.id.editTextTextPersonName);
-        img = findViewById(R.id.imageView4);
-
-        bt.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String texto = tx.getText().toString();
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try{
-                    BitMatrix bitMatrix = multiFormatWriter.encode(texto, BarcodeFormat.QR_CODE,200,200);
-                    BarcodeEncoder brEncod = new BarcodeEncoder();
-                    Bitmap bit = brEncod.createBitmap(bitMatrix);
-                    img.setImageBitmap(bit);
-                }catch(WriterException e){
-                    e.printStackTrace();
-                }
-            }
-        });
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String texto = "Exemplo";
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(texto, BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder brEncod = new BarcodeEncoder();
+            Bitmap bit = brEncod.createBitmap(bitMatrix);
+            img.setImageBitmap(bit);
+        }catch(WriterException e){
+            e.printStackTrace();
+        }
     }
 }
