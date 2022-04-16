@@ -4,8 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2055" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable-xxxhdpi/ic_baseline_apps_white_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable-xxxhdpi/ic_baseline_directions_bus_24.xml" value="0.1575" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/btn_design.xml" value="0.2065" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/btn_shape_blue.xml" value="0.2055" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_apps_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_arrow_right_alt_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_arrow_right_alt_white_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_directions_bus_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_subway_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_subway_white_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_train_24.xml" value="0.1575" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_baseline_train_white_24.xml" value="0.1575" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_date.xml" value="0.2055" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_email.xml" value="0.2055" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_favorite.xml" value="0.2055" />
@@ -20,7 +30,10 @@
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_ticket.xml" value="0.2055" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/ic_time.xml" value="0.2055" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/input_design.xml" value="0.2055" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/drawable/shape_arredounded.xml" value="0.1575" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_checkout.xml" value="0.1" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_favorite.xml" value="0.21" />
+        <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_history.xml" value="0.12135416666666667" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Programacao/Workspaces/Florence-Facebook/CrossingBorder/Software_Project-_NCI/app/src/main/res/layout/activity_maps.xml" value="0.18" />

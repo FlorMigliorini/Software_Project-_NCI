@@ -23,6 +23,8 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String KEY_LOCATION = "location";
     private static final String KEY_DESTINATION = "destination";
 
+    private SQLiteDatabase db;
+
     private static final String[] COLUMNS = {KEY_ID, KEY_LOCATION, KEY_DESTINATION};
 
     public DbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -40,17 +42,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 + KEY_LOCATION + " TEXT, "
                 + KEY_DESTINATION + " TEXT )";
         sqLiteDatabase.execSQL(CREATE_TABLE);
+        db = sqLiteDatabase;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS " + TABLE_NAME;
         sqLiteDatabase.execSQL(DROP_TABLE_IF_EXISTS);
+        db = sqLiteDatabase;
         this.onCreate(sqLiteDatabase);
     }
 
     public void addFavorite(Favorite favorite) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_LOCATION, favorite.getLocation());
         contentValues.put(KEY_DESTINATION, favorite.getDestination());
@@ -59,7 +63,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Favorite getFavorite(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME,
                 COLUMNS,
                 " id=?",
@@ -80,7 +84,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<Favorite> getAllFavorites() {
         List<Favorite> plants = new LinkedList<Favorite>();
         String getAllCarsStatement = "SELECT * FROM "+TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(getAllCarsStatement,null);
         Favorite favorite = null;
         if(cursor.moveToFirst()) {
@@ -98,7 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public int updateFavorite(Favorite favorite) {
         int id = favorite.getId();
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_LOCATION, favorite.getLocation());
         contentValues.put(KEY_DESTINATION, favorite.getDestination());
@@ -112,7 +116,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public int deleteFavorite(Favorite favorite) {
         int id = favorite.getId();
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
         int iNumberOfRowsDeleted = db.delete(TABLE_NAME,
                 KEY_ID+"=?",
                 new String[] {String.valueOf(id)});
