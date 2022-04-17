@@ -17,6 +17,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/btn_design2"
             android:text="Remove"
+            android:onClick="deleteFavorite"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:onClick="backButton"
             android:background="@drawable/btn_design2"
             android:text="Back"
             android:textColor="@color/white"
@@ -59,10 +61,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="93dp"
-            android:padding="5dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,19 +74,19 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnAllTypes"
-                android:onClick="filterAll"
                 android:layout_width="90dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/shape_arredounded_blue"
-                android:layout_height="match_parent">
+                android:onClick="filterAll">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btnAllTypes"
                     android:layout_width="50dp"
-                    android:tag="icon"
                     android:layout_height="50dp"
-                    android:elevation="5dp"
                     android:background="@drawable/ic_baseline_apps_white_24"
+                    android:elevation="5dp"
+                    android:tag="icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +100,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="All"
                     android:tag="text"
+                    android:text="All"
                     android:textColor="#FFFAFA"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,17 +113,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnTrainType"
                 android:layout_width="90dp"
-                android:onClick="filterTrain"
-                android:background="@drawable/shape_arredounded"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:layout_height="match_parent">
+                android:background="@drawable/shape_arredounded"
+                android:onClick="filterTrain">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btnTrainType"
                     android:layout_width="50dp"
-                    android:tag="icon"
                     android:layout_height="50dp"
-                    android:elevation="5dp"
                     android:background="@drawable/ic_baseline_train_24"
+                    android:elevation="5dp"
+                    android:tag="icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -134,8 +138,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="Train"
                     android:tag="text"
+                    android:text="Train"
                     android:textColor="#1C1C1C"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -143,20 +147,22 @@
                     app:layout_constraintTop_toTopOf="@+id/btnTrainType"
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnBusType"
                 android:layout_width="90dp"
-                android:onClick="filterBus"
-                android:background="@drawable/shape_arredounded"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:layout_height="match_parent">
+                android:background="@drawable/shape_arredounded"
+                android:onClick="filterBus">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btnBusType"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:tag="icon"
-                    android:elevation="5dp"
                     android:background="@drawable/ic_baseline_directions_bus_24"
+                    android:elevation="5dp"
+                    android:tag="icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,8 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="Bus"
                     android:tag="text"
+                    android:text="Bus"
                     android:textColor="#1C1C1C"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -179,20 +185,22 @@
                     app:layout_constraintTop_toTopOf="@+id/btnBusType"
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnLuasType"
                 android:layout_width="90dp"
-                android:onClick="filterLuas"
-                android:background="@drawable/shape_arredounded"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:layout_height="match_parent">
+                android:background="@drawable/shape_arredounded"
+                android:onClick="filterLuas">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btnLuasType"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:tag="icon"
-                    android:elevation="5dp"
                     android:background="@drawable/ic_baseline_subway_24"
+                    android:elevation="5dp"
+                    android:tag="icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -216,6 +224,19 @@
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="57dp"
+            android:layout_height="42dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:onClick="menuButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

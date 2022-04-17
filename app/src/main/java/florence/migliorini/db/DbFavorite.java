@@ -64,7 +64,28 @@ public class DbFavorite extends SQLiteOpenHelper {
         }
         return list;
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<TravelDTO> getAllFavoritesWithType(String type) throws ParseException {
+        List<TravelDTO> list = new ArrayList<>();
+        Cursor cursor = this.db.query("TB_FAVORITE",new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME"},
+                "CD_TRANSPORT = ?",new String[]{type},null,null,null,null);
+        TravelDTO travel = null;
+        if(cursor.moveToFirst()) {
+            do {
+                travel = new TravelDTO(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(3),
+                        null,
+                        cursor.getInt(2),
+                        null,
+                        null
+                );
+                list.add(travel);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
     public void addFavorite(TravelDTO travel){
         ContentValues values = new ContentValues();
         values.put("DS_LOCATION",travel.getLocation());

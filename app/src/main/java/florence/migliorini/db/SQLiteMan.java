@@ -25,8 +25,17 @@ public class SQLiteMan {
     public static List<TravelDTO> getListFavorites() throws ParseException {
         return dbFavorite.getAllFavorites();
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<TravelDTO> getListFavoritesWithTransportType(String type){
+        try{
+            return dbFavorite.getAllFavoritesWithType(type);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    public static void removeItemList(Integer id){
+    public static void removeFavoriteById(Integer id){
         dbFavorite.removeFavorite(id);
     }
 
