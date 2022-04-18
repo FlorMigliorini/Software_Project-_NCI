@@ -1,17 +1,19 @@
 package florence.migliorini.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TravelDTO {
     private Integer id;
     private String location;
     private String destiny;
-    private Date dtInitial;
+    private LocalDate dtInitial;
     private Integer cdTransport;
     private String duration;
     private String value;
 
-    public TravelDTO(Integer id, String location, String destiny, Date dtInitial, Integer cdTransport, String duration, String value) {
+    public TravelDTO(Integer id, String location, String destiny, LocalDate dtInitial,
+                     Integer cdTransport, String duration, String value) {
         this.id = id;
         this.location = location;
         this.destiny = destiny;
@@ -37,11 +39,11 @@ public class TravelDTO {
         this.destiny = destiny;
     }
 
-    public Date getDtInitial() {
+    public LocalDate getDtInitial() {
         return dtInitial;
     }
 
-    public void setDtInitial(Date dtInitial) {
+    public void setDtInitial(LocalDate dtInitial) {
         this.dtInitial = dtInitial;
     }
 

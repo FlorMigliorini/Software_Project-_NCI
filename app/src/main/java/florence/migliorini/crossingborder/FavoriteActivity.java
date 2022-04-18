@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -99,11 +100,11 @@ public class FavoriteActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });*/
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 2","Rota 3",new Date()
+        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 2","Rota 3", LocalDate.now()
                 ,2,"8h","EUR 50"));
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 4","Rota 5",new Date()
+        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 4","Rota 5",LocalDate.now()
                 ,1,"3h","EUR 100"));
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 6","Rota 7",new Date()
+        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
                 ,3,"15h","EUR 20"));
         try {
             listFavorites = SQLiteMan.getListFavorites();

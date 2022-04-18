@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,16 +44,16 @@ public class DbHistory extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getHistory(){
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.rawQuery("SELECT * FROM TB_FAVORITE",null);
+        Cursor cursor = this.db.rawQuery("SELECT * FROM TB_HISTORY",null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {
             do {
                 travel = new TravelDTO(
-                        Integer.parseInt(cursor.getString(0)),
+                        cursor.getInt(0),
                         cursor.getString(1),
-                        cursor.getString(2),
-                        Date.from(Instant.parse(cursor.getString(3))),
-                        Integer.parseInt(cursor.getString(4)),
+                        cursor.getString(3),
+                        LocalDate.parse(cursor.getString(4)),
+                        cursor.getInt(2),
                         null,
                         null
                 );

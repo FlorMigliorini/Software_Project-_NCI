@@ -178,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(HomeActivity.this, FavoriteActivity.class);
+        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
         startActivity(intent);
         finish();
     }

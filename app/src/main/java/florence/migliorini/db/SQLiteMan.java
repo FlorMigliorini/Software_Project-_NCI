@@ -13,6 +13,7 @@ import florence.migliorini.model.TravelDTO;
 public class SQLiteMan {
     private static DbLogin dbLogin= new DbLogin(null,null,null,1);
     private static DbFavorite dbFavorite= new DbFavorite(null,null,null,1);
+    private static DbHistory dbHistoric= new DbHistory(null,null,null,1);
 
     public static Boolean login(String sEmail, String sPassword){
         return dbLogin.login(sEmail,sPassword);
@@ -41,5 +42,19 @@ public class SQLiteMan {
 
     public static void addFavorite(TravelDTO travel){
         dbFavorite.addFavorite(travel);
+    }
+
+    public static void addHistoric(TravelDTO travelDTO) {
+        dbHistoric.addHistory(travelDTO);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<TravelDTO> getListHistoric() {
+        try{
+            return dbHistoric.getHistory();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
