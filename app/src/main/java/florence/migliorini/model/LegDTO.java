@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class LegDTO {
-    private TimeDTO arrivalDTO;
+    private TimeDTO arrival_time;
     private TimeDTO departure_time;
     private MapDTO distance;
     private MapDTO duration;
@@ -19,9 +19,9 @@ public class LegDTO {
     public LegDTO() {
     }
 
-    public LegDTO(TimeDTO arrivalDTO, TimeDTO departure_time, MapDTO distance, MapDTO duration, String end_address, CoordenationDTO end_location, String start_address,
+    public LegDTO(TimeDTO arrival_time, TimeDTO departure_time, MapDTO distance, MapDTO duration, String end_address, CoordenationDTO end_location, String start_address,
                   CoordenationDTO start_location, List<StepDTO> steps, List<Object> traffic_speed_entry, List<Object> via_waypoint) {
-        this.arrivalDTO = arrivalDTO;
+        this.arrival_time = arrival_time;
         this.departure_time = departure_time;
         this.distance = distance;
         this.duration = duration;
@@ -34,12 +34,12 @@ public class LegDTO {
         this.via_waypoint = via_waypoint;
     }
 
-    public TimeDTO getArrivalDTO() {
-        return arrivalDTO;
+    public TimeDTO getArrival_time() {
+        return arrival_time;
     }
 
-    public void setArrivalDTO(TimeDTO arrivalDTO) {
-        this.arrivalDTO = arrivalDTO;
+    public void setArrival_time(TimeDTO arrival_time) {
+        this.arrival_time = arrival_time;
     }
 
     public TimeDTO getDeparture_time() {
@@ -127,18 +127,18 @@ public class LegDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LegDTO legDTO = (LegDTO) o;
-        return Objects.equals(arrivalDTO, legDTO.arrivalDTO) && Objects.equals(departure_time, legDTO.departure_time) && Objects.equals(distance, legDTO.distance) && Objects.equals(duration, legDTO.duration) && Objects.equals(end_address, legDTO.end_address) && Objects.equals(end_location, legDTO.end_location) && Objects.equals(start_address, legDTO.start_address) && Objects.equals(start_location, legDTO.start_location) && Objects.equals(steps, legDTO.steps) && Objects.equals(traffic_speed_entry, legDTO.traffic_speed_entry) && Objects.equals(via_waypoint, legDTO.via_waypoint);
+        return Objects.equals(arrival_time, legDTO.arrival_time) && Objects.equals(departure_time, legDTO.departure_time) && Objects.equals(distance, legDTO.distance) && Objects.equals(duration, legDTO.duration) && Objects.equals(end_address, legDTO.end_address) && Objects.equals(end_location, legDTO.end_location) && Objects.equals(start_address, legDTO.start_address) && Objects.equals(start_location, legDTO.start_location) && Objects.equals(steps, legDTO.steps) && Objects.equals(traffic_speed_entry, legDTO.traffic_speed_entry) && Objects.equals(via_waypoint, legDTO.via_waypoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(arrivalDTO, departure_time, distance, duration, end_address, end_location, start_address, start_location, steps, traffic_speed_entry, via_waypoint);
+        return Objects.hash(arrival_time, departure_time, distance, duration, end_address, end_location, start_address, start_location, steps, traffic_speed_entry, via_waypoint);
     }
 
     @Override
     public String toString() {
         return "LegDTO{" +
-                "arrivalDTO=" + arrivalDTO +
+                "arrival_time=" + arrival_time +
                 ", departure_time=" + departure_time +
                 ", distance=" + distance +
                 ", duration=" + duration +

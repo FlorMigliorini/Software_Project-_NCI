@@ -128,8 +128,10 @@ public class HomeActivity extends AppCompatActivity {
         String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
         String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
         urlBase+="key="+API_KEY;
-        urlBase+="&destination="+etDestination.getText();
-        urlBase+="&origin="+etLocation.getText();
+        //urlBase+="&destination="+etDestination.getText();
+        urlBase+="&destination=Montreal";
+        //urlBase+="&origin="+etLocation.getText();
+        urlBase+="&origin=Toronto";
         urlBase+="&mode=transit";
         urlBase+="&transit_mode=tram|train|bus";
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
@@ -150,11 +152,12 @@ public class HomeActivity extends AppCompatActivity {
                             ConstraintLayout objList = new ConstraintLayout(getApplicationContext());
                             objList.setLayoutParams(layoutParams);
                             objList.setBackgroundResource(R.drawable.shape_arredounded);
-                            objList.setMinHeight(200);
-                            objList.setPadding(20,20,20,20);
+                            objList.setMinHeight(230);
+                            //objList.setPadding(20,20,20,20);
+                            objList.setId(i);
                             //O LAYOUT está em formato de flex-box
 
-                            layoutParams = new ConstraintLayout.LayoutParams(100,MATCH_PARENT);
+                            layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
                             ConstraintLayout column1 = new ConstraintLayout(getApplicationContext());
                             {
                                 layoutParams.leftToLeft = objList.getId();
@@ -162,9 +165,9 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.bottomToBottom = objList.getId();
                                 layoutParams.horizontalBias = (float) 0.0;
                                 layoutParams.verticalBias = (float) 0.0;
-                                column1.setId(i);
+                                column1.setId(i++);
                                 column1.setLayoutParams(layoutParams);
-
+                                column1.setPadding(40,10,0,0);
                                 layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
                                 layoutParams.leftToLeft = column1.getId();
                                 layoutParams.topToTop = column1.getId();
@@ -209,6 +212,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
                             ConstraintLayout column2 = new ConstraintLayout(getApplicationContext());
                             {
+                                layoutParams = new ConstraintLayout.LayoutParams(170,MATCH_PARENT);
                                 layoutParams.leftToRight = column1.getId();
                                 layoutParams.topToTop = objList.getId();
                                 layoutParams.bottomToBottom = objList.getId();
@@ -216,7 +220,7 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.verticalBias = (float) 0.0;
                                 column2.setId(i++);
                                 column2.setLayoutParams(layoutParams);
-
+                                column2.setPadding(20,10,0,0);
                                 TextView timeText = new TextView(getApplicationContext());
                                 layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
                                 layoutParams.leftToLeft = column2.getId();
@@ -225,11 +229,14 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.bottomToBottom = column2.getId();
                                 layoutParams.horizontalBias = (float) 0.481;
                                 layoutParams.verticalBias = (float) 0.285;
+                                layoutParams.topMargin = 40;
                                 timeText.setId(i++);
                                 timeText.setTextSize(14);
                                 timeText.setTextColor(R.color.madison);
                                 timeText.setLayoutParams(layoutParams);
-                                timeText.setText(route.getLegs().get(0).getDuration().getText());
+                                timeText.setText(route.getLegs().get(0).getDuration().getText()
+                                .replaceAll("\\shour[s]+\\s",".")
+                                .replaceAll("\\smin","m"));
                                 column2.addView(timeText);
 
                                 ImageView icon = new ImageView(getApplicationContext());
@@ -244,6 +251,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
                             ConstraintLayout column3 = new ConstraintLayout(getApplicationContext());
                             {
+                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
                                 layoutParams.leftToRight = column2.getId();
                                 layoutParams.topToTop = objList.getId();
                                 layoutParams.bottomToBottom = objList.getId();
@@ -251,7 +259,7 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.verticalBias = (float) 0.0;
                                 column3.setId(i++);
                                 column3.setLayoutParams(layoutParams);
-
+                                column3.setPadding(20,10,0,0);
                                 layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
                                 layoutParams.leftToLeft = column3.getId();
                                 layoutParams.topToTop = column3.getId();
@@ -291,20 +299,21 @@ public class HomeActivity extends AppCompatActivity {
                                 timeText.setTextSize(12);
                                 timeText.setTextColor(R.color.madison);
                                 timeText.setLayoutParams(layoutParams);
-                                timeText.setText(route.getLegs().get(0).getArrivalDTO().getText());
+                                timeText.setText(route.getLegs().get(0).getArrival_time().getText());
                                 column3.addView(timeText);
                             }
                             ConstraintLayout column4 = new ConstraintLayout(getApplicationContext());
                             {
-                                layoutParams = new ConstraintLayout.LayoutParams(120,MATCH_PARENT);
-                                layoutParams.leftToRight = column4.getId();
+                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
+                                layoutParams.leftToRight = column3.getId();
                                 layoutParams.topToTop = objList.getId();
                                 layoutParams.bottomToBottom = objList.getId();
                                 layoutParams.rightToRight = objList.getRight();
-                                layoutParams.horizontalBias = (float) 0.601;
+                                layoutParams.horizontalBias = (float) 1;
                                 layoutParams.verticalBias = (float) 0.0;
                                 column4.setId(i++);
                                 column4.setLayoutParams(layoutParams);
+                                column4.setPadding(20,0,0,0);
 
                                 TextView titleText = new TextView(getApplicationContext());
                                 layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
@@ -312,9 +321,10 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.topToTop = column4.getId();
                                 layoutParams.rightToRight = column4.getId();
                                 layoutParams.bottomToBottom = column4.getId();
-                                layoutParams.verticalBias = (float) 0.125;
+                                //layoutParams.bottomMargin = 10;
+                                layoutParams.verticalBias = (float) 0.107;
                                 titleText.setId(i++);
-                                titleText.setTextSize(14);
+                                titleText.setTextSize(10);
                                 titleText.setLayoutParams(layoutParams);
                                 titleText.setText("Price");
                                 column4.addView(titleText);
@@ -334,12 +344,14 @@ public class HomeActivity extends AppCompatActivity {
                                 column4.addView(priceText);
 
                                 ConstraintLayout btnGetTicket = new ConstraintLayout(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+                                layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
                                 layoutParams.leftToLeft = column4.getId();
                                 layoutParams.topToBottom = priceText.getId();
                                 layoutParams.rightToRight = column4.getId();
                                 layoutParams.bottomToBottom = column4.getId();
                                 btnGetTicket.setBackgroundResource(R.drawable.shape_arredounded_fifteen_blue);
+                                btnGetTicket.setPadding(20,20,20,20);
+                                btnGetTicket.setLayoutParams(layoutParams);
                                 TextView textGetTicket = new TextView(getApplicationContext());
                                 layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
                                 layoutParams.leftToLeft = btnGetTicket.getId();
@@ -360,6 +372,7 @@ public class HomeActivity extends AppCompatActivity {
                                 layoutParams.rightToRight = btnGetTicket.getId();
                                 layoutParams.bottomToBottom = btnGetTicket.getId();
                                 iconRight.setLayoutParams(layoutParams);
+                                btnGetTicket.addView(iconRight);
                                 column4.addView(btnGetTicket);
 
                             }
