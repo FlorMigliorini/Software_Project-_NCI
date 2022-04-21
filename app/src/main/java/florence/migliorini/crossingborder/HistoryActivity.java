@@ -40,12 +40,12 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         lnListHistoric = findViewById(R.id.lnListHistory);
-        SQLiteMan.addHistoric(new TravelDTO(null,"Rota 2","Rota 3", LocalDate.now()
+        /*SQLiteMan.addHistoric(new TravelDTO(null,"Rota 2","Rota 3", LocalDate.now()
                 ,2,"8h","EUR 50"));
         SQLiteMan.addHistoric(new TravelDTO(null,"Rota 4","Rota 5",LocalDate.now()
                 ,1,"3h","EUR 100"));
         SQLiteMan.addHistoric(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
-                ,3,"15h","EUR 20"));
+                ,3,"15h","EUR 20"));*/
         listHistoric = SQLiteMan.getListHistoric();
         constructListFavorites(listHistoric);
 

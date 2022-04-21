@@ -62,11 +62,13 @@ import florence.migliorini.model.RouteDTO;
 public class HomeActivity extends AppCompatActivity {
 
 
-    Button btnHide, dateButton, btnSearch, timeButton, btnAddFav;
+    Button btnHide, dateButton, btnSearch, timeButton;
     private DatePickerDialog datePickerDialog;
     private ListView listView;
     private ArrayList<String> options;
     private LinearLayout listRoutes;
+    private Integer favoriteSelection =0;
+    private ImageView btnAddFav;
 
 
     RadioButton radioButton;
@@ -109,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-       saveFavorite();
+       //saveFavorite();
 
         initDatePicker();
         dateButton = findViewById(R.id.buttonPickDate);
@@ -124,14 +126,294 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void fillListRoutes(List<RouteDTO> routes){
+        int i = 80;
+        for(RouteDTO route:routes){
+            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            //layoutParams.setMargins(0, 0, 0, 50);
+            //bloco principal
+            ConstraintLayout objList = new ConstraintLayout(getApplicationContext());
+            objList.setLayoutParams(layoutParams);
+            objList.setBackgroundResource(R.drawable.shape_arredounded);
+            objList.setMinHeight(230);
+            //objList.setPadding(20,20,20,20);
+            objList.setId(i);
+            //O LAYOUT está em formato de flex-box
+
+            layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
+            ConstraintLayout column1 = new ConstraintLayout(getApplicationContext());
+            {
+                column1.setMaxWidth(220);
+                layoutParams.leftToLeft = objList.getId();
+                layoutParams.topToTop = objList.getId();
+                layoutParams.bottomToBottom = objList.getId();
+                layoutParams.horizontalBias = (float) 0.0;
+                layoutParams.verticalBias = (float) 0.0;
+                column1.setId(i++);
+                column1.setLayoutParams(layoutParams);
+                column1.setPadding(40,10,0,0);
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column1.getId();
+                layoutParams.topToTop = column1.getId();
+                layoutParams.rightToRight = column1.getId();
+                layoutParams.bottomToBottom = column1.getId();
+                layoutParams.horizontalBias = (float) 0.481;
+                layoutParams.verticalBias = (float) 0.107;
+                TextView titleColumn = new TextView(getApplicationContext());
+                titleColumn.setText("Departure");
+                titleColumn.setTextSize(10);
+                titleColumn.setId(i++);
+                titleColumn.setLayoutParams(layoutParams);
+                column1.addView(titleColumn);
+
+                TextView locationText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column1.getId();
+                layoutParams.topToBottom = titleColumn.getId();
+                layoutParams.rightToRight = column1.getId();
+                layoutParams.bottomToBottom = column1.getId();
+                layoutParams.horizontalBias = (float) 0.481;
+                layoutParams.verticalBias = (float) 0.222;
+                locationText.setId(i++);
+                locationText.setMaxWidth(220);
+                //locationText.setTextSize(18);
+                locationText.setTextColor(Color.rgb(15, 48, 99));
+                locationText.setLayoutParams(layoutParams);
+                locationText.setText(route.getLegs().get(0).getStart_address().split(",")[0]);
+                column1.addView(locationText);
+
+                TextView timeText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column1.getId();
+                layoutParams.topToBottom = locationText.getId();
+                layoutParams.rightToRight = column1.getId();
+                layoutParams.bottomToBottom = column1.getId();
+                timeText.setId(i++);
+                timeText.setTextSize(12);
+                timeText.setTextColor(Color.rgb(15, 48, 99));
+                timeText.setLayoutParams(layoutParams);
+                timeText.setText(route.getLegs().get(0).getDeparture_time().getText());
+                column1.addView(timeText);
+            }
+            ConstraintLayout column2 = new ConstraintLayout(getApplicationContext());
+            {
+                layoutParams = new ConstraintLayout.LayoutParams(170,MATCH_PARENT);
+                layoutParams.leftToRight = column1.getId();
+                layoutParams.topToTop = objList.getId();
+                layoutParams.bottomToBottom = objList.getId();
+                layoutParams.horizontalBias = (float)0.009;
+                layoutParams.verticalBias = (float) 0.0;
+                column2.setId(i++);
+                column2.setLayoutParams(layoutParams);
+                column2.setPadding(20,10,0,0);
+                TextView timeText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column2.getId();
+                layoutParams.topToTop = column2.getId();
+                layoutParams.rightToRight = column2.getId();
+                layoutParams.bottomToBottom = column2.getId();
+                layoutParams.horizontalBias = (float) 0.481;
+                layoutParams.verticalBias = (float) 0.285;
+                layoutParams.topMargin = 40;
+                timeText.setId(i++);
+                timeText.setTextSize(14);
+                timeText.setTextColor(Color.rgb(15, 48, 99));
+                timeText.setLayoutParams(layoutParams);
+                timeText.setText(route.getLegs().get(0).getDuration().getText()
+                        .replaceAll("\\shour[s]+\\s",".")
+                        .replaceAll("\\smin","m"));
+                column2.addView(timeText);
+
+                ImageView icon = new ImageView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column2.getId();
+                layoutParams.topToBottom = timeText.getId();
+                layoutParams.rightToRight = column2.getId();
+                layoutParams.bottomToBottom = column2.getId();
+                icon.setLayoutParams(layoutParams);
+                icon.setImageResource(R.drawable.ic_baseline_arrow_right_alt_24);
+                column2.addView(icon);
+            }
+            ConstraintLayout column3 = new ConstraintLayout(getApplicationContext());
+            {
+                column3.setMaxWidth(220);
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
+                layoutParams.leftToRight = column2.getId();
+                layoutParams.topToTop = objList.getId();
+                layoutParams.bottomToBottom = objList.getId();
+                layoutParams.horizontalBias = (float) 0.601;
+                layoutParams.verticalBias = (float) 0.0;
+                column3.setId(i++);
+                column3.setLayoutParams(layoutParams);
+                column3.setPadding(20,10,0,0);
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column3.getId();
+                layoutParams.topToTop = column3.getId();
+                layoutParams.rightToRight = column3.getId();
+                layoutParams.bottomToBottom = column3.getId();
+                layoutParams.horizontalBias = (float) 0.481;
+                layoutParams.verticalBias = (float) 0.107;
+                TextView titleColumn = new TextView(getApplicationContext());
+                titleColumn.setText("Arrival");
+                titleColumn.setTextSize(10);
+                titleColumn.setId(i++);
+                titleColumn.setLayoutParams(layoutParams);
+                column3.addView(titleColumn);
+
+                TextView destineText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column3.getId();
+                layoutParams.topToBottom = titleColumn.getId();
+                layoutParams.rightToRight = column3.getId();
+                layoutParams.bottomToBottom = column3.getId();
+                layoutParams.horizontalBias = (float) 0.481;
+                layoutParams.verticalBias = (float) 0.222;
+                destineText.setId(i++);
+                destineText.setMaxWidth(220);
+                //destineText.setTextSize(18);
+                destineText.setTextColor(Color.rgb(15, 48, 99));
+                destineText.setLayoutParams(layoutParams);
+                destineText.setText(route.getLegs().get(0).getEnd_address().split(",")[0]);
+                column3.addView(destineText);
+
+                TextView timeText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column3.getId();
+                layoutParams.topToBottom = destineText.getId();
+                layoutParams.rightToRight = column3.getId();
+                layoutParams.bottomToBottom = column3.getId();
+                timeText.setId(i++);
+                timeText.setTextSize(12);
+                timeText.setTextColor(Color.rgb(15, 48, 99));
+                timeText.setLayoutParams(layoutParams);
+                timeText.setText(route.getLegs().get(0).getArrival_time().getText());
+                column3.addView(timeText);
+            }
+            ConstraintLayout column4 = new ConstraintLayout(getApplicationContext());
+            {
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
+                layoutParams.leftToRight = column3.getId();
+                layoutParams.topToTop = objList.getId();
+                layoutParams.bottomToBottom = objList.getId();
+                layoutParams.rightToRight = objList.getRight();
+                layoutParams.horizontalBias = (float) 1;
+                layoutParams.verticalBias = (float) 0.0;
+                column4.setId(i++);
+                column4.setLayoutParams(layoutParams);
+                column4.setPadding(20,0,0,0);
+
+                TextView titleText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column4.getId();
+                layoutParams.topToTop = column4.getId();
+                layoutParams.rightToRight = column4.getId();
+                layoutParams.bottomToBottom = column4.getId();
+                //layoutParams.bottomMargin = 10;
+                layoutParams.verticalBias = (float) 0.107;
+                titleText.setId(i++);
+                titleText.setTextSize(10);
+                titleText.setLayoutParams(layoutParams);
+                titleText.setText("Price");
+                column4.addView(titleText);
+
+                TextView priceText = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column4.getId();
+                layoutParams.topToBottom = titleText.getId();
+                layoutParams.rightToRight = column4.getId();
+                layoutParams.bottomToBottom = column4.getId();
+                layoutParams.verticalBias = (float) 0.125;
+                priceText.setId(i++);
+                priceText.setTextSize(18);
+                priceText.setTextColor(Color.rgb(15, 48, 99));
+                priceText.setLayoutParams(layoutParams);
+                String price;
+                if(route.getFare()!=null){
+                    price = route.getFare().getText();
+                    priceText.setText(route.getFare().getText());
+                }else{
+                    price = "100";
+                    priceText.setText("$ 100.00");
+                }
+                column4.addView(priceText);
+
+                ConstraintLayout btnGetTicket = new ConstraintLayout(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = column4.getId();
+                layoutParams.topToBottom = priceText.getId();
+                layoutParams.rightToRight = column4.getId();
+                layoutParams.bottomToBottom = column4.getId();
+                btnGetTicket.setBackgroundResource(R.drawable.shape_arredounded_fifteen_blue);
+                btnGetTicket.setPadding(20,20,20,20);
+                btnGetTicket.setLayoutParams(layoutParams);
+                btnGetTicket.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
+                        intent.putExtra("titleTicket",route.getLegs().get(0).getArrival_time().getTime_zone());
+                        intent.putExtra("locationName",route.getLegs().get(0).getStart_address().split(",")[0]);
+                        intent.putExtra("locationTime",route.getLegs().get(0).getDeparture_time().getText());
+                        intent.putExtra("destinationName",route.getLegs().get(0).getEnd_address().split(",")[0]);
+                        intent.putExtra("destinationTime",route.getLegs().get(0).getArrival_time().getText());
+                        intent.putExtra("TimeTicket",route.getLegs().get(0).getDuration().getText()
+                                .replaceAll("\\shour[s]+\\s",".")
+                                .replaceAll("\\smin[s]+","m"));
+                        intent.putExtra("numberPersons","1");
+                        intent.putExtra("imgTypeTransport",1);
+                        intent.putExtra("favoriteSelection",favoriteSelection);
+                        //PRICE NÃO ESTÁ FORMATADO EM CASO DO FARE VIR
+                        intent.putExtra("value",price);
+                        if(route.getFare()!=null){
+                            intent.putExtra("ticketPrice",route.getFare().getText());
+                        }else{
+                            intent.putExtra("ticketPrice","EUR 100");
+                        }
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                TextView textGetTicket = new TextView(getApplicationContext());
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToLeft = btnGetTicket.getId();
+                layoutParams.topToTop = btnGetTicket.getId();
+                layoutParams.rightToRight = btnGetTicket.getId();
+                layoutParams.bottomToBottom = btnGetTicket.getId();
+                textGetTicket.setId(i++);
+                textGetTicket.setTextSize(18);
+                textGetTicket.setTextColor(Color.rgb(255, 250, 250));
+                textGetTicket.setLayoutParams(layoutParams);
+                textGetTicket.setText("Get ticket");
+                btnGetTicket.addView(textGetTicket);
+                ImageView iconRight = new ImageView(getApplicationContext());
+                iconRight.setImageResource(R.drawable.ic_baseline_keyboard_arrow_right_24);
+                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                layoutParams.leftToRight = textGetTicket.getId();
+                layoutParams.topToTop = btnGetTicket.getId();
+                layoutParams.rightToRight = btnGetTicket.getId();
+                layoutParams.bottomToBottom = btnGetTicket.getId();
+                iconRight.setLayoutParams(layoutParams);
+                btnGetTicket.addView(iconRight);
+                column4.addView(btnGetTicket);
+
+            }
+            objList.addView(column1);
+            objList.addView(column2);
+            objList.addView(column3);
+            objList.addView(column4);
+            listRoutes.addView(objList);
+        }
+        listRoutes.invalidate();
+    }
+
     public void searchAction(View view){
         String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
         String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
         urlBase+="key="+API_KEY;
-        //urlBase+="&destination="+etDestination.getText();
-        urlBase+="&destination=Montreal";
-        //urlBase+="&origin="+etLocation.getText();
-        urlBase+="&origin=Toronto";
+        urlBase+="&destination="+etDestination.getText();
+        //urlBase+="&destination=-23.493899,-46.446555";
+        urlBase+="&origin="+etLocation.getText();
+        //urlBase+="&origin=-23.500751,-46.397492";
         urlBase+="&mode=transit";
         urlBase+="&transit_mode=tram|train|bus";
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
@@ -144,245 +426,7 @@ public class HomeActivity extends AppCompatActivity {
                     if(response!=null) {
                         Gson gson=new Gson();
                         DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                        int i = 80;
-                        for(RouteDTO route:modelMaps.getRoutes()){
-                            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-                            //layoutParams.setMargins(0, 0, 0, 50);
-                            //bloco principal
-                            ConstraintLayout objList = new ConstraintLayout(getApplicationContext());
-                            objList.setLayoutParams(layoutParams);
-                            objList.setBackgroundResource(R.drawable.shape_arredounded);
-                            objList.setMinHeight(230);
-                            //objList.setPadding(20,20,20,20);
-                            objList.setId(i);
-                            //O LAYOUT está em formato de flex-box
-
-                            layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
-                            ConstraintLayout column1 = new ConstraintLayout(getApplicationContext());
-                            {
-                                layoutParams.leftToLeft = objList.getId();
-                                layoutParams.topToTop = objList.getId();
-                                layoutParams.bottomToBottom = objList.getId();
-                                layoutParams.horizontalBias = (float) 0.0;
-                                layoutParams.verticalBias = (float) 0.0;
-                                column1.setId(i++);
-                                column1.setLayoutParams(layoutParams);
-                                column1.setPadding(40,10,0,0);
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column1.getId();
-                                layoutParams.topToTop = column1.getId();
-                                layoutParams.rightToRight = column1.getId();
-                                layoutParams.bottomToBottom = column1.getId();
-                                layoutParams.horizontalBias = (float) 0.481;
-                                layoutParams.verticalBias = (float) 0.107;
-                                TextView titleColumn = new TextView(getApplicationContext());
-                                titleColumn.setText("Departure");
-                                titleColumn.setTextSize(10);
-                                titleColumn.setId(i++);
-                                titleColumn.setLayoutParams(layoutParams);
-                                column1.addView(titleColumn);
-
-                                TextView locationText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column1.getId();
-                                layoutParams.topToBottom = titleColumn.getId();
-                                layoutParams.rightToRight = column1.getId();
-                                layoutParams.bottomToBottom = column1.getId();
-                                layoutParams.horizontalBias = (float) 0.481;
-                                layoutParams.verticalBias = (float) 0.222;
-                                locationText.setId(i++);
-                                locationText.setTextSize(18);
-                                locationText.setTextColor(R.color.madison);
-                                locationText.setLayoutParams(layoutParams);
-                                locationText.setText(route.getLegs().get(0).getStart_address().split(",")[0]);
-                                column1.addView(locationText);
-
-                                TextView timeText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column1.getId();
-                                layoutParams.topToBottom = locationText.getId();
-                                layoutParams.rightToRight = column1.getId();
-                                layoutParams.bottomToBottom = column1.getId();
-                                timeText.setId(i++);
-                                timeText.setTextSize(12);
-                                timeText.setTextColor(R.color.madison);
-                                timeText.setLayoutParams(layoutParams);
-                                timeText.setText(route.getLegs().get(0).getDeparture_time().getText());
-                                column1.addView(timeText);
-                            }
-                            ConstraintLayout column2 = new ConstraintLayout(getApplicationContext());
-                            {
-                                layoutParams = new ConstraintLayout.LayoutParams(170,MATCH_PARENT);
-                                layoutParams.leftToRight = column1.getId();
-                                layoutParams.topToTop = objList.getId();
-                                layoutParams.bottomToBottom = objList.getId();
-                                layoutParams.horizontalBias = (float)0.009;
-                                layoutParams.verticalBias = (float) 0.0;
-                                column2.setId(i++);
-                                column2.setLayoutParams(layoutParams);
-                                column2.setPadding(20,10,0,0);
-                                TextView timeText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column2.getId();
-                                layoutParams.topToTop = column2.getId();
-                                layoutParams.rightToRight = column2.getId();
-                                layoutParams.bottomToBottom = column2.getId();
-                                layoutParams.horizontalBias = (float) 0.481;
-                                layoutParams.verticalBias = (float) 0.285;
-                                layoutParams.topMargin = 40;
-                                timeText.setId(i++);
-                                timeText.setTextSize(14);
-                                timeText.setTextColor(R.color.madison);
-                                timeText.setLayoutParams(layoutParams);
-                                timeText.setText(route.getLegs().get(0).getDuration().getText()
-                                .replaceAll("\\shour[s]+\\s",".")
-                                .replaceAll("\\smin","m"));
-                                column2.addView(timeText);
-
-                                ImageView icon = new ImageView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column2.getId();
-                                layoutParams.topToBottom = timeText.getId();
-                                layoutParams.rightToRight = column2.getId();
-                                layoutParams.bottomToBottom = column2.getId();
-                                icon.setLayoutParams(layoutParams);
-                                icon.setImageResource(R.drawable.ic_baseline_arrow_right_alt_24);
-                                column2.addView(icon);
-                            }
-                            ConstraintLayout column3 = new ConstraintLayout(getApplicationContext());
-                            {
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
-                                layoutParams.leftToRight = column2.getId();
-                                layoutParams.topToTop = objList.getId();
-                                layoutParams.bottomToBottom = objList.getId();
-                                layoutParams.horizontalBias = (float) 0.601;
-                                layoutParams.verticalBias = (float) 0.0;
-                                column3.setId(i++);
-                                column3.setLayoutParams(layoutParams);
-                                column3.setPadding(20,10,0,0);
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column3.getId();
-                                layoutParams.topToTop = column3.getId();
-                                layoutParams.rightToRight = column3.getId();
-                                layoutParams.bottomToBottom = column3.getId();
-                                layoutParams.horizontalBias = (float) 0.481;
-                                layoutParams.verticalBias = (float) 0.107;
-                                TextView titleColumn = new TextView(getApplicationContext());
-                                titleColumn.setText("Arrival");
-                                titleColumn.setTextSize(10);
-                                titleColumn.setId(i++);
-                                titleColumn.setLayoutParams(layoutParams);
-                                column3.addView(titleColumn);
-
-                                TextView destineText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column3.getId();
-                                layoutParams.topToBottom = titleColumn.getId();
-                                layoutParams.rightToRight = column3.getId();
-                                layoutParams.bottomToBottom = column3.getId();
-                                layoutParams.horizontalBias = (float) 0.481;
-                                layoutParams.verticalBias = (float) 0.222;
-                                destineText.setId(i++);
-                                destineText.setTextSize(18);
-                                destineText.setTextColor(R.color.madison);
-                                destineText.setLayoutParams(layoutParams);
-                                destineText.setText(route.getLegs().get(0).getEnd_address().split(",")[0]);
-                                column3.addView(destineText);
-
-                                TextView timeText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column3.getId();
-                                layoutParams.topToBottom = destineText.getId();
-                                layoutParams.rightToRight = column3.getId();
-                                layoutParams.bottomToBottom = column3.getId();
-                                timeText.setId(i++);
-                                timeText.setTextSize(12);
-                                timeText.setTextColor(R.color.madison);
-                                timeText.setLayoutParams(layoutParams);
-                                timeText.setText(route.getLegs().get(0).getArrival_time().getText());
-                                column3.addView(timeText);
-                            }
-                            ConstraintLayout column4 = new ConstraintLayout(getApplicationContext());
-                            {
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
-                                layoutParams.leftToRight = column3.getId();
-                                layoutParams.topToTop = objList.getId();
-                                layoutParams.bottomToBottom = objList.getId();
-                                layoutParams.rightToRight = objList.getRight();
-                                layoutParams.horizontalBias = (float) 1;
-                                layoutParams.verticalBias = (float) 0.0;
-                                column4.setId(i++);
-                                column4.setLayoutParams(layoutParams);
-                                column4.setPadding(20,0,0,0);
-
-                                TextView titleText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column4.getId();
-                                layoutParams.topToTop = column4.getId();
-                                layoutParams.rightToRight = column4.getId();
-                                layoutParams.bottomToBottom = column4.getId();
-                                //layoutParams.bottomMargin = 10;
-                                layoutParams.verticalBias = (float) 0.107;
-                                titleText.setId(i++);
-                                titleText.setTextSize(10);
-                                titleText.setLayoutParams(layoutParams);
-                                titleText.setText("Price");
-                                column4.addView(titleText);
-
-                                TextView priceText = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column4.getId();
-                                layoutParams.topToBottom = titleText.getId();
-                                layoutParams.rightToRight = column4.getId();
-                                layoutParams.bottomToBottom = column4.getId();
-                                layoutParams.verticalBias = (float) 0.125;
-                                priceText.setId(i++);
-                                priceText.setTextSize(18);
-                                priceText.setTextColor(R.color.madison);
-                                priceText.setLayoutParams(layoutParams);
-                                priceText.setText("$ 10.00");
-                                column4.addView(priceText);
-
-                                ConstraintLayout btnGetTicket = new ConstraintLayout(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = column4.getId();
-                                layoutParams.topToBottom = priceText.getId();
-                                layoutParams.rightToRight = column4.getId();
-                                layoutParams.bottomToBottom = column4.getId();
-                                btnGetTicket.setBackgroundResource(R.drawable.shape_arredounded_fifteen_blue);
-                                btnGetTicket.setPadding(20,20,20,20);
-                                btnGetTicket.setLayoutParams(layoutParams);
-                                TextView textGetTicket = new TextView(getApplicationContext());
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToLeft = btnGetTicket.getId();
-                                layoutParams.topToTop = btnGetTicket.getId();
-                                layoutParams.rightToRight = btnGetTicket.getId();
-                                layoutParams.bottomToBottom = btnGetTicket.getId();
-                                textGetTicket.setId(i++);
-                                textGetTicket.setTextSize(18);
-                                textGetTicket.setTextColor(Color.rgb(255, 250, 250));
-                                textGetTicket.setLayoutParams(layoutParams);
-                                textGetTicket.setText("Get ticket");
-                                btnGetTicket.addView(textGetTicket);
-                                ImageView iconRight = new ImageView(getApplicationContext());
-                                iconRight.setImageResource(R.drawable.ic_baseline_keyboard_arrow_right_24);
-                                layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-                                layoutParams.leftToRight = textGetTicket.getId();
-                                layoutParams.topToTop = btnGetTicket.getId();
-                                layoutParams.rightToRight = btnGetTicket.getId();
-                                layoutParams.bottomToBottom = btnGetTicket.getId();
-                                iconRight.setLayoutParams(layoutParams);
-                                btnGetTicket.addView(iconRight);
-                                column4.addView(btnGetTicket);
-
-                            }
-                            objList.addView(column1);
-                            objList.addView(column2);
-                            objList.addView(column3);
-                            objList.addView(column4);
-                            listRoutes.addView(objList);
-                        }
-                        listRoutes.invalidate();
+                        fillListRoutes(modelMaps.getRoutes());
                     }else {
                     }
                 }
@@ -401,6 +445,15 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void confirmAddFavorite(View view){
+        if(favoriteSelection == 0){
+            btnAddFav.setImageResource(R.drawable.ic_baseline_favorite_24);
+            favoriteSelection = 1;
+        }else{
+            btnAddFav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            favoriteSelection = 0;
+        }
+    }
 
     private void Api(EditText etLocation, EditText etDestination, Button search){
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());;
@@ -460,9 +513,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        /*Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
-        startActivity(intent);
-        finish();*/
     }
 
     private String makeDateString(int day, int month, int year){

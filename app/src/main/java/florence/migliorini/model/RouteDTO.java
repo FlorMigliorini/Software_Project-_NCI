@@ -6,19 +6,21 @@ import java.util.Objects;
 public class RouteDTO {
     private BoundsDTO bounds;
     private String copyrights;
+    private FareDTO fare;
     private List<LegDTO> legs;
     private OverviewPolylineDTO overview_polyline;
     private String sumary;
     private List<Object> warnings;
     private List<Object> waypoint_order;
 
+
     public RouteDTO() {
     }
 
-    public RouteDTO(BoundsDTO bounds, String copyrights, List<LegDTO> legs,
-                    OverviewPolylineDTO overview_polyline, String sumary, List<Object> warnings, List<Object> waypoint_order) {
+    public RouteDTO(BoundsDTO bounds, String copyrights, FareDTO fare, List<LegDTO> legs, OverviewPolylineDTO overview_polyline, String sumary, List<Object> warnings, List<Object> waypoint_order) {
         this.bounds = bounds;
         this.copyrights = copyrights;
+        this.fare = fare;
         this.legs = legs;
         this.overview_polyline = overview_polyline;
         this.sumary = sumary;
@@ -82,17 +84,25 @@ public class RouteDTO {
         this.waypoint_order = waypoint_order;
     }
 
+    public FareDTO getFare() {
+        return fare;
+    }
+
+    public void setFare(FareDTO fare) {
+        this.fare = fare;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RouteDTO routeDTO = (RouteDTO) o;
-        return Objects.equals(bounds, routeDTO.bounds) && Objects.equals(copyrights, routeDTO.copyrights) && Objects.equals(legs, routeDTO.legs) && Objects.equals(overview_polyline, routeDTO.overview_polyline) && Objects.equals(sumary, routeDTO.sumary) && Objects.equals(warnings, routeDTO.warnings) && Objects.equals(waypoint_order, routeDTO.waypoint_order);
+        return Objects.equals(bounds, routeDTO.bounds) && Objects.equals(copyrights, routeDTO.copyrights) && Objects.equals(fare, routeDTO.fare) && Objects.equals(legs, routeDTO.legs) && Objects.equals(overview_polyline, routeDTO.overview_polyline) && Objects.equals(sumary, routeDTO.sumary) && Objects.equals(warnings, routeDTO.warnings) && Objects.equals(waypoint_order, routeDTO.waypoint_order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bounds, copyrights, legs, overview_polyline, sumary, warnings, waypoint_order);
+        return Objects.hash(bounds, copyrights, fare, legs, overview_polyline, sumary, warnings, waypoint_order);
     }
 
     @Override
@@ -100,6 +110,7 @@ public class RouteDTO {
         return "RouteDTO{" +
                 "bounds=" + bounds +
                 ", copyrights='" + copyrights + '\'' +
+                ", fare=" + fare +
                 ", legs=" + legs +
                 ", overview_polyline=" + overview_polyline +
                 ", sumary='" + sumary + '\'' +

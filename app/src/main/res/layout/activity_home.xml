@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".HomeActivity"
-    android:background="@drawable/bg9"
+    android:background="@drawable/bg4"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView android:layout_width="match_parent"
@@ -62,11 +62,12 @@
                     app:layout_constraintStart_toStartOf="@+id/textView33"
                     app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
-                <Button
+                <ImageView
                     android:id="@+id/btn_Add_Fav"
                     android:layout_width="38dp"
                     android:layout_height="29dp"
-                    android:drawableStart="@drawable/ic_favorite"
+                    android:onClick="confirmAddFavorite"
+                    android:src="@drawable/ic_baseline_favorite_border_24"
                     app:layout_constraintBottom_toBottomOf="@+id/txtVAddFav"
                     app:layout_constraintEnd_toStartOf="@+id/txtVAddFav"
                     app:layout_constraintHorizontal_bias="0.939"
@@ -171,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/btn_design"
+                    android:background="@drawable/btn_madison"
                     android:text="Search"
                     android:onClick="searchAction"
                     android:textColor="@color/white"
@@ -191,6 +192,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/radio_group"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/navagation" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout

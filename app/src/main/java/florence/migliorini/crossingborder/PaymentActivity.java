@@ -1,10 +1,12 @@
 package florence.migliorini.crossingborder;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,11 @@ import com.stripe.android.googlepaylauncher.GooglePayLauncher;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+import java.time.LocalDate;
+
+import florence.migliorini.db.SQLiteMan;
 import florence.migliorini.model.StripeKeyDTO;
+import florence.migliorini.model.TravelDTO;
 import florence.migliorini.payment.ConfigStripe;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -29,19 +35,20 @@ public class PaymentActivity extends AppCompatActivity {
     PaymentSheet.CustomerConfiguration customerConfig;
     ConfigStripe config = new ConfigStripe();
     Gson gson = new Gson();
-    StripeKeyDTO strpe = gson.fromJson(config.getKey(),StripeKeyDTO.class);
+    StripeKeyDTO strpe ;
     private Button btnStripe, btnGooglePlayPay;
     private TextView titleTicket, locationName, locationTime, destinationName,
             destinationTime, TimeTicket, numberPersons;
-    private Integer typeTransport = 1;
+    private Integer typeTransport;
     private ImageView imgTypeTransport;
+    private String ticketPrice;
+    private Integer favoriteSelection;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
-        PaymentConfiguration.init(this, strpe.getPublishableKey());
         imgTypeTransport = findViewById(R.id.iconTypeTransport);
         titleTicket = findViewById(R.id.TitleTicket);
         locationName = findViewById(R.id.locationName);
@@ -52,6 +59,22 @@ public class PaymentActivity extends AppCompatActivity {
         numberPersons = findViewById(R.id.numberOfPerson);
         btnStripe = findViewById(R.id.btnPaymentStripe);
         btnGooglePlayPay = findViewById(R.id.btnPaymentGooglePlay);
+        Intent in = getIntent();
+        titleTicket.setText(in.getStringExtra("titleTicket"));
+        locationName.setText(in.getStringExtra("locationName"));
+        locationTime.setText(in.getStringExtra("locationTime"));
+        destinationName.setText(in.getStringExtra("destinationName"));
+        destinationTime.setText(in.getStringExtra("destinationTime"));
+        TimeTicket.setText(in.getStringExtra("TimeTicket"));
+        numberPersons.setText(in.getStringExtra("numberPersons"));
+        typeTransport = in.getIntExtra("imgTypeTransport",0);
+        favoriteSelection = in.getIntExtra("favoriteSelection",0);
+
+        strpe = gson.fromJson(config.getKey(Long.parseLong(in.getStringExtra("value")))
+                ,StripeKeyDTO.class);
+        ticketPrice = in.getStringExtra("ticketPrice");
+        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
+        PaymentConfiguration.init(this, strpe.getPublishableKey());
         configPaymentWithGooglePlay();
     }
 
@@ -112,6 +135,7 @@ public class PaymentActivity extends AppCompatActivity {
         //runOnUiThread(() -> payButton.setEnabled(true));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void onPaymentSheetResult(final PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
             Log.d("Stripe","Canceled");
@@ -128,6 +152,12 @@ public class PaymentActivity extends AppCompatActivity {
             intent.putExtra("TimeTicket",TimeTicket.getText());
             intent.putExtra("numberPersons",numberPersons.getText());
             intent.putExtra("imgTypeTransport",typeTransport);
+            TravelDTO travel = new TravelDTO(null,locationName.getText().toString(),destinationName.getText().toString()
+                    , LocalDate.now(),typeTransport,TimeTicket.getText().toString(),ticketPrice);
+            if(favoriteSelection == 1){
+                SQLiteMan.addFavorite(travel);
+            }
+            SQLiteMan.addHistoric(travel);
             startActivity(intent);
             finish();
         }

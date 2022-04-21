@@ -26,7 +26,7 @@ public class ConfigStripe {
         Stripe.apiKey = "sk_test_51KoodkK4jThQYIzhMivdqlsLJGCgcGDSpUoDPIh3bZTMdIWK8t30S1wVyrBMom78wWLwlAqVumgB6Li56HykEveD00cfvfIQA5";
     }
 
-    public String getKey(){
+    public String getKey(Long value){
         try{
             CustomerCreateParams customerParams = CustomerCreateParams.builder()
                     .build();
@@ -42,7 +42,7 @@ public class ConfigStripe {
                     ephemeralKeyOptions);
             PaymentIntentCreateParams paymentIntentParams =
                     PaymentIntentCreateParams.builder()
-                            .setAmount(100L)
+                            .setAmount(value)
                             .setCurrency("eur")
                             .setCustomer(customer.getId())
                             .setAutomaticPaymentMethods(new PaymentIntentCreateParams
