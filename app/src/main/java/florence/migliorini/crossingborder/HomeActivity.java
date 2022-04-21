@@ -55,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private ListView listView;
     private ArrayList<String> options;
+    private LinearLayout listRoutes;
+
 
     RadioButton radioButton;
     AutoCompleteTextView autoCompleteTextViewPassegers;
@@ -75,8 +77,8 @@ public class HomeActivity extends AppCompatActivity {
         btnAddFav = findViewById(R.id.btn_Add_Fav);
         btnSearch = findViewById(R.id.btnSearch);
         timeButton = findViewById(R.id.btnSelectTime);
-        listView = findViewById(R.id.LV_list);
-
+        //listView = findViewById(R.id.LV_list);
+        listRoutes = findViewById(R.id.listRoutes);
 
         radioButton = findViewById(R.id.rbOneWay);
         radioButton = findViewById(R.id.rbReturn);
@@ -119,6 +121,40 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    public void searchAction(View view){
+        String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+        String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
+        urlBase+="key="+API_KEY;
+        urlBase+="&destination="+etDestination.getText();
+        urlBase+="&origin="+etLocation.getText();
+        urlBase+="&mode=transit";
+        urlBase+="&transit_mode=tram|train|bus";
+        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());;
+        try {
+            //JSONObject json=new JSONObject();
+            JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET, urlBase,
+                    null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    if(response!=null) {
+                        Gson gson=new Gson();
+
+                    }else {
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            requestQueue.add(jsonRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void Api(EditText etLocation, EditText etDestination, Button search){
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());;
@@ -178,9 +214,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+        /*Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
     }
 
     private String makeDateString(int day, int month, int year){

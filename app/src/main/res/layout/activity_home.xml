@@ -173,6 +173,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/btn_design"
                     android:text="Search"
+                    android:onClick="searchAction"
                     android:textColor="@color/white"
                     android:textSize="13dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -192,13 +193,15 @@
                     tools:ignore="MissingConstraints,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ListView
-                android:id="@+id/LV_list"
+            <LinearLayout
+                android:id="@+id/listRoutes"
                 android:layout_width="match_parent"
-                android:layout_height="329dp">
+                android:layout_height="330dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
-            </ListView>>
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
