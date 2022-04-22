@@ -310,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
         //FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
 
-        //startHome();
+        startHome();
         /*
             // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.

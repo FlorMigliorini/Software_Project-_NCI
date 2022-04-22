@@ -207,13 +207,145 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
+                android:id="@+id/linearFilters"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:visibility="invisible"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.955">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockBtnTrainTypeHome"
+                    android:layout_width="104dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_arredounded"
+                    android:onClick="filterTrain">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btnTrainTypeHome"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_baseline_train_24"
+                        android:elevation="5dp"
+                        android:tag="icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.04"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.303">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/txBtnTrainTypeHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:tag="text"
+                        android:text="Train"
+                        android:textColor="#1C1C1C"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.466"
+                        app:layout_constraintStart_toEndOf="@+id/btnTrainTypeHome"
+                        app:layout_constraintTop_toTopOf="@+id/btnTrainTypeHome"
+                        app:layout_constraintVertical_bias="0.545" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockBtnBusTypeHome"
+                    android:layout_width="104dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_arredounded"
+                    android:onClick="filterBus">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btnBusTypeHome"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_baseline_directions_bus_24"
+                        android:elevation="5dp"
+                        android:tag="icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/txBtnBusTypeHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:tag="text"
+                        android:text="Bus"
+                        android:textColor="#1C1C1C"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.35"
+                        app:layout_constraintStart_toEndOf="@+id/btnBusTypeHome"
+                        app:layout_constraintTop_toTopOf="@+id/btnBusTypeHome" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockBtnLuasTypeHome"
+                    android:layout_width="104dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_arredounded"
+                    android:onClick="filterLuas">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btnLuasTypeHome"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_baseline_subway_24"
+                        android:elevation="5dp"
+                        android:tag="icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.093">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/txBtnLuasTypeHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:tag="text"
+                        android:text="Luas"
+                        android:textColor="#1C1C1C"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.428"
+                        app:layout_constraintStart_toEndOf="@+id/btnLuasTypeHome"
+                        app:layout_constraintTop_toTopOf="@+id/btnLuasTypeHome" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/listRoutes"
                 android:paddingLeft="25dp"
                 android:paddingRight="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
                 android:orientation="vertical"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp">
+
+            </LinearLayout>
 
         </LinearLayout>
 

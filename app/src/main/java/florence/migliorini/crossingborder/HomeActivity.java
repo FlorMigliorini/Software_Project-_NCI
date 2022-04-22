@@ -4,6 +4,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -55,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 
 import florence.migliorini.db.DbHelper;
+import florence.migliorini.db.SQLiteMan;
 import florence.migliorini.model.DirectionsMainDTO;
 import florence.migliorini.model.Favorite;
 import florence.migliorini.model.RouteDTO;
@@ -69,7 +72,18 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout listRoutes;
     private Integer favoriteSelection =0;
     private ImageView btnAddFav;
+    private LinearLayout linearFilters;
 
+    private List<RouteDTO> listRoutesTrain;
+    private List<RouteDTO> listRoutesBus;
+    private List<RouteDTO> listRoutesLuas;
+
+    //Atributos de filtros
+    private ConstraintLayout favoriteSelected = null;
+    private ConstraintLayout filterActive;
+    private ConstraintLayout iconFilterActive;
+    private TextView textViewActive;
+    private Integer typeTransportSelected = 0;
 
     RadioButton radioButton;
     AutoCompleteTextView autoCompleteTextViewPassegers;
@@ -95,6 +109,7 @@ public class HomeActivity extends AppCompatActivity {
 
         radioButton = findViewById(R.id.rbOneWay);
         radioButton = findViewById(R.id.rbReturn);
+        linearFilters = findViewById(R.id.linearFilters);
         //autoCompleteTextViewPassegers = findViewById(R.id.autoCompleteTextViewPassegers);
 
         //display the list options
@@ -131,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         int i = 80;
         for(RouteDTO route:routes){
             ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-            //layoutParams.setMargins(0, 0, 0, 50);
+            layoutParams.setMargins(0, 0, 0, 50);
             //bloco principal
             ConstraintLayout objList = new ConstraintLayout(getApplicationContext());
             objList.setLayoutParams(layoutParams);
@@ -360,7 +375,7 @@ public class HomeActivity extends AppCompatActivity {
                                 .replaceAll("\\shour[s]+\\s",".")
                                 .replaceAll("\\smin[s]+","m"));
                         intent.putExtra("numberPersons","1");
-                        intent.putExtra("imgTypeTransport",1);
+                        intent.putExtra("imgTypeTransport",typeTransportSelected);
                         intent.putExtra("favoriteSelection",favoriteSelection);
                         //PRICE NÃO ESTÁ FORMATADO EM CASO DO FARE VIR
                         intent.putExtra("value",price);
@@ -415,18 +430,29 @@ public class HomeActivity extends AppCompatActivity {
         urlBase+="&origin="+etLocation.getText();
         //urlBase+="&origin=-23.500751,-46.397492";
         urlBase+="&mode=transit";
-        urlBase+="&transit_mode=tram|train|bus";
+        //urlBase+="&transit_mode=tram|train|bus";
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
-            JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET, urlBase,
+            JsonObjectRequest jsonRequestTrain=new JsonObjectRequest(Request.Method.GET,
+                    urlBase+"&transit_mode=train",
                     null, new Response.Listener<JSONObject>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @SuppressLint("ResourceAsColor")
                 @Override
                 public void onResponse(JSONObject response) {
                     if(response!=null) {
                         Gson gson=new Gson();
                         DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                        fillListRoutes(modelMaps.getRoutes());
+                        if(modelMaps.getRoutes().size()>0){
+                            typeTransportSelected = 1;
+                            //fillListRoutes(modelMaps.getRoutes());
+                            linearFilters.setVisibility(View.VISIBLE);
+                            filterActive = findViewById(R.id.blockBtnTrainTypeHome);
+                            iconFilterActive = findViewById(R.id.btnTrainTypeHome);
+                            textViewActive = findViewById(R.id.txBtnTrainTypeHome);
+                            listRoutesTrain = modelMaps.getRoutes();
+                            filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
+                        }
                     }else {
                     }
                 }
@@ -435,7 +461,69 @@ public class HomeActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
-            requestQueue.add(jsonRequest);
+            JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
+                    urlBase+"&transit_mode=bus",
+                    null, new Response.Listener<JSONObject>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onResponse(JSONObject response) {
+                    if(response!=null) {
+                        Gson gson=new Gson();
+                        DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                        if(modelMaps.getRoutes().size()>0){
+                            //fillListRoutes(modelMaps.getRoutes());
+                            listRoutesBus = modelMaps.getRoutes();
+                            if(typeTransportSelected==0){
+                                typeTransportSelected = 2;
+                                filterActive = findViewById(R.id.blockBtnBusTypeHome);
+                                iconFilterActive = findViewById(R.id.btnBusTypeHome);
+                                textViewActive = findViewById(R.id.txBtnBusTypeHome);
+                                filterBus(findViewById(R.id.blockBtnBusTypeHome));
+                            }
+                            linearFilters.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+            JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
+                    urlBase+"&transit_mode=tram",
+                    null, new Response.Listener<JSONObject>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onResponse(JSONObject response) {
+                    if(response!=null) {
+                        Gson gson=new Gson();
+                        DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                        if(modelMaps.getRoutes().size()>0){
+                            //fillListRoutes(modelMaps.getRoutes());
+                            listRoutesLuas = modelMaps.getRoutes();
+                            if(typeTransportSelected==0){
+                                typeTransportSelected = 3;
+                                filterActive = findViewById(R.id.blockBtnLuasTypeHome);
+                                iconFilterActive = findViewById(R.id.btnLuasTypeHome);
+                                textViewActive = findViewById(R.id.txBtnLuasTypeHome);
+                                filterLuas(findViewById(R.id.blockBtnLuasTypeHome));
+                            }
+                            linearFilters.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+            requestQueue.add(jsonRequestTrain);
+            requestQueue.add(jsonRequestBus);
+            requestQueue.add(jsonRequestLuas);
             /*Gson gson=new Gson();
             JSONObject response = new JSONObject(getString(R.string.teste_json_maps));
             DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);*/
@@ -590,6 +678,82 @@ public class HomeActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour, minute, true);
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void filterTrain(View view){
+        if(filterActive!=null){
+            clearLastFilter();
+            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            ConstraintLayout icon = findViewById(R.id.btnTrainTypeHome);
+            TextView txBtn = findViewById(R.id.txBtnTrainTypeHome);
+            icon.setBackgroundResource(R.drawable.ic_baseline_train_white_24);
+            txBtn.setTextColor(Color.rgb(255,250,250));
+            filterActive = (ConstraintLayout) view;
+            textViewActive = txBtn;
+            iconFilterActive = icon;
+            listRoutes.removeAllViews();
+            typeTransportSelected = 1;
+            try{
+                fillListRoutes(listRoutesTrain);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void filterBus(View view){
+        if(filterActive!=null){
+            clearLastFilter();
+            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            ConstraintLayout icon = findViewById(R.id.btnBusTypeHome);
+            TextView txBtn = findViewById(R.id.txBtnBusTypeHome);
+            icon.setBackgroundResource(R.drawable.ic_baseline_directions_bus_white_24);
+            txBtn.setTextColor(Color.rgb(255,250,250));
+            filterActive = (ConstraintLayout) view;
+            textViewActive = txBtn;
+            iconFilterActive = icon;
+            listRoutes.removeAllViews();
+            typeTransportSelected = 2;
+            try{
+                fillListRoutes(listRoutesBus);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void filterLuas(View view){
+        if(filterActive!=null){
+            clearLastFilter();
+            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            ConstraintLayout icon = findViewById(R.id.btnLuasTypeHome);
+            TextView txBtn = findViewById(R.id.txBtnLuasTypeHome);
+            icon.setBackgroundResource(R.drawable.ic_baseline_subway_white_24);
+            txBtn.setTextColor(Color.rgb(255,250,250));
+            filterActive = (ConstraintLayout) view;
+            textViewActive = txBtn;
+            iconFilterActive = icon;
+            listRoutes.removeAllViews();
+            typeTransportSelected = 3;
+            try{
+                fillListRoutes(listRoutesLuas);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    @SuppressLint("ResourceType")
+    public void clearLastFilter(){
+        filterActive.setBackgroundResource(R.drawable.shape_arredounded);
+        if(typeTransportSelected == 1){
+            iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_train_24);
+        }else if(typeTransportSelected==2){
+            iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_directions_bus_24);
+        }else if(typeTransportSelected==3){
+            iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_subway_24);
+        }
+        textViewActive.setTextColor(Color.rgb(56,56,56));
     }
 
 //    @Override
