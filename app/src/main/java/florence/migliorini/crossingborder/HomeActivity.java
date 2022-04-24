@@ -345,10 +345,12 @@ public class HomeActivity extends AppCompatActivity {
                 priceText.setLayoutParams(layoutParams);
                 String price;
                 if(route.getFare()!=null){
-                    price = route.getFare().getText();
+                    price = route.getFare().getText().replaceAll("[.]","")
+                    .replaceAll("[a-zA-Z$€]","")
+                    .replaceAll("\\s","");
                     priceText.setText(route.getFare().getText());
                 }else{
-                    price = "100";
+                    price = "10000";
                     priceText.setText("$ 100.00");
                 }
                 column4.addView(priceText);
@@ -461,6 +463,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
+            Log.d("Test",urlBase+"&transit_mode=bus");
             JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
                     urlBase+"&transit_mode=bus",
                     null, new Response.Listener<JSONObject>() {
@@ -491,6 +494,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
+            Log.d("Test",urlBase+"&transit_mode=tram");
             JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
                     urlBase+"&transit_mode=tram",
                     null, new Response.Listener<JSONObject>() {
@@ -682,6 +686,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterTrain(View view){
+        Log.d("Checked","Entrou 1");
+        Log.d("Checked",listRoutesTrain.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
@@ -703,6 +709,8 @@ public class HomeActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterBus(View view){
+        Log.d("Checked","Entrou 2");
+        Log.d("Checked",listRoutesBus.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
@@ -724,6 +732,8 @@ public class HomeActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterLuas(View view){
+        Log.d("Checked","Entrou 3");
+        Log.d("Checked",listRoutesLuas.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
