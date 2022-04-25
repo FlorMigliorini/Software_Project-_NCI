@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -48,11 +49,14 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.type.DateTime;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,14 +88,15 @@ public class HomeActivity extends AppCompatActivity {
     private ConstraintLayout iconFilterActive;
     private TextView textViewActive;
     private Integer typeTransportSelected = 0;
+    private Spinner spinner;
 
-    RadioButton radioButton;
+    RadioButton rbOneWay,rbReturn;
     AutoCompleteTextView autoCompleteTextViewPassegers;
     EditText etLocation, etDestination;
 
     FavoriteActivity favoriteActivity;
-
-    int hour, minute;
+    int daySelected,monthSelected,yearSelected = 0;
+    int hour, minute = 0;
 
 //    private Button button;
 
@@ -103,12 +108,11 @@ public class HomeActivity extends AppCompatActivity {
         etDestination = findViewById(R.id.etDestination);
         btnAddFav = findViewById(R.id.btn_Add_Fav);
         btnSearch = findViewById(R.id.btnSearch);
-        timeButton = findViewById(R.id.btnSelectTime);
         //listView = findViewById(R.id.LV_list);
         listRoutes = findViewById(R.id.listRoutes);
-
-        radioButton = findViewById(R.id.rbOneWay);
-        radioButton = findViewById(R.id.rbReturn);
+        ScrollView scroll = findViewById(R.id.scrollViewMain);
+        rbOneWay = findViewById(R.id.rbOneWay);
+        rbReturn = findViewById(R.id.rbReturn);
         linearFilters = findViewById(R.id.linearFilters);
         //autoCompleteTextViewPassegers = findViewById(R.id.autoCompleteTextViewPassegers);
 
@@ -120,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
 //        listView.setAdapter(adapterTranspOption);
 
         //passenger
-        Spinner spinner = (Spinner) findViewById(R.id.sp_passagers);
+        spinner = (Spinner) findViewById(R.id.sp_passagers);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.passagers));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -131,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
         initDatePicker();
         dateButton = findViewById(R.id.buttonPickDate);
         dateButton.setText(getTodaysDate());
+        timeButton = findViewById(R.id.btnSelectTime);
         btnHide = findViewById(R.id.btnHide);
         btnHide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -344,14 +349,23 @@ public class HomeActivity extends AppCompatActivity {
                 priceText.setTextColor(Color.rgb(15, 48, 99));
                 priceText.setLayoutParams(layoutParams);
                 String price;
+                Integer priceInt = 100;
+                String numberPassangers="1";
                 if(route.getFare()!=null){
                     price = route.getFare().getText().replaceAll("[.]","")
                     .replaceAll("[a-zA-Z$€]","")
                     .replaceAll("\\s","");
                     priceText.setText(route.getFare().getText());
                 }else{
-                    price = "10000";
-                    priceText.setText("$ 100.00");
+                    if(rbReturn.isChecked()){
+                        priceInt = 200;
+                    }else{
+                        priceInt = 100;
+                    }
+                    numberPassangers = spinner.getSelectedItem().toString();
+                    numberPassangers = numberPassangers.split(" ")[0];
+                    priceInt = Integer.parseInt(numberPassangers)*priceInt;
+                    priceText.setText("$ "+priceInt+".00");
                 }
                 column4.addView(priceText);
 
@@ -364,6 +378,8 @@ public class HomeActivity extends AppCompatActivity {
                 btnGetTicket.setBackgroundResource(R.drawable.shape_arredounded_fifteen_blue);
                 btnGetTicket.setPadding(20,20,20,20);
                 btnGetTicket.setLayoutParams(layoutParams);
+                Integer finalPriceInt = priceInt;
+                String finalNumberPassangers = numberPassangers;
                 btnGetTicket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -376,11 +392,11 @@ public class HomeActivity extends AppCompatActivity {
                         intent.putExtra("TimeTicket",route.getLegs().get(0).getDuration().getText()
                                 .replaceAll("\\shour[s]+\\s",".")
                                 .replaceAll("\\smin[s]+","m"));
-                        intent.putExtra("numberPersons","1");
+                        intent.putExtra("numberPersons", finalNumberPassangers);
                         intent.putExtra("imgTypeTransport",typeTransportSelected);
                         intent.putExtra("favoriteSelection",favoriteSelection);
                         //PRICE NÃO ESTÁ FORMATADO EM CASO DO FARE VIR
-                        intent.putExtra("value",price);
+                        intent.putExtra("value", finalPriceInt +"00");
                         if(route.getFare()!=null){
                             intent.putExtra("ticketPrice",route.getFare().getText());
                         }else{
@@ -424,11 +440,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void searchAction(View view){
+        String dateFormat="";
         String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
         String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
         urlBase+="key="+API_KEY;
         urlBase+="&alternatives=true";
+        Calendar calendar = Calendar.getInstance();
+        if(daySelected!=0){
+            calendar.set(yearSelected,monthSelected,daySelected);
+        }
+        if(hour!=0){
+            calendar.set(yearSelected,monthSelected,daySelected,hour,minute);
+        }
+        dateFormat = String.valueOf(calendar.getTimeInMillis()/1000);
+        if(dateFormat!=""){
+            urlBase+="&departure_time="+dateFormat;
+        }
         urlBase+="&destination="+etDestination.getText();
+
         //urlBase+="&destination=-23.493899,-46.446555";
         urlBase+="&origin="+etLocation.getText();
         //urlBase+="&origin=-23.500751,-46.397492";
@@ -649,6 +678,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month +1;
+                monthSelected = month;
+                yearSelected = year;
+                daySelected = day;
                 String date = makeDateString(day, month, year);
                 dateButton.setText(date);
             }
@@ -673,6 +705,7 @@ public class HomeActivity extends AppCompatActivity {
                 //applying variables
                 hour = selectedHour;
                 minute = selectedMinute;
+
                 timeButton.setText(String.format(Locale.getDefault(), "%2d:%02d", hour, minute));
 
             }

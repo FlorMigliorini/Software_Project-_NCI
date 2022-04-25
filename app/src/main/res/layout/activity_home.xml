@@ -7,7 +7,9 @@
     android:background="@drawable/bg4"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView
+        android:id="@+id/scrollViewMain"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,6 +35,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_one_way"
+                        android:checked="true"
                         android:textSize="15dp"
                         tools:ignore="TouchTargetSizeCheck" />
 
