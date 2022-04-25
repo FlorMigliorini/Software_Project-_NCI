@@ -45,14 +45,4 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("florence.migliorini.crossingborder", appContext.getPackageName());
     }
-
-    @Test
-    public void teste() throws ParseException {
-        List<TravelDTO> list = SQLiteMan.getListFavorites();
-        Log.d("test",list.size()+"");
-    }
-    @Test
-    public void addFavorite(){
-
-    }
 }

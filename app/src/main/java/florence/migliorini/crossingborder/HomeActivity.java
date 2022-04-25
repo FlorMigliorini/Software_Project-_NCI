@@ -427,6 +427,7 @@ public class HomeActivity extends AppCompatActivity {
         String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
         String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
         urlBase+="key="+API_KEY;
+        urlBase+="&alternatives=true";
         urlBase+="&destination="+etDestination.getText();
         //urlBase+="&destination=-23.493899,-46.446555";
         urlBase+="&origin="+etLocation.getText();
