@@ -2,12 +2,14 @@ package florence.migliorini.crossingborder;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -98,5 +100,10 @@ public class Route1Activity extends FragmentActivity implements OnMapReadyCallba
         }catch (SecurityException e){
             e.printStackTrace();
         }
+    }
+    public void menuButton(View view) {
+        Intent intent = new Intent(Route1Activity.this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

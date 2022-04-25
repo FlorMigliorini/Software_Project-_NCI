@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.squareup.okhttp.Route;
 
 import florence.migliorini.crossingborder.databinding.ActivityMapsBinding;
 
@@ -54,5 +57,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
+    }
+    public void menuButton(View view) {
+        Intent intent = new Intent(RouteActivity.this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -493,7 +493,6 @@ public class HomeActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
-            Log.d("Test",urlBase+"&transit_mode=bus");
             JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
                     urlBase+"&transit_mode=bus",
                     null, new Response.Listener<JSONObject>() {
@@ -507,7 +506,7 @@ public class HomeActivity extends AppCompatActivity {
                         if(modelMaps.getRoutes().size()>0){
                             //fillListRoutes(modelMaps.getRoutes());
                             listRoutesBus = modelMaps.getRoutes();
-                            if(typeTransportSelected==0){
+                            if(typeTransportSelected.equals(0)){
                                 typeTransportSelected = 2;
                                 filterActive = findViewById(R.id.blockBtnBusTypeHome);
                                 iconFilterActive = findViewById(R.id.btnBusTypeHome);
@@ -524,7 +523,6 @@ public class HomeActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
-            Log.d("Test",urlBase+"&transit_mode=tram");
             JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
                     urlBase+"&transit_mode=tram",
                     null, new Response.Listener<JSONObject>() {
@@ -538,7 +536,7 @@ public class HomeActivity extends AppCompatActivity {
                         if(modelMaps.getRoutes().size()>0){
                             //fillListRoutes(modelMaps.getRoutes());
                             listRoutesLuas = modelMaps.getRoutes();
-                            if(typeTransportSelected==0){
+                            if(typeTransportSelected.equals(0)){
                                 typeTransportSelected = 3;
                                 filterActive = findViewById(R.id.blockBtnLuasTypeHome);
                                 iconFilterActive = findViewById(R.id.btnLuasTypeHome);
@@ -720,8 +718,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterTrain(View view){
-        Log.d("Checked","Entrou 1");
-        Log.d("Checked",listRoutesTrain.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
@@ -743,8 +739,6 @@ public class HomeActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterBus(View view){
-        Log.d("Checked","Entrou 2");
-        Log.d("Checked",listRoutesBus.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
@@ -766,8 +760,6 @@ public class HomeActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterLuas(View view){
-        Log.d("Checked","Entrou 3");
-        Log.d("Checked",listRoutesLuas.size() + "");
         if(filterActive!=null){
             clearLastFilter();
             view.setBackgroundResource(R.drawable.shape_arredounded_blue);
