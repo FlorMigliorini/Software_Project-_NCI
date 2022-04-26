@@ -256,7 +256,29 @@ public class FavoriteActivity extends AppCompatActivity {
                     txDestine.setTextColor(Color.rgb(255, 250, 250));
                 }
             });
-
+            ct.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Intent intent = new Intent(FavoriteActivity.this, PaymentActivity.class);
+                    intent.putExtra("titleTicket",tv.getDsTitleTicket());
+                    intent.putExtra("locationName",tv.getLocation());
+                    intent.putExtra("locationTime",tv.getDtHourDeparture());
+                    intent.putExtra("destinationName",tv.getDestiny());
+                    intent.putExtra("destinationTime",tv.getDtHourTravel());
+                    intent.putExtra("TimeTicket",tv.getDtDuration()
+                            .replaceAll("\\shour[s]+\\s",".")
+                            .replaceAll("\\smin[s]+","m"));
+                    intent.putExtra("numberPersons", tv.getNumPassengers().toString());
+                    intent.putExtra("imgTypeTransport",tv.getCdTransport());
+                    //intent.putExtra("favoriteSelection",favoriteSelection);
+                    //PRICE NÃO ESTÁ FORMATADO EM CASO DO FARE VIR
+                    intent.putExtra("value", tv.getValue()+"");
+                    intent.putExtra("ticketPrice",tv.getValue().toString().substring(0,
+                            tv.getValue().toString().length()-2));
+                    startActivity(intent);
+                    return true;
+                }
+            });
 
             ImageView img = new ImageView(getApplicationContext());
             img.setImageResource(castingCdTypeTransport(tv.getCdTransport(), "default"));

@@ -43,6 +43,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ImageView imgTypeTransport;
     private String ticketPrice;
     private Integer favoriteSelection;
+    private Integer valueTicket;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -69,7 +70,7 @@ public class PaymentActivity extends AppCompatActivity {
         numberPersons.setText(in.getStringExtra("numberPersons"));
         typeTransport = in.getIntExtra("imgTypeTransport",0);
         favoriteSelection = in.getIntExtra("favoriteSelection",0);
-
+        valueTicket = Integer.parseInt(in.getStringExtra("value"));
         strpe = gson.fromJson(config.getKey(Long.parseLong(in.getStringExtra("value")))
                 ,StripeKeyDTO.class);
         ticketPrice = in.getStringExtra("ticketPrice");
@@ -149,11 +150,14 @@ public class PaymentActivity extends AppCompatActivity {
             intent.putExtra("locationTime",locationTime.getText());
             intent.putExtra("destinationName",destinationName.getText());
             intent.putExtra("destinationTime",destinationTime.getText());
-            intent.putExtra("TimeTicket",TimeTicket.getText());
-            intent.putExtra("numberPersons",numberPersons.getText());
+            intent.putExtra("TimeTicket",TimeTicket.getText().toString());
+            intent.putExtra("numberPersons",numberPersons.getText().toString());
             intent.putExtra("imgTypeTransport",typeTransport);
             TravelDTO travel = new TravelDTO(null,locationName.getText().toString(),destinationName.getText().toString()
-                    , LocalDate.now(),typeTransport,TimeTicket.getText().toString(),ticketPrice);
+                    , LocalDate.now(),typeTransport,TimeTicket.getText().toString(),valueTicket,
+                    TimeTicket.getText().toString(),titleTicket.getText().toString(),
+                    locationTime.getText().toString(),destinationTime.getText().toString()
+                    ,Integer.parseInt(numberPersons.getText().toString()));
             if(favoriteSelection == 1){
                 SQLiteMan.addFavorite(travel);
             }

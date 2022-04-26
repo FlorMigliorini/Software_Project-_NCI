@@ -55,7 +55,8 @@ public class DbHistory extends SQLiteOpenHelper {
                         LocalDate.parse(cursor.getString(4)),
                         cursor.getInt(2),
                         null,
-                        null
+                        null,
+                        null,null,null,null,null
                 );
                 list.add(travel);
             } while (cursor.moveToNext());

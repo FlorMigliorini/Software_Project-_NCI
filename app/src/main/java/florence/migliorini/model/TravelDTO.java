@@ -10,10 +10,18 @@ public class TravelDTO {
     private LocalDate dtInitial;
     private Integer cdTransport;
     private String duration;
-    private String value;
+    private Integer value;
+    private String dtDuration;
+    private String dsTitleTicket;
+    private String dtHourDeparture;
+    private String dtHourTravel;
+    private Integer numPassengers;
 
-    public TravelDTO(Integer id, String location, String destiny, LocalDate dtInitial,
-                     Integer cdTransport, String duration, String value) {
+    public TravelDTO(Integer id, String location, String destiny,
+                     LocalDate dtInitial, Integer cdTransport,
+                     String duration, Integer value, String dtDuration,
+                     String dsTitleTicket, String dtHourDeparture,
+                     String dtHourTravel, Integer numPassengers) {
         this.id = id;
         this.location = location;
         this.destiny = destiny;
@@ -21,6 +29,19 @@ public class TravelDTO {
         this.cdTransport = cdTransport;
         this.duration = duration;
         this.value = value;
+        this.dtDuration = dtDuration;
+        this.dsTitleTicket = dsTitleTicket;
+        this.dtHourDeparture = dtHourDeparture;
+        this.dtHourTravel = dtHourTravel;
+        this.numPassengers = numPassengers;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLocation() {
@@ -47,6 +68,14 @@ public class TravelDTO {
         this.dtInitial = dtInitial;
     }
 
+    public Integer getCdTransport() {
+        return cdTransport;
+    }
+
+    public void setCdTransport(Integer cdTransport) {
+        this.cdTransport = cdTransport;
+    }
+
     public String getDuration() {
         return duration;
     }
@@ -55,27 +84,51 @@ public class TravelDTO {
         this.duration = duration;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
-    public Integer getId() {
-        return id;
+    public String getDtDuration() {
+        return dtDuration;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDtDuration(String dtDuration) {
+        this.dtDuration = dtDuration;
     }
 
-    public Integer getCdTransport() {
-        return cdTransport;
+    public String getDsTitleTicket() {
+        return dsTitleTicket;
     }
 
-    public void setCdTransport(Integer cdTransport) {
-        this.cdTransport = cdTransport;
+    public void setDsTitleTicket(String dsTitleTicket) {
+        this.dsTitleTicket = dsTitleTicket;
+    }
+
+    public String getDtHourDeparture() {
+        return dtHourDeparture;
+    }
+
+    public void setDtHourDeparture(String dtHourDeparture) {
+        this.dtHourDeparture = dtHourDeparture;
+    }
+
+    public String getDtHourTravel() {
+        return dtHourTravel;
+    }
+
+    public void setDtHourTravel(String dtHourTravel) {
+        this.dtHourTravel = dtHourTravel;
+    }
+
+    public Integer getNumPassengers() {
+        return numPassengers;
+    }
+
+    public void setNumPassengers(Integer numPassengers) {
+        this.numPassengers = numPassengers;
     }
 }

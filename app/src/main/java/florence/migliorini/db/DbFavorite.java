@@ -34,7 +34,13 @@ public class DbFavorite extends SQLiteOpenHelper {
                 "DS_LOCATION VARCHAR(100)," +
                 "CD_TRANSPORT INTEGER," +
                 "DS_DISTINY VARCHAR(100)," +
-                "DT_TIME VARCHAR(100))";
+                "DT_TIME VARCHAR(100)," +
+                "NUM_VALUE INTEGER," +
+                "DT_DURATION VARCHAR(100)," +
+                "DS_TITLE_TICKET VARCHAR(100)," +
+                "DT_HOUR_DEPARTURE VARCHAR(100)," +
+                "DT_HOUR_TRAVEL VARCHAR(100)," +
+                "NUM_PASSENGERS INTEGER)";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
@@ -56,8 +62,13 @@ public class DbFavorite extends SQLiteOpenHelper {
                         cursor.getString(3),
                         null,
                         cursor.getInt(2),
-                        null,
-                        null
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getString(8),
+                        cursor.getString(9),
+                        cursor.getInt(10)
                 );
                 list.add(travel);
             } while (cursor.moveToNext());
@@ -67,7 +78,8 @@ public class DbFavorite extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getAllFavoritesWithType(String type) throws ParseException {
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.query("TB_FAVORITE",new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME"},
+        Cursor cursor = this.db.query("TB_FAVORITE",new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME",
+                "DT_DURATION","DS_TITLE_TICKET","DT_HOUR_DEPARTURE","DT_HOUR_TRAVEL","NUM_PASSENGERS"},
                 "CD_TRANSPORT = ?",new String[]{type},null,null,null,null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {
@@ -78,8 +90,13 @@ public class DbFavorite extends SQLiteOpenHelper {
                         cursor.getString(3),
                         null,
                         cursor.getInt(2),
-                        null,
-                        null
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getString(8),
+                        cursor.getString(9),
+                        cursor.getInt(10)
                 );
                 list.add(travel);
             } while (cursor.moveToNext());
@@ -92,6 +109,12 @@ public class DbFavorite extends SQLiteOpenHelper {
         values.put("CD_TRANSPORT",travel.getCdTransport());
         values.put("DS_DISTINY",travel.getDestiny());
         values.put("DT_TIME",travel.getDtInitial().toString());
+        values.put("NUM_VALUE",travel.getValue().toString());
+        values.put("DT_DURATION",travel.getDtDuration().toString());
+        values.put("DS_TITLE_TICKET",travel.getDsTitleTicket().toString());
+        values.put("DT_HOUR_DEPARTURE",travel.getDtHourDeparture().toString());
+        values.put("DT_HOUR_TRAVEL",travel.getDtHourTravel().toString());
+        values.put("NUM_PASSENGERS",travel.getNumPassengers().toString());
         this.db.insert("TB_FAVORITE",null,values);
     }
 
