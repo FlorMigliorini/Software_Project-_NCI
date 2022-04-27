@@ -240,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                 timeText.setLayoutParams(layoutParams);
                 timeText.setText(route.getLegs().get(0).getDuration().getText()
                         .replaceAll("\\shour[s]+\\s",".")
-                        .replaceAll("\\smin","m"));
+                        .replaceAll("\\smin[s]+(\\s)?","m"));
                 column2.addView(timeText);
 
                 ImageView icon = new ImageView(getApplicationContext());
@@ -351,17 +351,12 @@ public class HomeActivity extends AppCompatActivity {
                 String numberPassangers="1";
                 if(route.getLegs().get(0).getDistance()!=null){
                     price = route.getLegs().get(0).getDistance().getText().split(" ")[0];
-                    priceText.setText("$ "+0.20*Double.parseDouble(price));
-                }else{
-                    if(rbReturn.isChecked()){
-                        priceInt = 200;
-                    }else{
-                        priceInt = 100;
-                    }
+                    priceInt = Integer.parseInt(String.valueOf(0.20*Double.parseDouble(price))
+                            .replaceAll("\\.",""));
                     numberPassangers = spinner.getSelectedItem().toString();
                     numberPassangers = numberPassangers.split(" ")[0];
                     priceInt = Integer.parseInt(numberPassangers)*priceInt;
-                    priceText.setText("$ "+priceInt+".00");
+                    priceText.setText("$ "+0.20*Double.parseDouble(price));
                 }
                 column4.addView(priceText);
 
@@ -392,12 +387,15 @@ public class HomeActivity extends AppCompatActivity {
                         intent.putExtra("imgTypeTransport",typeTransportSelected);
                         intent.putExtra("favoriteSelection",favoriteSelection);
                         //PRICE NÃO ESTÁ FORMATADO EM CASO DO FARE VIR
-                        intent.putExtra("value", finalPriceInt +"00");
-                        if(route.getFare()!=null){
-                            intent.putExtra("ticketPrice",route.getFare().getText());
-                        }else{
-                            intent.putExtra("ticketPrice","EUR 100");
+                        String finalPrice = String.valueOf(finalPriceInt);
+                        if(String.valueOf(finalPriceInt).length()==2){
+                            finalPrice+="0";
+                        }else if(String.valueOf(finalPriceInt).length()==1){
+                            finalPrice+="00";
                         }
+                        intent.putExtra("value", finalPrice);
+                        String value = String.valueOf(finalPriceInt);
+                        intent.putExtra("ticketPrice","EUR "+ value);
                         startActivity(intent);
                         finish();
                     }
