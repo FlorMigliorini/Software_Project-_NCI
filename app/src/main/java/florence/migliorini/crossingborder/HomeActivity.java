@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -36,8 +37,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -628,6 +633,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        initialLocalization();
     }
 
     private String makeDateString(int day, int month, int year){
@@ -790,7 +796,8 @@ public class HomeActivity extends AppCompatActivity {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
             String urlBase = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-                    address.replaceAll("\\s","+") +
+                    address.replaceAll("\\s","+")
+                    .replaceAll("(R\\.)","Rua")+
                     "&key=AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
             JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,
                     urlBase,
@@ -826,6 +833,70 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void initialLocalization(){
+        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
+        try {
+            String urlBase = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+            JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.POST,
+                    urlBase,
+                    null, new Response.Listener<JSONObject>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onResponse(JSONObject response) {
+                    if(response!=null) {
+                        try {
+                            double latitude = response.getJSONObject("location").getDouble("lat");
+                            double longitude = response.getJSONObject("location").getDouble("lng");
+                            RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
+                            try {
+                                String urlBase = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                                        latitude +","+ longitude +
+                                        "&key=AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+                                JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,
+                                        urlBase,
+                                        null, new Response.Listener<JSONObject>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
+                                    @SuppressLint("ResourceAsColor")
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        if(response!=null) {
+                                            try{
+                                                String road =  response.getJSONArray("results").getJSONObject(0)
+                                                        .getString("formatted_address").toString().split(",")[0].toString();
+                                                etLocation.setText(road);
+                                            }catch (JSONException e){
+                                                e.printStackTrace();
+                                            }
+                                        }else {
+                                            return;
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                    }
+                                });
+                                requestQueue.add(jsonRequest);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+            requestQueue.add(jsonRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 //    @Override
 //    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 //        return false;
