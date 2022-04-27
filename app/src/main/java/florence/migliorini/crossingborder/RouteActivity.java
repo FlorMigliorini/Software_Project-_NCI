@@ -54,7 +54,6 @@ import com.squareup.okhttp.Route;
 
 import org.json.JSONObject;
 
-import florence.migliorini.crossingborder.databinding.ActivityMapsBinding;
 import florence.migliorini.model.DirectionsMainDTO;
 import florence.migliorini.model.ResultsGeoDTO;
 
@@ -68,7 +67,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private final long MIN_TIME = 5;
     private final long MIN_DIST = 5;
     private LatLng latLng;
-    private ActivityMapsBinding binding;
+    //private ActivityMapsBinding binding;
     private GoogleApiClient googleApiClient;
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -139,6 +138,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMap = googleMap;
     }
     public void menuButton(View view) {
+        Log.d("App","ENTROU -----------");
         Intent intent = new Intent(RouteActivity.this, MenuActivity.class);
         startActivity(intent);
         finish();
@@ -167,7 +167,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                         double latitude = model.getResults().get(0).getGeometry().getLocation().getLat();
                         double longitude = model.getResults().get(0).getGeometry().getLocation().getLng();
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,
-                                longitude), 12.0f));
+                                longitude), 17.0f));
                     }else {
                     }
                 }
