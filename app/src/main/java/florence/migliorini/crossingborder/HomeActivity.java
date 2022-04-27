@@ -148,7 +148,6 @@ public class HomeActivity extends AppCompatActivity {
             objList.setMinHeight(230);
             //objList.setPadding(20,20,20,20);
             objList.setId(i);
-            //O LAYOUT está em formato de flex-box
 
             layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
             ConstraintLayout column1 = new ConstraintLayout(getApplicationContext());

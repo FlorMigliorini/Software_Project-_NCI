@@ -52,6 +52,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Route;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import florence.migliorini.model.DirectionsMainDTO;
@@ -96,6 +97,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                                     Manifest.permission.ACCESS_FINE_LOCATION, false);
                             Boolean coarseLocationGranted = result.getOrDefault(
                                     Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                            Boolean backgroundLocation = result.getOrDefault(
+                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION, false);
+                            Boolean networkLocation = result.getOrDefault(
+                                    Manifest.permission.ACCESS_NETWORK_STATE, false);
+                            Boolean internetLocation = result.getOrDefault(
+                                    Manifest.permission.INTERNET, false);
                             if (fineLocationGranted != null && fineLocationGranted) {
                                 // Precise location access granted.
                             } else if (coarseLocationGranted != null && coarseLocationGranted) {
@@ -108,13 +115,11 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         locationPermissionRequest.launch(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.INTERNET
         });
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationClient.getLastLocation()
+        /*fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
@@ -130,7 +135,38 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                                     .title("map"));
                         }
                     }
-                });
+                });*/
+        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
+        try {
+            String urlBase = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+            JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.POST,
+                    urlBase,
+                    null, new Response.Listener<JSONObject>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onResponse(JSONObject response) {
+                    if(response!=null) {
+                        try {
+                            double latitude = response.getJSONObject("location").getDouble("lat");
+                            double longitude = response.getJSONObject("location").getDouble("lng");
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,
+                                    longitude), 17.0f));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+            requestQueue.add(jsonRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

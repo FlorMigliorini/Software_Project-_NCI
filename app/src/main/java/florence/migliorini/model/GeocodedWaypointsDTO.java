@@ -3,6 +3,7 @@ package florence.migliorini.model;
 import java.util.List;
 import java.util.Objects;
 
+//DATA TRANSFER OBJECT
 public class GeocodedWaypointsDTO {
     private String geocoder_status;
     private String place_id;

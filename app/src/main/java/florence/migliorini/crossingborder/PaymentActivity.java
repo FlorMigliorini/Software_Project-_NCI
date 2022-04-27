@@ -184,7 +184,6 @@ public class PaymentActivity extends AppCompatActivity {
                 // that complete payment after a delay, like SEPA Debit and Sofort.
                 .allowsDelayedPaymentMethods(true)
                 .build();
-        //TEM UM ERRO AQUI
         String paymentClientSecret = "sk_test_51KoodkK4jThQYIzhMivdqlsLJGCgcGDSpUoDPIh3bZTMdIWK8t30S1wVyrBMom78wWLwlAqVumgB6Li56HykEveD00cfvfIQA5";
         paymentSheet.presentWithPaymentIntent(
                 paymentClientSecret,
