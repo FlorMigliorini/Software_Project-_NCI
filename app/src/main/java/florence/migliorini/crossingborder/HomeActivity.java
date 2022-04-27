@@ -45,6 +45,7 @@ import com.google.gson.JsonIOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -94,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
 
 //    private Button button;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +141,9 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+        yearSelected = LocalDate.now().getYear();
+        daySelected = LocalDate.now().getDayOfMonth();
+        monthSelected = LocalDate.now().getMonthValue();
     }
 
     public void fillListRoutes(List<RouteDTO> routes){
@@ -344,11 +349,9 @@ public class HomeActivity extends AppCompatActivity {
                 String price;
                 Integer priceInt = 100;
                 String numberPassangers="1";
-                if(route.getFare()!=null){
-                    price = route.getFare().getText().replaceAll("[.]","")
-                    .replaceAll("[a-zA-Z$€]","")
-                    .replaceAll("\\s","");
-                    priceText.setText(route.getFare().getText());
+                if(route.getLegs().get(0).getDistance()!=null){
+                    price = route.getLegs().get(0).getDistance().getText().split(" ")[0];
+                    priceText.setText("$ "+0.20*Double.parseDouble(price));
                 }else{
                     if(rbReturn.isChecked()){
                         priceInt = 200;
