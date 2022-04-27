@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginRight="20dp"
+                android:onClick="searchAddress"
                 android:background="@drawable/btn_design"
                 android:text="Search"
                 android:textColor="#FFFAFA"/>
@@ -58,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
+                android:onClick="clearMethod"
                 android:background="@drawable/btn_design_white"
                 android:text="Clear" />
         </LinearLayout>

@@ -633,6 +633,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Intent intent = new Intent(HomeActivity.this, RouteActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private String makeDateString(int day, int month, int year){
