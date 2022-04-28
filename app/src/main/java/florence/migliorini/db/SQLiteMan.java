@@ -11,12 +11,14 @@ import florence.migliorini.model.Favorite;
 import florence.migliorini.model.TravelDTO;
 
 public class SQLiteMan {
-    private static DbLogin dbLogin= new DbLogin(null,null,null,1);
-    private static DbFavorite dbFavorite= new DbFavorite(null,null,null,1);
-    private static DbHistory dbHistoric= new DbHistory(null,null,null,1);
+    private static DbLogin dbLogin= DbLogin.getInstance(null,null,null,1);
+    private static DbFavorite dbFavorite= DbFavorite.getInstance(null,null,null,1);
+    private static DbHistory dbHistoric= DbHistory.getInstance(null,null,null,1);
 
     public static Boolean login(String sEmail, String sPassword){
-        return dbLogin.login(sEmail,sPassword);
+        Boolean bool =dbLogin.login(sEmail,sPassword);
+        dbLogin.closeDb();
+        return bool;
     }
     public static Boolean signUp(String name, String phone, String password){
         return dbLogin.signUp(name,phone,password);

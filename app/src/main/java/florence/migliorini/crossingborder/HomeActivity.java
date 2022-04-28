@@ -45,6 +45,7 @@ import com.google.gson.JsonIOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -351,12 +352,13 @@ public class HomeActivity extends AppCompatActivity {
                 String numberPassangers="1";
                 if(route.getLegs().get(0).getDistance()!=null){
                     price = route.getLegs().get(0).getDistance().getText().split(" ")[0];
-                    priceInt = Integer.parseInt(String.valueOf(0.20*Double.parseDouble(price))
+                    DecimalFormat formatPrice = new DecimalFormat("#.00");
+                    priceInt = Integer.parseInt(String.valueOf(formatPrice.format(0.20*Double.parseDouble(price)))
                             .replaceAll("\\.",""));
                     numberPassangers = spinner.getSelectedItem().toString();
                     numberPassangers = numberPassangers.split(" ")[0];
                     priceInt = Integer.parseInt(numberPassangers)*priceInt;
-                    priceText.setText("$ "+0.20*Double.parseDouble(price));
+                    priceText.setText("$ "+formatPrice.format(0.20*Double.parseDouble(price)));
                 }
                 column4.addView(priceText);
 

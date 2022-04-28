@@ -23,7 +23,17 @@ import florence.migliorini.model.TravelDTO;
 
 public class DbFavorite extends SQLiteOpenHelper {
     private SQLiteDatabase db;
-    public DbFavorite(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected static DbFavorite INSTANCE;
+
+    public static DbFavorite getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+        if(INSTANCE==null){
+            INSTANCE =new DbFavorite(context,name,factory,version);
+            return INSTANCE;
+        }else{
+            return INSTANCE;
+        }
+    }
+    protected DbFavorite(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.db= this.getReadableDatabase();
     }
@@ -78,8 +88,9 @@ public class DbFavorite extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getAllFavoritesWithType(String type) throws ParseException {
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.query("TB_FAVORITE",new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME",
-                "DT_DURATION","DS_TITLE_TICKET","DT_HOUR_DEPARTURE","DT_HOUR_TRAVEL","NUM_PASSENGERS"},
+        Cursor cursor = this.db.query("TB_FAVORITE",
+                new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME",
+                "NUM_VALUE","DT_DURATION","DS_TITLE_TICKET","DT_HOUR_DEPARTURE","DT_HOUR_TRAVEL","NUM_PASSENGERS"},
                 "CD_TRANSPORT = ?",new String[]{type},null,null,null,null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {

@@ -198,13 +198,13 @@ public class FavoriteActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     public void clearLastFilter(){
         filterActive.setBackgroundResource(R.drawable.shape_arredounded);
-        if(iconFilterActive.getId()==2131361935){
+        if(textViewActive.getText().equals("All")){
             iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_apps_24);
-        }else if(iconFilterActive.getId()==2131361951){
+        }else if(textViewActive.getText().equals("Train")){
             iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_train_24);
-        }else if(iconFilterActive.getId()==2131361937){
+        }else if(textViewActive.getText().equals("Bus")){
             iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_directions_bus_24);
-        }else if(iconFilterActive.getId()==2131361944){
+        }else if(textViewActive.getText().equals("Luas")){
             iconFilterActive.setBackgroundResource(R.drawable.ic_baseline_subway_24);
         }
         textViewActive.setTextColor(Color.rgb(56,56,56));

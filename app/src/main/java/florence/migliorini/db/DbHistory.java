@@ -21,7 +21,18 @@ import florence.migliorini.model.TravelDTO;
 
 public class DbHistory extends SQLiteOpenHelper {
     private SQLiteDatabase db;
-    public DbHistory(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected static DbHistory INSTANCE;
+
+    public static DbHistory getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+        if(INSTANCE==null){
+            INSTANCE =new DbHistory(context,name,factory,version);
+            return INSTANCE;
+        }else{
+            return INSTANCE;
+        }
+    }
+
+    protected DbHistory(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.db= this.getReadableDatabase();
     }

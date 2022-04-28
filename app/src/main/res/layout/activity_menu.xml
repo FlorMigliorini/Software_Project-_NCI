@@ -54,17 +54,6 @@
             android:textColor="@color/cyan_blue_dark" />
 
         <Button
-            android:id="@+id/btnPlanTrip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_design2"
-            android:drawableStart="@drawable/ic_plan"
-            android:padding="5dp"
-            android:text="Plan trip"
-            android:textColor="@color/cyan_blue_dark" />
-
-        <Button
             android:id="@+id/btnHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,6 +86,21 @@
             android:text="@string/log_out"
             android:textColor="@color/cyan_blue_dark" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="350dp"
+        android:onClick="closeMenu"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/btn_design2">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <!--    <TextView-->
 <!--        android:id="@+id/txtViewEmail"-->
 <!--        android:layout_width="match_parent"-->

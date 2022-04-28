@@ -10,7 +10,18 @@ import androidx.annotation.Nullable;
 
 public class DbLogin extends SQLiteOpenHelper {
     private SQLiteDatabase db;
-    public DbLogin(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected static DbLogin INSTANCE;
+
+    public static DbLogin getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+        if(INSTANCE==null){
+            INSTANCE =new DbLogin(context,name,factory,version);
+            return INSTANCE;
+        }else{
+            return INSTANCE;
+        }
+    }
+
+    protected DbLogin(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.db= this.getReadableDatabase();
     }
@@ -31,7 +42,6 @@ public class DbLogin extends SQLiteOpenHelper {
         Cursor cursor = this.db.query("USER",new String[]{"USER_NAME","USER_PHONE","USER_PASSWORD"},
                 "USER_PHONE = ? AND USER_PASSWORD = ?",new String[]{phone,password},null,null,null,null);
         cursor.moveToFirst();
-        System.out.println(cursor.getCount());
         return (cursor.getCount()>0);
     }
 
