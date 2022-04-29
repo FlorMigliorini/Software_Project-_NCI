@@ -9,10 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DbLogin extends SQLiteOpenHelper {
-    private SQLiteDatabase db;
     protected static DbLogin INSTANCE;
 
-    public static DbLogin getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+    public static DbLogin getInstance(Context context,String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
         if(INSTANCE==null){
             INSTANCE =new DbLogin(context,name,factory,version);
             return INSTANCE;
@@ -21,9 +20,8 @@ public class DbLogin extends SQLiteOpenHelper {
         }
     }
 
-    protected DbLogin(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected DbLogin(Context context,String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        this.db= this.getReadableDatabase();
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -35,14 +33,17 @@ public class DbLogin extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS USER");
+        onCreate(sqLiteDatabase);
     }
 
     public Boolean login(String phone, String password){
-        Cursor cursor = this.db.query("USER",new String[]{"USER_NAME","USER_PHONE","USER_PASSWORD"},
+        Cursor cursor = this.getReadableDatabase().query("USER",new String[]{"USER_NAME","USER_PHONE","USER_PASSWORD"},
                 "USER_PHONE = ? AND USER_PASSWORD = ?",new String[]{phone,password},null,null,null,null);
         cursor.moveToFirst();
-        return (cursor.getCount()>0);
+        Boolean bol = ((cursor.getCount()>0));
+        this.getReadableDatabase().close();
+        return bol;
     }
 
     public Boolean signUp(String name, String phone, String password){
@@ -50,13 +51,15 @@ public class DbLogin extends SQLiteOpenHelper {
         values.put("USER_NAME",name);
         values.put("USER_PHONE",phone);
         values.put("USER_PASSWORD",password);
-        this.db.insert("USER",null,values);
+        this.getReadableDatabase().insert("USER",null,values);
         //this.db.close();
-        return login(phone,password);
+        Boolean bol = login(phone,password);
+        this.getReadableDatabase().close();
+        return bol;
     }
 
     public void closeDb(){
-        db.close();
+        this.getReadableDatabase().close();
     }
-
+    public void beginTransaction(){this.getReadableDatabase().beginTransaction();}
 }

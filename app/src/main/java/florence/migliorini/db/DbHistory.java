@@ -20,10 +20,9 @@ import florence.migliorini.model.Favorite;
 import florence.migliorini.model.TravelDTO;
 
 public class DbHistory extends SQLiteOpenHelper {
-    private SQLiteDatabase db;
     protected static DbHistory INSTANCE;
 
-    public static DbHistory getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+    public static DbHistory getInstance(Context context,String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
         if(INSTANCE==null){
             INSTANCE =new DbHistory(context,name,factory,version);
             return INSTANCE;
@@ -32,9 +31,8 @@ public class DbHistory extends SQLiteOpenHelper {
         }
     }
 
-    protected DbHistory(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected DbHistory(Context context, String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        this.db= this.getReadableDatabase();
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -49,13 +47,14 @@ public class DbHistory extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS TB_HISTORY");
+        onCreate(sqLiteDatabase);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getHistory(){
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.rawQuery("SELECT * FROM TB_HISTORY",null);
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM TB_HISTORY",null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {
             do {
@@ -72,6 +71,7 @@ public class DbHistory extends SQLiteOpenHelper {
                 list.add(travel);
             } while (cursor.moveToNext());
         }
+        this.getReadableDatabase().close();
         return list;
     }
 
@@ -81,14 +81,16 @@ public class DbHistory extends SQLiteOpenHelper {
         values.put("CD_TRANSPORT",travel.getCdTransport());
         values.put("DS_DISTINY",travel.getDestiny());
         values.put("DT_TIME",travel.getDtInitial().toString());
-        this.db.insert("TB_HISTORY",null,values);
+        this.getReadableDatabase().insert("TB_HISTORY",null,values);
+        this.getReadableDatabase().close();
     }
 
     public void removeHistory(Integer id){
-        db.execSQL("DELETE FROM TB_HISTORY WHERE ID_HISTORY = "+id);
+        this.getReadableDatabase().execSQL("DELETE FROM TB_HISTORY WHERE ID_HISTORY = "+id);
     }
 
     public void closeDb(){
-        db.close();
+        this.getReadableDatabase().close();
     }
+    public void beginTransaction(){this.getReadableDatabase().beginTransaction();}
 }

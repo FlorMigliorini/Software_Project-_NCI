@@ -159,7 +159,7 @@ public class PaymentActivity extends AppCompatActivity {
                     locationTime.getText().toString(),destinationTime.getText().toString()
                     ,Integer.parseInt(numberPersons.getText().toString()));
             if(favoriteSelection == 1){
-                SQLiteMan.addFavorite(travel);
+                SQLiteMan.getInstance(getApplicationContext(),"database").addFavorite(travel);
             }
             SQLiteMan.addHistoric(travel);
             startActivity(intent);

@@ -183,7 +183,7 @@ public class HistoryActivity extends AppCompatActivity {
     public void deleteHistory(View view){
         if(historicSelected!=null){
             @SuppressLint("ResourceType") TextView tx = (TextView) historicSelected.findViewById(historicSelected.getId()+5);
-            SQLiteMan.removeFavoriteById(Integer.parseInt(tx.getText()+""));
+            SQLiteMan.getInstance(getApplicationContext(),"database").removeHistoricById(Integer.parseInt(tx.getText()+""));
             lnListHistoric.removeView(historicSelected);
         }
     }

@@ -22,10 +22,9 @@ import java.util.List;
 import florence.migliorini.model.TravelDTO;
 
 public class DbFavorite extends SQLiteOpenHelper {
-    private SQLiteDatabase db;
     protected static DbFavorite INSTANCE;
 
-    public static DbFavorite getInstance(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+    public static DbFavorite getInstance(Context context, String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
         if(INSTANCE==null){
             INSTANCE =new DbFavorite(context,name,factory,version);
             return INSTANCE;
@@ -33,9 +32,8 @@ public class DbFavorite extends SQLiteOpenHelper {
             return INSTANCE;
         }
     }
-    protected DbFavorite(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    protected DbFavorite(Context context,String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        this.db= this.getReadableDatabase();
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -56,13 +54,14 @@ public class DbFavorite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS TB_FAVORITE");
+        onCreate(sqLiteDatabase);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getAllFavorites() throws ParseException {
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.rawQuery("SELECT * FROM TB_FAVORITE",null);
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM TB_FAVORITE",null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {
             do {
@@ -83,12 +82,13 @@ public class DbFavorite extends SQLiteOpenHelper {
                 list.add(travel);
             } while (cursor.moveToNext());
         }
+        this.getReadableDatabase().close();
         return list;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getAllFavoritesWithType(String type) throws ParseException {
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.db.query("TB_FAVORITE",
+        Cursor cursor = this.getReadableDatabase().query("TB_FAVORITE",
                 new String[]{"ID_FAVORITE","DS_LOCATION","CD_TRANSPORT","DS_DISTINY","DT_TIME",
                 "NUM_VALUE","DT_DURATION","DS_TITLE_TICKET","DT_HOUR_DEPARTURE","DT_HOUR_TRAVEL","NUM_PASSENGERS"},
                 "CD_TRANSPORT = ?",new String[]{type},null,null,null,null);
@@ -112,6 +112,7 @@ public class DbFavorite extends SQLiteOpenHelper {
                 list.add(travel);
             } while (cursor.moveToNext());
         }
+        this.getReadableDatabase().close();
         return list;
     }
     public void addFavorite(TravelDTO travel){
@@ -126,14 +127,21 @@ public class DbFavorite extends SQLiteOpenHelper {
         values.put("DT_HOUR_DEPARTURE",travel.getDtHourDeparture().toString());
         values.put("DT_HOUR_TRAVEL",travel.getDtHourTravel().toString());
         values.put("NUM_PASSENGERS",travel.getNumPassengers().toString());
-        this.db.insert("TB_FAVORITE",null,values);
+        this.getReadableDatabase().insert("TB_FAVORITE",null,values);
+        this.getReadableDatabase().close();
     }
 
     public void removeFavorite(Integer id){
-        db.execSQL("DELETE FROM TB_FAVORITE WHERE ID_FAVORITE = "+id);
+        this.getReadableDatabase().execSQL("DELETE FROM TB_FAVORITE WHERE ID_FAVORITE = "+id);
+        this.getReadableDatabase().close();
     }
 
     public void closeDb(){
-        db.close();
+        this.getReadableDatabase().close();
+    }
+    public void beginTransaction(){this.getReadableDatabase().beginTransaction();}
+    public void endTransaction(){this.getReadableDatabase().endTransaction();}
+    public void successfulTransaction(){
+        this.getReadableDatabase().setTransactionSuccessful();
     }
 }

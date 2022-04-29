@@ -107,7 +107,7 @@ public class FavoriteActivity extends AppCompatActivity {
         SQLiteMan.addFavorite(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
                 ,3,"15h","EUR 20"));*/
         try {
-            listFavorites = SQLiteMan.getListFavorites();
+            listFavorites = SQLiteMan.getInstance(getApplicationContext(),"database").getListFavorites();
             constructListFavorites(listFavorites);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -129,7 +129,7 @@ public class FavoriteActivity extends AppCompatActivity {
             iconFilterActive = icon;
             lnListFavorites.removeAllViews();
             try{
-                constructListFavorites(SQLiteMan.getListFavorites());
+                constructListFavorites(SQLiteMan.getInstance(getApplicationContext(),"database").getListFavorites());
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -149,7 +149,7 @@ public class FavoriteActivity extends AppCompatActivity {
             iconFilterActive = icon;
             lnListFavorites.removeAllViews();
             try{
-                constructListFavorites(SQLiteMan.getListFavoritesWithTransportType("2"));
+                constructListFavorites(SQLiteMan.getInstance(getApplicationContext(),"database").getListFavoritesWithTransportType("2"));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -169,7 +169,7 @@ public class FavoriteActivity extends AppCompatActivity {
             iconFilterActive = icon;
             lnListFavorites.removeAllViews();
             try{
-                constructListFavorites(SQLiteMan.getListFavoritesWithTransportType("1"));
+                constructListFavorites(SQLiteMan.getInstance(getApplicationContext(),"database").getListFavoritesWithTransportType("1"));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -189,7 +189,7 @@ public class FavoriteActivity extends AppCompatActivity {
             iconFilterActive = icon;
             lnListFavorites.removeAllViews();
             try{
-                constructListFavorites(SQLiteMan.getListFavoritesWithTransportType("3"));
+                constructListFavorites(SQLiteMan.getInstance(getApplicationContext(),"database").getListFavoritesWithTransportType("3"));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -214,7 +214,7 @@ public class FavoriteActivity extends AppCompatActivity {
     public void deleteFavorite(View view){
         if(favoriteSelected!=null){
             @SuppressLint("ResourceType") TextView tx = (TextView) favoriteSelected.findViewById(favoriteSelected.getId()+5);
-            SQLiteMan.removeFavoriteById(Integer.parseInt(tx.getText()+""));
+            SQLiteMan.getInstance(getApplicationContext(),"database").removeFavoriteById(Integer.parseInt(tx.getText()+""));
             lnListFavorites.removeView(favoriteSelected);
         }
     }

@@ -25,7 +25,7 @@ public class MenuActivity extends AppCompatActivity {
         final Button buttonClose = findViewById(R.id.buttonHideMenu);
         final Button buttonFav = findViewById(R.id.btnFavTrips);
         final Button buttonLoc = findViewById(R.id.btnRoutes);
-        final Button buttonPlan = findViewById(R.id.btnPlanTrip);
+        //final Button buttonPlan = findViewById(R.id.btnPlanTrip);
         final Button buttonHistory = findViewById(R.id.btnHistory);
         final Button buttonHome = findViewById(R.id.btnGetTicket);
         final Button bLogout = findViewById(R.id.btnLogout);
@@ -62,14 +62,14 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
-        buttonPlan.setOnClickListener(new View.OnClickListener() {
+        /*buttonPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, PlanActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
         buttonHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
