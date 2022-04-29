@@ -555,8 +555,18 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     });
                     requestQueue.add(jsonRequestTrain);
-                    requestQueue.add(jsonRequestBus);
-                    requestQueue.add(jsonRequestLuas);
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            requestQueue.add(jsonRequestBus);
+                        }
+                    }, 500L);
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            requestQueue.add(jsonRequestLuas);
+                        }
+                    }, 1000L);
             /*Gson gson=new Gson();
             JSONObject response = new JSONObject(getString(R.string.teste_json_maps));
             DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);*/
@@ -724,7 +734,7 @@ public class HomeActivity extends AppCompatActivity {
     public void filterTrain(View view){
         if(filterActive!=null){
             clearLastFilter();
-            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            view.setBackgroundResource(R.drawable.btn_madison);
             ConstraintLayout icon = findViewById(R.id.btnTrainTypeHome);
             TextView txBtn = findViewById(R.id.txBtnTrainTypeHome);
             icon.setBackgroundResource(R.drawable.ic_baseline_train_white_24);
@@ -745,7 +755,7 @@ public class HomeActivity extends AppCompatActivity {
     public void filterBus(View view){
         if(filterActive!=null){
             clearLastFilter();
-            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            view.setBackgroundResource(R.drawable.btn_madison);
             ConstraintLayout icon = findViewById(R.id.btnBusTypeHome);
             TextView txBtn = findViewById(R.id.txBtnBusTypeHome);
             icon.setBackgroundResource(R.drawable.ic_baseline_directions_bus_white_24);
@@ -766,7 +776,7 @@ public class HomeActivity extends AppCompatActivity {
     public void filterLuas(View view){
         if(filterActive!=null){
             clearLastFilter();
-            view.setBackgroundResource(R.drawable.shape_arredounded_blue);
+            view.setBackgroundResource(R.drawable.btn_madison);
             ConstraintLayout icon = findViewById(R.id.btnLuasTypeHome);
             TextView txBtn = findViewById(R.id.txBtnLuasTypeHome);
             icon.setBackgroundResource(R.drawable.ic_baseline_subway_white_24);
