@@ -41,6 +41,7 @@ import florence.migliorini.db.SQLiteMan;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private EditText etEmail,etPasword;
    //private static final String TAG = "EmailPassword";
     private GoogleSignInClient mGoogleSignInClient;
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
@@ -67,8 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         Button bLogin = findViewById(R.id.btn_Login);
         Button bSignup = findViewById(R.id.btn_signup);
         Button bInfo = findViewById(R.id.button4);
-        EditText etEmail = findViewById(R.id.editTextTextEmailAddress2);
-        EditText etPasword = findViewById(R.id.editTextTextPassword2);
+        etEmail = findViewById(R.id.editTextTextEmailAddress2);
+        etPasword = findViewById(R.id.editTextTextPassword2);
         statusTextView = findViewById(R.id.textView);
 
         // Initialize Firebase Auth
@@ -76,47 +77,56 @@ public class LoginActivity extends AppCompatActivity {
 
         createRequest();
 
-        bSignup.setOnClickListener(new View.OnClickListener() {
+        /*bSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         // Firebase Auth
-//        mAuth = FirebaseAuth.getInstance();
-//        bSignup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String sEmail = etEmail.getText().toString();
-//                String sPassword = etPasword.getText().toString();
-//                mAuth.createUserWithEmailAndPassword(sEmail, sPassword)
-//                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    // Sign in success, update UI with the signed-in user's information
-//                                    //Log.d(TAG, "createUserWithEmail:success");
-//                                    FirebaseUser user = mAuth.getCurrentUser();
-//                                    Toast.makeText(getApplicationContext(), "Created User with Email: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-//                                    //updateUI(user);
-//
-//                                } else {
-//                                    // If sign in fails, display a message to the user.
-//                                    //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                    //updateUI(null);
-//                                    startHome();
-//                                }
-//                            }
-//                        });
-//            }
-//        });
-
+        mAuth = FirebaseAuth.getInstance();
+        bSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPasword.getText().toString())
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(getApplicationContext(), "Created User with Email: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                    startHome();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        final LoginActivity activity= this;
         bLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPasword.getText().toString())
+                        .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    startHome();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        /*bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String sEmail = etEmail.getText().toString();
@@ -152,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
             }
-        });
+        });*/
 
         bInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,33 +314,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
-        public void onStart () {
-            super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+    public void onStart () {
+        super.onStart();
+    // Check if user is signed in (non-null) and update UI accordingly.
+    //FirebaseUser currentUser = mAuth.getCurrentUser();
+    //updateUI(currentUser);
 
-        startHome();
-        /*
-            // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+    //startHome();
+    /*
+        // Check for existing Google Sign In account, if the user is already signed in
+    // the GoogleSignInAccount will be non-null.
+    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 //        updateUI(account);
-            // Check if user is signed in (non-null) and update UI accordingly.
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user == null) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Current User is Null", Toast.LENGTH_SHORT).show();
-            } else if(user != null){
-                reload();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Current User is Null", Toast.LENGTH_SHORT).show();
+        } else if(user != null){
+            reload();
+    }
+        else {
+            Toast.makeText(getApplicationContext(), "Current User is " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            //updateUI(currentUser);
         }
-            else {
-                Toast.makeText(getApplicationContext(), "Current User is " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                //updateUI(currentUser);
-            }
-         */
-        }
+     */
+    }
 
     private void reload() { }
 }
