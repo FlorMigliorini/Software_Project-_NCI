@@ -41,7 +41,8 @@ public class DbHistory extends SQLiteOpenHelper {
                 "DS_LOCATION VARCHAR(100)," +
                 "CD_TRANSPORT INTEGER," +
                 "DS_DISTINY VARCHAR(100)," +
-                "DT_TIME VARCHAR(100))";
+                "DT_TIME VARCHAR(100)," +
+                "USER_EMAIL VARCHAR(100))";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
@@ -52,9 +53,10 @@ public class DbHistory extends SQLiteOpenHelper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<TravelDTO> getHistory(){
+    public List<TravelDTO> getHistory(String email){
         List<TravelDTO> list = new ArrayList<>();
-        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM TB_HISTORY",null);
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM TB_HISTORY " +
+                "WHERE USER_EMAIL = '"+email+"'",null);
         TravelDTO travel = null;
         if(cursor.moveToFirst()) {
             do {
@@ -75,18 +77,20 @@ public class DbHistory extends SQLiteOpenHelper {
         return list;
     }
 
-    public void addHistory(TravelDTO travel){
+    public void addHistory(TravelDTO travel,String email){
         ContentValues values = new ContentValues();
         values.put("DS_LOCATION",travel.getLocation());
         values.put("CD_TRANSPORT",travel.getCdTransport());
         values.put("DS_DISTINY",travel.getDestiny());
         values.put("DT_TIME",travel.getDtInitial().toString());
+        values.put("USER_EMAIL",email);
         this.getReadableDatabase().insert("TB_HISTORY",null,values);
         this.getReadableDatabase().close();
     }
 
-    public void removeHistory(Integer id){
-        this.getReadableDatabase().execSQL("DELETE FROM TB_HISTORY WHERE ID_HISTORY = "+id);
+    public void removeHistory(Integer id,String email){
+        this.getReadableDatabase().execSQL("DELETE FROM TB_HISTORY WHERE ID_HISTORY = "+id
+        +" AND USER_EMAIL = '"+email+"'");
     }
 
     public void closeDb(){

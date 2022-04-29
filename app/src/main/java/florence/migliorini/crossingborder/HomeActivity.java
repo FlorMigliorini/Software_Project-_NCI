@@ -478,6 +478,7 @@ public class HomeActivity extends AppCompatActivity {
                                 DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
                                 if(modelMaps.getRoutes().size()>0){
                                     typeTransportSelected = 1;
+                                    listRoutesTrain = modelMaps.getRoutes();
                                     //fillListRoutes(modelMaps.getRoutes());
                                     linearFilters.setVisibility(View.VISIBLE);
                                     filterActive = findViewById(R.id.blockBtnTrainTypeHome);

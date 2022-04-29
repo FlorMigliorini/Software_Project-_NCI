@@ -25,9 +25,7 @@ public class DbLogin extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_TABLE="CREATE TABLE USER (USER_NAME VARCHAR(100)," +
-                "USER_PHONE VARCHAR(100)," +
-                "USER_PASSWORD VARCHAR(100))";
+        String CREATE_TABLE="CREATE TABLE USER (EMAIL VARCHAR(100))";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
@@ -37,16 +35,32 @@ public class DbLogin extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public Boolean login(String phone, String password){
-        Cursor cursor = this.getReadableDatabase().query("USER",new String[]{"USER_NAME","USER_PHONE","USER_PASSWORD"},
-                "USER_PHONE = ? AND USER_PASSWORD = ?",new String[]{phone,password},null,null,null,null);
+    public Boolean login(String email){
+        Cursor cursor = this.getReadableDatabase().query("USER",new String[]{"EMAIL"},
+                "EMAIL = ?",new String[]{email},null,null,null,null);
         cursor.moveToFirst();
         Boolean bol = ((cursor.getCount()>0));
         this.getReadableDatabase().close();
         return bol;
     }
 
-    public Boolean signUp(String name, String phone, String password){
+    public String getUserConnected(){
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM USER",null);
+        cursor.moveToFirst();
+        String email = cursor.getString(0);
+        this.getReadableDatabase().close();
+        return email;
+    }
+    public void setUserConnected(String email){
+        ContentValues values = new ContentValues();
+        values.put("EMAIL",email);
+        this.getReadableDatabase().insert("USER",null,values);
+        this.getReadableDatabase().close();
+    }
+    public void logoutDb(String email){
+        this.getReadableDatabase().delete("USER","EMAIL = ?",new String[]{email});
+    }
+    /*public Boolean signUp(String name, String phone, String password){
         ContentValues values = new ContentValues();
         values.put("USER_NAME",name);
         values.put("USER_PHONE",phone);
@@ -56,7 +70,7 @@ public class DbLogin extends SQLiteOpenHelper {
         Boolean bol = login(phone,password);
         this.getReadableDatabase().close();
         return bol;
-    }
+    }*/
 
     public void closeDb(){
         this.getReadableDatabase().close();

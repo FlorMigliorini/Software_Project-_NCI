@@ -161,7 +161,8 @@ public class PaymentActivity extends AppCompatActivity {
             if(favoriteSelection == 1){
                 SQLiteMan.getInstance(getApplicationContext(),"database").addFavorite(travel);
             }
-            SQLiteMan.addHistoric(travel);
+            SQLiteMan.getInstance(getApplicationContext(),"database")
+                    .addHistoric(travel);
             startActivity(intent);
             finish();
         }

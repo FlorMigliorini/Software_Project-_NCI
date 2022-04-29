@@ -46,7 +46,8 @@ public class HistoryActivity extends AppCompatActivity {
                 ,1,"3h","EUR 100"));
         SQLiteMan.addHistoric(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
                 ,3,"15h","EUR 20"));*/
-        listHistoric = SQLiteMan.getListHistoric();
+        listHistoric = SQLiteMan.getInstance(getApplicationContext(),"database")
+                .getListHistoric();
         constructListFavorites(listHistoric);
 
     }

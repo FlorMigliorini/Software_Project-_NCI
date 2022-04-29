@@ -26,28 +26,37 @@ public class SQLiteMan {
         dbFavorite = DbFavorite.getInstance(context,databaseTag+"2",null,1);
         dbHistoric = DbHistory.getInstance(context,databaseTag+"3",null,1);
     }
-    private static DbLogin dbLogin;
-    private static DbFavorite dbFavorite;
-    private static DbHistory dbHistoric;
+    private DbLogin dbLogin;
+    private DbFavorite dbFavorite;
+    private DbHistory dbHistoric;
 
-    public static Boolean login(String sEmail, String sPassword){
-        Boolean bool =dbLogin.login(sEmail,sPassword);
+    /*public static Boolean login(String sEmail){
+        Boolean bool =dbLogin.login(sEmail);
         return bool;
     }
     public static Boolean signUp(String name, String phone, String password){
         Boolean bool =dbLogin.signUp(name,phone,password);
         return bool;
+    }*/
+    public void setUserConnected(String email){
+        dbLogin.setUserConnected(email);
+    }
+    public void logoutUser(){
+        dbLogin.logoutDb(getUserConnected());
+    }
+    public String getUserConnected(){
+        return dbLogin.getUserConnected();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getListFavorites() throws ParseException {
-        List<TravelDTO> list = dbFavorite.getAllFavorites();
+        List<TravelDTO> list = dbFavorite.getAllFavorites(getUserConnected());
         return list;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<TravelDTO> getListFavoritesWithTransportType(String type){
         try{
-            List<TravelDTO> list = dbFavorite.getAllFavoritesWithType(type);
+            List<TravelDTO> list = dbFavorite.getAllFavoritesWithType(type,getUserConnected());
             return list;
         }catch (Exception e){
             e.printStackTrace();
@@ -56,24 +65,24 @@ public class SQLiteMan {
     }
 
     public void removeFavoriteById(Integer id){
-        dbFavorite.removeFavorite(id);
+        dbFavorite.removeFavorite(id,getUserConnected());
     }
 
     public void addFavorite(TravelDTO travel){
-        dbFavorite.addFavorite(travel);
+        dbFavorite.addFavorite(travel,getUserConnected());
     }
 
-    public static void addHistoric(TravelDTO travelDTO) {
-        dbHistoric.addHistory(travelDTO);
+    public void addHistoric(TravelDTO travelDTO) {
+        dbHistoric.addHistory(travelDTO,getUserConnected());
     }
     public void removeHistoricById(Integer id){
-        dbHistoric.removeHistory(id);
+        dbHistoric.removeHistory(id,getUserConnected());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<TravelDTO> getListHistoric() {
+    public List<TravelDTO> getListHistoric() {
         try{
-            List<TravelDTO> list = dbHistoric.getHistory();
+            List<TravelDTO> list = dbHistoric.getHistory(getUserConnected());
             return list;
         }catch (Exception e){
             e.printStackTrace();

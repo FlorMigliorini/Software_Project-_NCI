@@ -98,6 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(getApplicationContext(), "Created User with Email: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                    SQLiteMan.getInstance(getApplicationContext(),"database")
+                                            .setUserConnected(etEmail.getText().toString());
                                     startHome();
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -117,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    SQLiteMan.getInstance(getApplicationContext(),"database")
+                                            .setUserConnected(etEmail.getText().toString());
                                     startHome();
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",

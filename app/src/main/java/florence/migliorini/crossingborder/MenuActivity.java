@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
+
+import florence.migliorini.db.SQLiteMan;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -92,6 +95,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                SQLiteMan.getInstance(getApplicationContext(),"database").logoutUser();
                 startActivity(intent);
             }
         });

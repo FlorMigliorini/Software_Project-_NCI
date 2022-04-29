@@ -42,15 +42,15 @@ public class RegisterActivity extends AppCompatActivity {
         etInputPassword = (EditText) findViewById(R.id.register_password);
         progressDialog = new ProgressDialog(this);
 
-        btnCreateAcc.setOnClickListener(new View.OnClickListener() {
+        /*btnCreateAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CreateAccount();
             }
-        });
+        });*/
     }
 
-    private void CreateAccount() {
+    /*private void CreateAccount() {
         //getting inputs
         String name = etInputName.getText().toString();
         String phone = etPhoneNo.getText().toString();
@@ -80,12 +80,12 @@ public class RegisterActivity extends AppCompatActivity {
                 //Mensagem de erro
             }
         }
-    }
-    private Boolean ValidatephoneNo(String name,final String phone, final String password) {
+    }*/
+    /*private Boolean ValidatephoneNo(String name,final String phone, final String password) {
         Boolean bol = SQLiteMan.signUp(name,phone,password);
         return bol;
 
-    }
+    }*/
 //    private void ValidatephoneNo(String name, final String phone, final String password) {
 //        String urlFirebase = "https://bikecommerce-e9050-default-rtdb.firebaseio.com/"; //need to change it for the crossingborder project
 //        //connect database
