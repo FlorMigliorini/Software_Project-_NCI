@@ -37,10 +37,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +51,6 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import florence.migliorini.db.DbHelper;
 import florence.migliorini.model.CoordenationDTO;
 import florence.migliorini.model.DirectionsMainDTO;
 import florence.migliorini.model.Favorite;
@@ -626,22 +622,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void saveFavorite(){
-         btnAddFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DbHelper db = new DbHelper(HomeActivity.this);
-                String strLocation = etLocation.getText().toString();
-                String strDestination = etDestination.getText().toString();
-
-                Favorite favorite = new Favorite(strLocation, strDestination);
-                db.addFavorite(favorite);
-                Intent i = new Intent(HomeActivity.this,FavoriteActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-            }
-        });
-    }
 
     private String getTodaysDate(){
         Calendar calendar = Calendar.getInstance();

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.googlepaylauncher.GooglePayEnvironment;
@@ -84,7 +83,7 @@ public class PaymentActivity extends AppCompatActivity {
                 this,
                 new GooglePayLauncher.Config(
                         GooglePayEnvironment.Test,
-                        "US",
+                        "eur",
                         "Widget Store"
                 ),
                 this::onGooglePayReady,
@@ -98,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity {
         // implemented below
     }
 
-    private void onGooglePayResult(@NotNull GooglePayLauncher.Result result) {
+    private void onGooglePayResult(GooglePayLauncher.Result result) {
         // implemented below
     }
     @Override

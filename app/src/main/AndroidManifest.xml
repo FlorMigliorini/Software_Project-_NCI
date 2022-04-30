@@ -54,11 +54,6 @@
             android:label="@string/title_activity_maps"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".Route1Activity"
-            android:exported="true"
-            android:label="@string/title_activity_route1"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
             android:name=".HistoryActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"/>
@@ -68,10 +63,6 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".FavoriteActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name=".TestActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"/>
         <activity

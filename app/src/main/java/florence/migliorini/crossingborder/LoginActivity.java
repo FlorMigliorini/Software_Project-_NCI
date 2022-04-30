@@ -130,43 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
-        /*bLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String sEmail = etEmail.getText().toString();
-                String sPassword = etPasword.getText().toString();
-                Boolean login = SQLiteMan.login(sEmail,sPassword);
-                if(login){
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent);
-                }else{
-                    //Mensagem de login failed
-                }
-                 mAuth.signInWithEmailAndPassword(sEmail, sPassword)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    //Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(getApplicationContext(), "Signed In User with Email: "+user.getEmail(), Toast.LENGTH_SHORT).show();
-                                    //updateUI(user);
-                                    startHome();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    //Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
-                                    startHome();
-                                }
-
-                                // ...
-                            }
-                        });
-            }
-        });*/
 
         bInfo.setOnClickListener(new View.OnClickListener() {
             @Override
