@@ -50,7 +50,7 @@
           android:drawableStart="@drawable/ic_email"
           android:drawablePadding="12dp"
           android:ems="10"
-          android:hint="Username"
+          android:hint="E-mail"
           android:inputType="textEmailAddress"
           android:minHeight="48dp"
           app:layout_constraintEnd_toEndOf="parent"

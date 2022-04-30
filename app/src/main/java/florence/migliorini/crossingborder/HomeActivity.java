@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
     FavoriteActivity favoriteActivity;
     int daySelected,monthSelected,yearSelected = 0;
     int hour, minute = 0;
-    private String origin,destiny;
+    private String origin = null,destiny = null;
 
 //    private Button button;
 
@@ -438,145 +438,153 @@ public class HomeActivity extends AppCompatActivity {
     public void searchAction(View view){
         getCoordenation(etDestination.getText().toString(),2);
         getCoordenation(etLocation.getText().toString(),1);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                String dateFormat="";
-                String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
-                String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
-                urlBase+="key="+API_KEY;
-                urlBase+="&alternatives=true";
-                Calendar calendar = Calendar.getInstance();
-                if(daySelected!=0){
-                    calendar.set(yearSelected,monthSelected,daySelected);
-                }
-                if(hour!=0){
-                    calendar.set(yearSelected,monthSelected,daySelected,hour,minute);
-                }
-                dateFormat = String.valueOf(calendar.getTimeInMillis()/1000);
-                if(dateFormat!=""){
-                    urlBase+="&departure_time="+dateFormat;
-                }
-                urlBase+="&destination="+destiny;
+        if(origin!=null && destiny != null){
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    String dateFormat="";
+                    String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+                    String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
+                    urlBase+="key="+API_KEY;
+                    urlBase+="&alternatives=true";
+                    Calendar calendar = Calendar.getInstance();
+                    if(daySelected!=0){
+                        calendar.set(yearSelected,monthSelected,daySelected);
+                    }
+                    if(hour!=0){
+                        calendar.set(yearSelected,monthSelected,daySelected,hour,minute);
+                    }
+                    dateFormat = String.valueOf(calendar.getTimeInMillis()/1000);
+                    if(dateFormat!=""){
+                        urlBase+="&departure_time="+dateFormat;
+                    }
+                    urlBase+="&destination="+destiny;
 
-                //urlBase+="&destination=-23.493899,-46.446555";
-                urlBase+="&origin="+origin;
-                //urlBase+="&origin=-23.500751,-46.397492";
-                urlBase+="&mode=transit";
-                //urlBase+="&transit_mode=tram|train|bus";
-                RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
-                try {
-                    JsonObjectRequest jsonRequestTrain=new JsonObjectRequest(Request.Method.GET,
-                            urlBase+"&transit_mode=train",
-                            null, new Response.Listener<JSONObject>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @SuppressLint("ResourceAsColor")
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if(response!=null) {
-                                Gson gson=new Gson();
-                                DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                if(modelMaps.getRoutes().size()>0){
-                                    typeTransportSelected = 1;
-                                    listRoutesTrain = modelMaps.getRoutes();
-                                    //fillListRoutes(modelMaps.getRoutes());
-                                    linearFilters.setVisibility(View.VISIBLE);
-                                    filterActive = findViewById(R.id.blockBtnTrainTypeHome);
-                                    iconFilterActive = findViewById(R.id.btnTrainTypeHome);
-                                    textViewActive = findViewById(R.id.txBtnTrainTypeHome);
-                                    listRoutesTrain = modelMaps.getRoutes();
-                                    filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
-                                }
-                            }else {
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                        }
-                    });
-                    JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
-                            urlBase+"&transit_mode=bus",
-                            null, new Response.Listener<JSONObject>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @SuppressLint("ResourceAsColor")
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if(response!=null) {
-                                Gson gson=new Gson();
-                                DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                if(modelMaps.getRoutes().size()>0){
-                                    //fillListRoutes(modelMaps.getRoutes());
-                                    listRoutesBus = modelMaps.getRoutes();
-                                    if(typeTransportSelected.equals(0)){
-                                        typeTransportSelected = 2;
-                                        filterActive = findViewById(R.id.blockBtnBusTypeHome);
-                                        iconFilterActive = findViewById(R.id.btnBusTypeHome);
-                                        textViewActive = findViewById(R.id.txBtnBusTypeHome);
-                                        filterBus(findViewById(R.id.blockBtnBusTypeHome));
+                    //urlBase+="&destination=-23.493899,-46.446555";
+                    urlBase+="&origin="+origin;
+                    //urlBase+="&origin=-23.500751,-46.397492";
+                    urlBase+="&mode=transit";
+                    //urlBase+="&transit_mode=tram|train|bus";
+                    RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
+                    try {
+                        JsonObjectRequest jsonRequestTrain=new JsonObjectRequest(Request.Method.GET,
+                                urlBase+"&transit_mode=train",
+                                null, new Response.Listener<JSONObject>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @SuppressLint("ResourceAsColor")
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if(response!=null) {
+                                    Gson gson=new Gson();
+                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                    Log.d("App","Train");
+                                    Log.d("App",modelMaps.getRoutes().size()+"");
+                                    if(modelMaps.getRoutes().size()>0){
+                                        typeTransportSelected = 1;
+                                        listRoutesTrain = modelMaps.getRoutes();
+                                        //fillListRoutes(modelMaps.getRoutes());
+                                        linearFilters.setVisibility(View.VISIBLE);
+                                        filterActive = findViewById(R.id.blockBtnTrainTypeHome);
+                                        iconFilterActive = findViewById(R.id.btnTrainTypeHome);
+                                        textViewActive = findViewById(R.id.txBtnTrainTypeHome);
+                                        listRoutesTrain = modelMaps.getRoutes();
+                                        filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
                                     }
-                                    linearFilters.setVisibility(View.VISIBLE);
+                                }else {
                                 }
-                            }else {
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                        }
-                    });
-                    JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
-                            urlBase+"&transit_mode=tram",
-                            null, new Response.Listener<JSONObject>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @SuppressLint("ResourceAsColor")
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if(response!=null) {
-                                Gson gson=new Gson();
-                                DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                if(modelMaps.getRoutes().size()>0){
-                                    //fillListRoutes(modelMaps.getRoutes());
-                                    listRoutesLuas = modelMaps.getRoutes();
-                                    if(typeTransportSelected.equals(0)){
-                                        typeTransportSelected = 3;
-                                        filterActive = findViewById(R.id.blockBtnLuasTypeHome);
-                                        iconFilterActive = findViewById(R.id.btnLuasTypeHome);
-                                        textViewActive = findViewById(R.id.txBtnLuasTypeHome);
-                                        filterLuas(findViewById(R.id.blockBtnLuasTypeHome));
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                        JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
+                                urlBase+"&transit_mode=bus",
+                                null, new Response.Listener<JSONObject>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @SuppressLint("ResourceAsColor")
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if(response!=null) {
+                                    Gson gson=new Gson();
+                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                    Log.d("App","Bus");
+                                    Log.d("App",modelMaps.getRoutes().size()+"");
+                                    if(modelMaps.getRoutes().size()>0){
+                                        //fillListRoutes(modelMaps.getRoutes());
+                                        listRoutesBus = modelMaps.getRoutes();
+                                        if(typeTransportSelected.equals(0)){
+                                            typeTransportSelected = 2;
+                                            filterActive = findViewById(R.id.blockBtnBusTypeHome);
+                                            iconFilterActive = findViewById(R.id.btnBusTypeHome);
+                                            textViewActive = findViewById(R.id.txBtnBusTypeHome);
+                                            filterBus(findViewById(R.id.blockBtnBusTypeHome));
+                                        }
+                                        linearFilters.setVisibility(View.VISIBLE);
                                     }
-                                    linearFilters.setVisibility(View.VISIBLE);
+                                }else {
                                 }
-                            }else {
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                        }
-                    });
-                    requestQueue.add(jsonRequestTrain);
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            requestQueue.add(jsonRequestBus);
-                        }
-                    }, 500L);
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            requestQueue.add(jsonRequestLuas);
-                        }
-                    }, 1000L);
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                        JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
+                                urlBase+"&transit_mode=tram",
+                                null, new Response.Listener<JSONObject>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @SuppressLint("ResourceAsColor")
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if(response!=null) {
+                                    Gson gson=new Gson();
+                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                    Log.d("App","Tram");
+                                    Log.d("App",modelMaps.getRoutes().size()+"");
+                                    if(modelMaps.getRoutes().size()>0){
+                                        //fillListRoutes(modelMaps.getRoutes());
+                                        listRoutesLuas = modelMaps.getRoutes();
+                                        if(typeTransportSelected.equals(0)){
+                                            typeTransportSelected = 3;
+                                            filterActive = findViewById(R.id.blockBtnLuasTypeHome);
+                                            iconFilterActive = findViewById(R.id.btnLuasTypeHome);
+                                            textViewActive = findViewById(R.id.txBtnLuasTypeHome);
+                                            filterLuas(findViewById(R.id.blockBtnLuasTypeHome));
+                                        }
+                                        linearFilters.setVisibility(View.VISIBLE);
+                                    }
+                                }else {
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                        requestQueue.add(jsonRequestTrain);
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                requestQueue.add(jsonRequestBus);
+                            }
+                        }, 500L);
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                requestQueue.add(jsonRequestLuas);
+                            }
+                        }, 1000L);
             /*Gson gson=new Gson();
             JSONObject response = new JSONObject(getString(R.string.teste_json_maps));
             DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);*/
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }, 500L);
+            }, 500L);
+        }
     }
 
     public void confirmAddFavorite(View view){
@@ -823,12 +831,14 @@ public class HomeActivity extends AppCompatActivity {
                     if(response!=null) {
                         Gson gson=new Gson();
                         ResultsGeoDTO model = gson.fromJson(response.toString(), ResultsGeoDTO.class);
-                        double lat = model.getResults().get(0).getGeometry().getLocation().getLat();
-                        double lng = model.getResults().get(0).getGeometry().getLocation().getLng();
-                        if(type==1){
-                            origin = lat+","+lng;
-                        }else if(type==2){
-                            destiny = lat+","+lng;
+                        if(model.getResults().size()>0){
+                            double lat = model.getResults().get(0).getGeometry().getLocation().getLat();
+                            double lng = model.getResults().get(0).getGeometry().getLocation().getLng();
+                            if(type==1){
+                                origin = lat+","+lng;
+                            }else if(type==2){
+                                destiny = lat+","+lng;
+                            }
                         }
                     }else {
                         return;
