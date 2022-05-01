@@ -176,6 +176,18 @@
             app:layout_constraintTop_toBottomOf="@+id/TitleTicket"
             app:layout_constraintVertical_bias="0.706"
             app:srcCompat="@drawable/ic_ticket" />
+
+        <TextView
+            android:id="@+id/dateTicketPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iconPersonNumber"
+            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintStart_toEndOf="@+id/iconTypeTransport"
+            app:layout_constraintTop_toBottomOf="@+id/destinationTime"
+            app:layout_constraintVertical_bias="0.089" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button

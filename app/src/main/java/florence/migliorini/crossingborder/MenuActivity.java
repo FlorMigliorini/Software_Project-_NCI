@@ -31,6 +31,7 @@ public class MenuActivity extends AppCompatActivity {
         buttonHistory = findViewById(R.id.btnHistory);
         buttonHome = findViewById(R.id.btnGetTicket);
         bLogout = findViewById(R.id.btnLogout);
+        configureButtons();
     }
     //Configura os botões e suas ações
     public void configureButtons(){

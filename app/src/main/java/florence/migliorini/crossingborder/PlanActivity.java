@@ -20,7 +20,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class PlanActivity extends AppCompatActivity {
     private Button btnBack;
     private String qrCodeCoded;
-    private TextView titleTicket,locationName,locationTime,destinationName,destinationTime,TimeTicket,numberPersons;
+    private TextView titleTicket,locationName,locationTime,destinationName,destinationTime,TimeTicket,numberPersons,dateTicketPlan;
     private ImageView imgQr,imgTypeTransport;
 
 
@@ -37,6 +37,7 @@ public class PlanActivity extends AppCompatActivity {
         destinationTime = findViewById(R.id.destinationTime);
         TimeTicket = findViewById(R.id.timeTicket);
         numberPersons = findViewById(R.id.numberOfPerson);
+        dateTicketPlan = findViewById(R.id.dateTicketPlan);
         Intent in = getIntent();
         titleTicket.setText(in.getStringExtra("titleTicket"));
         locationName.setText(in.getStringExtra("locationName"));
@@ -45,6 +46,7 @@ public class PlanActivity extends AppCompatActivity {
         destinationTime.setText(in.getStringExtra("destinationTime"));
         TimeTicket.setText(in.getStringExtra("TimeTicket"));
         numberPersons.setText(in.getStringExtra("numberPersons"));
+        dateTicketPlan.setText(in.getStringExtra("dateTicketPlan"));
 
         qrCodeCoded = "";
         qrCodeCoded += in.getStringExtra("titleTicket");

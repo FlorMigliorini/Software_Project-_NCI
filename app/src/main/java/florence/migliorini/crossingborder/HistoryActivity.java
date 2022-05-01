@@ -138,9 +138,9 @@ public class HistoryActivity extends AppCompatActivity {
             TextView txDestination = new TextView(getApplicationContext());
             txDestination.setText(tv.getDestiny());
             layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-            layoutParams.baselineToBottom = ct.getId();
+            layoutParams.topToBottom = txLocation.getId();
             layoutParams.baselineToTop = ct.getId();
-            layoutParams.startToEnd = imgArrow.getId();
+            layoutParams.startToEnd = img.getId();
             layoutParams.leftMargin = 80;
             //layoutParams.startToStart = ct.getId();
             txDestination.setLayoutParams(layoutParams);
@@ -155,7 +155,7 @@ public class HistoryActivity extends AppCompatActivity {
             //txDate.setVisibility(View.INVISIBLE);
             layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             //layoutParams.baselineToBottom = imgArrow.getId();
-            layoutParams.topToBottom = imgArrow.getId();
+            layoutParams.topToBottom = txDestination.getId();
             //layoutParams.baselineToTop = imgArrow.getId();
             layoutParams.startToEnd = img.getId();
             //layoutParams.leftMargin = 80;

@@ -508,8 +508,6 @@ public class HomeActivity extends AppCompatActivity {
                                     if(response!=null) {
                                         Gson gson=new Gson();
                                         DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                        Log.d("App","Train");
-                                        Log.d("App",modelMaps.getRoutes().size()+"");
                                         if(modelMaps.getRoutes().size()>0){
                                             typeTransportSelected = 1;
                                             listRoutesTrain = modelMaps.getRoutes();
@@ -539,8 +537,6 @@ public class HomeActivity extends AppCompatActivity {
                                     if(response!=null) {
                                         Gson gson=new Gson();
                                         DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                        Log.d("App","Bus");
-                                        Log.d("App",modelMaps.getRoutes().size()+"");
                                         if(modelMaps.getRoutes().size()>0){
                                             //fillListRoutes(modelMaps.getRoutes());
                                             listRoutesBus = modelMaps.getRoutes();
@@ -571,8 +567,6 @@ public class HomeActivity extends AppCompatActivity {
                                     if(response!=null) {
                                         Gson gson=new Gson();
                                         DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                        Log.d("App","Tram");
-                                        Log.d("App",modelMaps.getRoutes().size()+"");
                                         if(modelMaps.getRoutes().size()>0){
                                             //fillListRoutes(modelMaps.getRoutes());
                                             listRoutesLuas = modelMaps.getRoutes();

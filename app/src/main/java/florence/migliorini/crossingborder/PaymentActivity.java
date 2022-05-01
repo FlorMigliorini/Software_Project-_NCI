@@ -22,6 +22,10 @@ import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import florence.migliorini.db.SQLiteMan;
 import florence.migliorini.model.StripeKeyDTO;
@@ -37,12 +41,13 @@ public class PaymentActivity extends AppCompatActivity {
     StripeKeyDTO strpe ;
     private Button btnStripe, btnGooglePlayPay;
     private TextView titleTicket, locationName, locationTime, destinationName,
-            destinationTime, TimeTicket, numberPersons;
+            destinationTime, TimeTicket, numberPersons,timeTicketPay;
     private Integer typeTransport;
     private ImageView imgTypeTransport;
     private String ticketPrice;
     private Integer favoriteSelection;
     private Integer valueTicket;
+    private String dateTimePay;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -59,6 +64,7 @@ public class PaymentActivity extends AppCompatActivity {
         numberPersons = findViewById(R.id.numberOfPerson);
         btnStripe = findViewById(R.id.btnPaymentStripe);
         btnGooglePlayPay = findViewById(R.id.btnPaymentGooglePlay);
+        timeTicketPay = findViewById(R.id.timeTicketPay);
         Intent in = getIntent();
         titleTicket.setText(in.getStringExtra("titleTicket"));
         locationName.setText(in.getStringExtra("locationName"));
@@ -69,6 +75,8 @@ public class PaymentActivity extends AppCompatActivity {
         numberPersons.setText(in.getStringExtra("numberPersons"));
         typeTransport = in.getIntExtra("imgTypeTransport",0);
         favoriteSelection = in.getIntExtra("favoriteSelection",0);
+        dateTimePay = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        timeTicketPay.setText(dateTimePay);
         valueTicket = Integer.parseInt(in.getStringExtra("value"));
         strpe = gson.fromJson(config.getKey(Long.parseLong(in.getStringExtra("value")))
                 ,StripeKeyDTO.class);
@@ -168,10 +176,11 @@ public class PaymentActivity extends AppCompatActivity {
             intent.putExtra("destinationName",destinationName.getText());
             intent.putExtra("destinationTime",destinationTime.getText());
             intent.putExtra("TimeTicket",TimeTicket.getText().toString());
+            intent.putExtra("dateTicketPlan",dateTimePay);
             intent.putExtra("numberPersons",numberPersons.getText().toString());
             intent.putExtra("imgTypeTransport",typeTransport);
             TravelDTO travel = new TravelDTO(null,locationName.getText().toString(),destinationName.getText().toString()
-                    , LocalDate.now(),typeTransport,TimeTicket.getText().toString(),valueTicket,
+                    , LocalDate.now(),typeTransport,dateTimePay,valueTicket,
                     TimeTicket.getText().toString(),titleTicket.getText().toString(),
                     locationTime.getText().toString(),destinationTime.getText().toString()
                     ,Integer.parseInt(numberPersons.getText().toString()));
