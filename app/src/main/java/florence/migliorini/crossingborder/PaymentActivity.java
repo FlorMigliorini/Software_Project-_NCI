@@ -77,7 +77,13 @@ public class PaymentActivity extends AppCompatActivity {
         PaymentConfiguration.init(this, strpe.getPublishableKey());
         configPaymentWithGooglePlay();
     }
-
+    //Configura o botão de pagamento com Google pay
+    /**
+     * O método de pagamento com o google pay foi utilizado
+     * baseado na documentação do Stripe
+     * https://stripe.com/docs/google-pay
+     *
+     * **/
     public void configPaymentWithGooglePlay(){
         final GooglePayLauncher googlePayLauncher = new GooglePayLauncher(
                 this,
@@ -114,15 +120,18 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Abre o menu.
     public void menuButton(View view) {
         Intent intent = new Intent(PaymentActivity.this, MenuActivity.class);
         startActivity(intent);
         finish();
     }
-
+    //Configura o Pagamento com cartão.
+    /**
+     * O método a seguir configura e cria uma intent para o método de pagamento do Stripe
+     * https://stripe.com/docs/payments
+     * **/
     private void fetchPaymentIntent() {
-        final String shoppingCartContent = "{\"items\": [ {\"id\":\"xl-tshirt\"}]}";
         paymentIntentClientSecret = strpe.getPaymentIntentClientSecret();
         customerConfig = new PaymentSheet.CustomerConfiguration(
                 strpe.getCustomer(),
@@ -132,9 +141,18 @@ public class PaymentActivity extends AppCompatActivity {
         PaymentSheet.Configuration configuration = new PaymentSheet.Configuration("Example, Inc.");
 
         paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration);
-        //runOnUiThread(() -> payButton.setEnabled(true));
     }
 
+    //Tratamento do pagamento confirmado ou cancelado.
+    /**
+     * O método a seguir executa ações para o retorno do Stripe
+     * Caso o pagamento seja confirmado o método executa uma intent para a
+     * Activity responsavel por gerar o QrCode passando as informações necessarias.
+     *
+     * Também é adicionado ao histórico a compra e aos favoritos (se selecionado)
+     * utilizando um banco local SQLite
+     * https://www.sqlite.org/docs.html
+     * **/
     @RequiresApi(api = Build.VERSION_CODES.O)
     void onPaymentSheetResult(final PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
@@ -165,30 +183,6 @@ public class PaymentActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }
-    public String convertIconTypeTransport(Integer type){
-        switch (type){
-            case 1:
-                return "bus";
-            case 2:
-                return "train";
-            case 3:
-                return "luas";
-        }
-        return null;
-    }
-    private void presentPaymentSheet() {
-        final PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("Example, Inc.")
-                .customer(customerConfig)
-                // Set `allowsDelayedPaymentMethods` to true if your business can handle payment methods
-                // that complete payment after a delay, like SEPA Debit and Sofort.
-                .allowsDelayedPaymentMethods(true)
-                .build();
-        String paymentClientSecret = "sk_test_51KoodkK4jThQYIzhMivdqlsLJGCgcGDSpUoDPIh3bZTMdIWK8t30S1wVyrBMom78wWLwlAqVumgB6Li56HykEveD00cfvfIQA5";
-        paymentSheet.presentWithPaymentIntent(
-                paymentClientSecret,
-                configuration
-        );
     }
 
     private void showAlert(String title, @Nullable String message) {

@@ -41,6 +41,11 @@ public class FavoriteActivity extends AppCompatActivity {
     private ConstraintLayout iconFilterActive;
     private TextView textViewActive;
 
+    /**
+     * Os métodos a seguir são semelhantes aos do home que filtram as listas.
+     * os filtros aqui são utilizados com base no tipo do transporte e fazem buscas no banco
+     * SQLite para ter o retorno desejado.
+     * **/
     @SuppressLint({"ResourceAsColor", "WrongViewCast"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -53,59 +58,6 @@ public class FavoriteActivity extends AppCompatActivity {
         filterActive= findViewById(R.id.blockBtnAllTypes);
         iconFilterActive = findViewById(R.id.btnAllTypes);
         textViewActive = findViewById(R.id.txBtnAllTypes);
-        /*DbHelper db = new DbHelper(FavoriteActivity.this);
-        List<Favorite> favoriteList = db.getAllFavorites();
-        Log.d("Test",favoriteList.toString());
-        String[] routes = new String[favoriteList.size()];
-        for(int i=0;i<favoriteList.size();++i) {
-            routes[i]=favoriteList.get(i).getLocation();
-            routes[i]=favoriteList.get(i).getDestination();
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,routes);
-        spinnerFavorite.setAdapter(arrayAdapter);
-        if(favoriteList.size()>0) {
-            homeActivity.etLocation.setText(favoriteList.get(0).getLocation());
-            homeActivity.etDestination.setText(favoriteList.get(0).getDestination());
-        }
-        spinnerFavorite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<Favorite> plantList = db.getAllFavorites();
-                //homeActivity.etLocation.setText(plantList.get(position).getLocation());
-                //homeActivity.etDestination.setText(plantList.get(position).getDestination());
-                iFavoriteId = plantList.get(position).getId();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DbHelper db = new DbHelper(FavoriteActivity.this);
-                //String strLocation = etLocation.getText().toString();
-                //String strDestination = etDestination.getText().toString();
-                String strLocation = "";
-                String strDestination = "";
-                // Get it from DB
-                Favorite favorite = new Favorite(strLocation, strDestination);
-                favorite.setId(iFavoriteId);
-                db.deleteFavorite(favorite);
-                Intent i = new Intent(FavoriteActivity.this,HomeActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-            }
-        });
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 2","Rota 3", LocalDate.now()
-                ,2,"8h","EUR 50"));
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 4","Rota 5",LocalDate.now()
-                ,1,"3h","EUR 100"));
-        SQLiteMan.addFavorite(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
-                ,3,"15h","EUR 20"));*/
         try {
             listFavorites = SQLiteMan.getInstance(getApplicationContext(),"database").getListFavorites();
             constructListFavorites(listFavorites);
@@ -114,7 +66,7 @@ public class FavoriteActivity extends AppCompatActivity {
         }
 
     }
-
+    //Filtros
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterAll(View view){
         if(view.getId()!=filterActive.getId()){
@@ -209,7 +161,7 @@ public class FavoriteActivity extends AppCompatActivity {
         }
         textViewActive.setTextColor(Color.rgb(56,56,56));
     }
-
+    //Deleta um favorito
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void deleteFavorite(View view){
         if(favoriteSelected!=null){
@@ -218,6 +170,7 @@ public class FavoriteActivity extends AppCompatActivity {
             lnListFavorites.removeView(favoriteSelected);
         }
     }
+    //Constroi a lista de favoritos dinamicamente.
     public void constructListFavorites(List<TravelDTO> list){
         int i = 0;
         for(TravelDTO tv:list) {

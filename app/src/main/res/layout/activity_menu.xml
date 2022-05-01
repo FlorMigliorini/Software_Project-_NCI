@@ -93,10 +93,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="350dp"
-        android:onClick="closeMenu"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="7dp"
-        android:background="@drawable/btn_design2">
+        android:background="@drawable/btn_design2"
+        android:onClick="closeMenu">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -56,17 +56,14 @@ public class PlanActivity extends AppCompatActivity {
         qrCodeCoded += in.getStringExtra("numberPersons");
 
     }
-    public String convertIconTypeTransport(Integer type){
-        switch (type){
-            case 1:
-                return "bus";
-            case 2:
-                return "train";
-            case 3:
-                return "luas";
-        }
-        return null;
-    }
+
+    //Inicia a Activity e cria o QrCode
+    /**
+     * O método a seguir inicia a activity e utiliza dos atributos ja iniciados
+     * para criar um QRcode
+     * a biblioteca utilizada para criar o qrCode é
+     * https://github.com/journeyapps/zxing-android-embedded
+     * **/
     @Override
     protected void onStart() {
         super.onStart();

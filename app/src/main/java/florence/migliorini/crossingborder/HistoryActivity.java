@@ -51,6 +51,7 @@ public class HistoryActivity extends AppCompatActivity {
         constructListFavorites(listHistoric);
 
     }
+    //Constroi a lista de histórico dinamicamente
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void constructListFavorites(List<TravelDTO> list){
         int i = 0;
@@ -180,6 +181,7 @@ public class HistoryActivity extends AppCompatActivity {
             lnListHistoric.addView(ct);
         }
     }
+    //Deleta um item do histórico.
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void deleteHistory(View view){
         if(historicSelected!=null){

@@ -86,6 +86,24 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         addressText = findViewById(R.id.TF_location);
     }
 
+    //Executa ações inicia na Activity
+    /**
+     * O método a seguir pede permissão para usuario para utilizar algumas
+     * ferramentas como por exemplo a localização em primeiro e segundo plano.
+     *
+     * o método também faz uma requisição para a api geolocation
+     * https://developers.google.com/maps/documentation/geolocation/overview
+     *
+     * Para o consumo da api é utilizada a classe RequestQueue da biblioteca Volley
+     * https://google.github.io/volley/
+     *
+     * Para manipulação do Json foi optado por usar o design DTO
+     * porque fica mais transparente oque está sendo buscado e recebido ao invés de
+     * ter que saber o nome de todas chaves em JSONObject.
+     *
+     * Para o casting de Json para DTO (Java class) foi usada a classe GSON
+     * https://sites.google.com/site/gson/gson-user-guide
+     * **/
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onStart() {
@@ -169,21 +187,35 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    //Inicia a instancia do atributo GoogleMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
     }
     public void menuButton(View view) {
-        Log.d("App","ENTROU -----------");
         Intent intent = new Intent(RouteActivity.this, MenuActivity.class);
         startActivity(intent);
         finish();
     }
-
+    //Evento de alterar a localização do mapa
     public void searchAddress(View view){
         String address = addressText.getText().toString();
         alterAddressMap(address);
     }
+    /**
+     * O método a seguir faz uma busca para api geocoding e insere as coordenadas de retorno
+     * no mapa.
+     *
+     * Para o consumo da api é utilizada a classe RequestQueue da biblioteca Volley
+     * https://google.github.io/volley/
+     *
+     * Para manipulação do Json foi optado por usar o design DTO
+     * porque fica mais transparente oque está sendo buscado e recebido ao invés de
+     * ter que saber o nome de todas chaves em JSONObject.
+     *
+     * Para o casting de Json para DTO (Java class) foi usada a classe GSON
+     * https://sites.google.com/site/gson/gson-user-guide
+     * **/
     public void alterAddressMap(String address){
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
@@ -220,7 +252,5 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     public void clearMethod(View view){
         addressText.setText("");
     }
-
-
 
 }

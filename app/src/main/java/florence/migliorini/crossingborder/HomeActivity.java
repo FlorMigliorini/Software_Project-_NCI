@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -80,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView textViewActive;
     private Integer typeTransportSelected = 0;
     private Spinner spinner;
-
+    private RadioGroup radioGroup;
     RadioButton rbOneWay,rbReturn;
     AutoCompleteTextView autoCompleteTextViewPassegers;
     EditText etLocation, etDestination;
@@ -107,23 +108,14 @@ public class HomeActivity extends AppCompatActivity {
         rbOneWay = findViewById(R.id.rbOneWay);
         rbReturn = findViewById(R.id.rbReturn);
         linearFilters = findViewById(R.id.linearFilters);
-        //autoCompleteTextViewPassegers = findViewById(R.id.autoCompleteTextViewPassegers);
-
-        //display the list options
+        radioGroup = findViewById(R.id.radio_group);
+        //Inicializa as opções para núemro de passageiros
         options = new ArrayList<>();
-        //how to display the option getting from the api?
-//        ArrayAdapter<String> adapterTranspOption = new ArrayAdapter<~>(HomeActivity.this,
-//                android.R.layout.simple_list_item_1, listView);
-//        listView.setAdapter(adapterTranspOption);
-
-        //passenger
         spinner = (Spinner) findViewById(R.id.sp_passagers);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.passagers));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
-       //saveFavorite();
 
         initDatePicker();
         dateButton = findViewById(R.id.buttonPickDate);
@@ -143,7 +135,17 @@ public class HomeActivity extends AppCompatActivity {
         monthSelected = LocalDate.now().getMonthValue();
     }
 
+    //Preenche a lista de rotas
+    /**
+    * Ao iniciar uma busca por rotas esse método é invocado e
+    * Ele recebe uma lista de possiveis rotas e preenche o layout linear
+     * com as mesmas
+    * **/
+    @SuppressLint("WrongViewCast")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void fillListRoutes(List<RouteDTO> routes){
+        /*Ao criar um elemento dinamicamente é necesario um id e nessa lista os ids
+        são iniciados pela base 80 e são acrescentados de 1 em 1.*/
         int i = 80;
         for(RouteDTO route:routes){
             ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
@@ -157,6 +159,10 @@ public class HomeActivity extends AppCompatActivity {
             objList.setId(i);
 
             layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT,MATCH_PARENT);
+            /**
+             * Cada rota tem seu layout baseado em 4 colunas
+             * cada escopo abaixo corresponde a uma coluna com seus respectivos elementos
+             * **/
             ConstraintLayout column1 = new ConstraintLayout(getApplicationContext());
             {
                 column1.setMaxWidth(220);
@@ -346,15 +352,21 @@ public class HomeActivity extends AppCompatActivity {
                 String price;
                 Integer priceInt = 100;
                 String numberPassangers="1";
+                //Calculo do valor baseado em 0.10 por KM
                 if(route.getLegs().get(0).getDistance()!=null){
                     price = route.getLegs().get(0).getDistance().getText().split(" ")[0];
                     DecimalFormat formatPrice = new DecimalFormat("#.00");
-                    priceInt = Integer.parseInt(String.valueOf(formatPrice.format(0.20*Double.parseDouble(price)))
-                            .replaceAll("\\.",""));
                     numberPassangers = spinner.getSelectedItem().toString();
                     numberPassangers = numberPassangers.split(" ")[0];
-                    priceInt = Integer.parseInt(numberPassangers)*priceInt;
-                    priceText.setText("$ "+formatPrice.format(0.20*Double.parseDouble(price)));
+                    price = String.valueOf(formatPrice.format(0.20*Double.parseDouble(price)));
+                    RadioButton rbOneWay = findViewById(R.id.rbOneWay);
+                    if(!rbOneWay.isChecked()){
+                        price = String.valueOf(Double.parseDouble(price)*2);
+                    }
+                    price = String.valueOf(Double.parseDouble(price)*Integer.parseInt(numberPassangers));
+                    priceInt = Integer.parseInt(String.valueOf(price)
+                            .replaceAll("\\.",""));
+                    priceText.setText("€ "+Double.parseDouble(price));
                 }
                 column4.addView(priceText);
 
@@ -422,167 +434,185 @@ public class HomeActivity extends AppCompatActivity {
                 column4.addView(btnGetTicket);
 
             }
+            //Adição das colunas no bloco principal.
             objList.addView(column1);
             objList.addView(column2);
             objList.addView(column3);
             objList.addView(column4);
+            //Adição do bloco principal no layout linear
             listRoutes.addView(objList);
         }
         listRoutes.invalidate();
     }
 
+    //Consulta de rotas
+    /**
+     * Ação de consultar possiveis rotas.
+     * O método executa 3 requisições na api Directions do google
+     * https://developers.google.com/maps/documentation/directions/overview
+     * 1. Busca rotas para o tipo train
+     * 2. Busca rotas para o tipo bus
+     * 3. Busca rotas para o tipo tram
+     *
+     * Para o consumo da api é utilizada a classe RequestQueue da biblioteca Volley
+     * https://google.github.io/volley/
+     *
+     * Para manipulação do Json foi optado por usar o design DTO
+     * porque fica mais transparente oque está sendo buscado e recebido ao invés de
+     * ter que saber o nome de todas chaves em JSONObject.
+     *
+     * Para o casting de Json para DTO (Java class) foi usada a classe GSON
+     * https://sites.google.com/site/gson/gson-user-guide
+     * **/
     public void searchAction(View view){
+        //Pede as coordenadas de um endereço especifico.
         getCoordenation(etDestination.getText().toString(),2);
         getCoordenation(etLocation.getText().toString(),1);
-        if(origin!=null && destiny != null){
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    String dateFormat="";
-                    String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
-                    String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
-                    urlBase+="key="+API_KEY;
-                    urlBase+="&alternatives=true";
-                    Calendar calendar = Calendar.getInstance();
-                    if(daySelected!=0){
-                        calendar.set(yearSelected,monthSelected,daySelected);
-                    }
-                    if(hour!=0){
-                        calendar.set(yearSelected,monthSelected,daySelected,hour,minute);
-                    }
-                    dateFormat = String.valueOf(calendar.getTimeInMillis()/1000);
-                    if(dateFormat!=""){
-                        urlBase+="&departure_time="+dateFormat;
-                    }
-                    urlBase+="&destination="+destiny;
+        new Timer().schedule(new TimerTask() {
+                //O timer é usado aplicando o delay de 500 porque ao solicitas as coordenadas acima
+                //A requisição não vira imediatamente e os 500 foram suficientes para a resposta a principio.
+                    @Override
+                    public void run() {
+                        //Montagem do URL BASE para todas as demais requisições.
 
-                    //urlBase+="&destination=-23.493899,-46.446555";
-                    urlBase+="&origin="+origin;
-                    //urlBase+="&origin=-23.500751,-46.397492";
-                    urlBase+="&mode=transit";
-                    //urlBase+="&transit_mode=tram|train|bus";
-                    RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
-                    try {
-                        JsonObjectRequest jsonRequestTrain=new JsonObjectRequest(Request.Method.GET,
-                                urlBase+"&transit_mode=train",
-                                null, new Response.Listener<JSONObject>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @SuppressLint("ResourceAsColor")
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                if(response!=null) {
-                                    Gson gson=new Gson();
-                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                    Log.d("App","Train");
-                                    Log.d("App",modelMaps.getRoutes().size()+"");
-                                    if(modelMaps.getRoutes().size()>0){
-                                        typeTransportSelected = 1;
-                                        listRoutesTrain = modelMaps.getRoutes();
-                                        //fillListRoutes(modelMaps.getRoutes());
-                                        linearFilters.setVisibility(View.VISIBLE);
-                                        filterActive = findViewById(R.id.blockBtnTrainTypeHome);
-                                        iconFilterActive = findViewById(R.id.btnTrainTypeHome);
-                                        textViewActive = findViewById(R.id.txBtnTrainTypeHome);
-                                        listRoutesTrain = modelMaps.getRoutes();
-                                        filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
-                                    }
-                                }else {
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        });
-                        JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
-                                urlBase+"&transit_mode=bus",
-                                null, new Response.Listener<JSONObject>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @SuppressLint("ResourceAsColor")
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                if(response!=null) {
-                                    Gson gson=new Gson();
-                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                    Log.d("App","Bus");
-                                    Log.d("App",modelMaps.getRoutes().size()+"");
-                                    if(modelMaps.getRoutes().size()>0){
-                                        //fillListRoutes(modelMaps.getRoutes());
-                                        listRoutesBus = modelMaps.getRoutes();
-                                        if(typeTransportSelected.equals(0)){
-                                            typeTransportSelected = 2;
-                                            filterActive = findViewById(R.id.blockBtnBusTypeHome);
-                                            iconFilterActive = findViewById(R.id.btnBusTypeHome);
-                                            textViewActive = findViewById(R.id.txBtnBusTypeHome);
-                                            filterBus(findViewById(R.id.blockBtnBusTypeHome));
+                        String dateFormat="";
+                        //Chave da api
+                        String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
+                        String urlBase = "https://maps.googleapis.com/maps/api/directions/json?";
+                        urlBase+="key="+API_KEY;
+                        urlBase+="&alternatives=true";
+                        Calendar calendar = Calendar.getInstance();
+                        if(daySelected!=0){
+                            calendar.set(yearSelected,monthSelected,daySelected);
+                        }
+                        if(hour!=0){
+                            calendar.set(yearSelected,monthSelected,daySelected,hour,minute);
+                        }
+                        dateFormat = String.valueOf(calendar.getTimeInMillis()/1000);
+                        if(dateFormat!=""){
+                            urlBase+="&departure_time="+dateFormat;
+                        }
+                        urlBase+="&destination="+destiny;
+                        urlBase+="&origin="+origin;
+                        urlBase+="&mode=transit";
+                        //urlBase+="&transit_mode=tram|train|bus";
+                        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
+                        try {
+                            JsonObjectRequest jsonRequestTrain=new JsonObjectRequest(Request.Method.GET,
+                                    urlBase+"&transit_mode=train",
+                                    null, new Response.Listener<JSONObject>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                @SuppressLint("ResourceAsColor")
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    if(response!=null) {
+                                        Gson gson=new Gson();
+                                        DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                        Log.d("App","Train");
+                                        Log.d("App",modelMaps.getRoutes().size()+"");
+                                        if(modelMaps.getRoutes().size()>0){
+                                            typeTransportSelected = 1;
+                                            listRoutesTrain = modelMaps.getRoutes();
+                                            //fillListRoutes(modelMaps.getRoutes());
+                                            linearFilters.setVisibility(View.VISIBLE);
+                                            filterActive = findViewById(R.id.blockBtnTrainTypeHome);
+                                            iconFilterActive = findViewById(R.id.btnTrainTypeHome);
+                                            textViewActive = findViewById(R.id.txBtnTrainTypeHome);
+                                            listRoutesTrain = modelMaps.getRoutes();
+                                            filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
                                         }
-                                        linearFilters.setVisibility(View.VISIBLE);
+                                    }else {
                                     }
-                                }else {
                                 }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        });
-                        JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
-                                urlBase+"&transit_mode=tram",
-                                null, new Response.Listener<JSONObject>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @SuppressLint("ResourceAsColor")
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                if(response!=null) {
-                                    Gson gson=new Gson();
-                                    DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
-                                    Log.d("App","Tram");
-                                    Log.d("App",modelMaps.getRoutes().size()+"");
-                                    if(modelMaps.getRoutes().size()>0){
-                                        //fillListRoutes(modelMaps.getRoutes());
-                                        listRoutesLuas = modelMaps.getRoutes();
-                                        if(typeTransportSelected.equals(0)){
-                                            typeTransportSelected = 3;
-                                            filterActive = findViewById(R.id.blockBtnLuasTypeHome);
-                                            iconFilterActive = findViewById(R.id.btnLuasTypeHome);
-                                            textViewActive = findViewById(R.id.txBtnLuasTypeHome);
-                                            filterLuas(findViewById(R.id.blockBtnLuasTypeHome));
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            });
+                            JsonObjectRequest jsonRequestBus=new JsonObjectRequest(Request.Method.GET,
+                                    urlBase+"&transit_mode=bus",
+                                    null, new Response.Listener<JSONObject>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                @SuppressLint("ResourceAsColor")
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    if(response!=null) {
+                                        Gson gson=new Gson();
+                                        DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                        Log.d("App","Bus");
+                                        Log.d("App",modelMaps.getRoutes().size()+"");
+                                        if(modelMaps.getRoutes().size()>0){
+                                            //fillListRoutes(modelMaps.getRoutes());
+                                            listRoutesBus = modelMaps.getRoutes();
+                                            if(typeTransportSelected.equals(0)){
+                                                typeTransportSelected = 2;
+                                                filterActive = findViewById(R.id.blockBtnBusTypeHome);
+                                                iconFilterActive = findViewById(R.id.btnBusTypeHome);
+                                                textViewActive = findViewById(R.id.txBtnBusTypeHome);
+                                                filterBus(findViewById(R.id.blockBtnBusTypeHome));
+                                            }
+                                            linearFilters.setVisibility(View.VISIBLE);
                                         }
-                                        linearFilters.setVisibility(View.VISIBLE);
+                                    }else {
                                     }
-                                }else {
                                 }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        });
-                        requestQueue.add(jsonRequestTrain);
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                requestQueue.add(jsonRequestBus);
-                            }
-                        }, 500L);
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                requestQueue.add(jsonRequestLuas);
-                            }
-                        }, 1000L);
-            /*Gson gson=new Gson();
-            JSONObject response = new JSONObject(getString(R.string.teste_json_maps));
-            DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);*/
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            });
+                            JsonObjectRequest jsonRequestLuas=new JsonObjectRequest(Request.Method.GET,
+                                    urlBase+"&transit_mode=tram",
+                                    null, new Response.Listener<JSONObject>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                @SuppressLint("ResourceAsColor")
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    if(response!=null) {
+                                        Gson gson=new Gson();
+                                        DirectionsMainDTO modelMaps = gson.fromJson(response.toString(),DirectionsMainDTO.class);
+                                        Log.d("App","Tram");
+                                        Log.d("App",modelMaps.getRoutes().size()+"");
+                                        if(modelMaps.getRoutes().size()>0){
+                                            //fillListRoutes(modelMaps.getRoutes());
+                                            listRoutesLuas = modelMaps.getRoutes();
+                                            if(typeTransportSelected.equals(0)){
+                                                typeTransportSelected = 3;
+                                                filterActive = findViewById(R.id.blockBtnLuasTypeHome);
+                                                iconFilterActive = findViewById(R.id.btnLuasTypeHome);
+                                                textViewActive = findViewById(R.id.txBtnLuasTypeHome);
+                                                filterLuas(findViewById(R.id.blockBtnLuasTypeHome));
+                                            }
+                                            linearFilters.setVisibility(View.VISIBLE);
+                                        }
+                                    }else {
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            });
+                            requestQueue.add(jsonRequestTrain);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    requestQueue.add(jsonRequestBus);
+                                }
+                            }, 500L);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    requestQueue.add(jsonRequestLuas);
+                                }
+                            }, 1000L);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }, 500L);
-        }
+        }, 1000L);
     }
-
+    //Método que alterna o icone do botão de adicionar aos favoritos.
     public void confirmAddFavorite(View view){
         if(favoriteSelection == 0){
             btnAddFav.setImageResource(R.drawable.ic_baseline_favorite_24);
@@ -593,36 +623,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void Api(EditText etLocation, EditText etDestination, Button search){
-        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());;
-        try {
-            String url="https://api.nationaltransport.ie/gtfsr/v1?format=json";
-            JSONObject json=new JSONObject();
-            json.put("Location",etLocation.getText());
-            json.put("Destination",etDestination.getText());
-            JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    if(response!=null) {
-                        Gson gson=new Gson();
-
-                    }else {
-
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-            requestQueue.add(jsonRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    //Recebe a data de atual.
     private String getTodaysDate(){
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -635,8 +636,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        //Inicializa o campo de localização.
         initialLocalization();
     }
+
 
     private String makeDateString(int day, int month, int year){
         return getMonthFormat(month) + " " + day + " " + year;
@@ -669,11 +672,10 @@ public class HomeActivity extends AppCompatActivity {
         //default should never happen
         return "JAN";
     }
-
     public void openDatePicker(View view){
         datePickerDialog.show();
     }
-
+    //Inicializa a data atual nos atributos e inicia o evento de selecionar uma data.
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -694,11 +696,7 @@ public class HomeActivity extends AppCompatActivity {
         int style = AlertDialog.THEME_HOLO_LIGHT;
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
-
-    public void checkButton(View view){
-
-    }
-
+    //Inicializa o evento de mudar o horario no botão.
     public void openTimePicker(View view) {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -719,6 +717,14 @@ public class HomeActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    //
+    /**
+     * Os métodos a seguir ( filterTrain, filterBus, filterLuas eclearLastFilter)
+     * Executam as ações de filtrar as rotas por um tipo de transporte especifico
+     * e ação de limpar a lista de rotas antes de preencher a nova.
+     * Aqui também a feita a lógica de trocar cores e icones de filtros relacionados
+     * aos tipos de transporte.
+     * **/
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void filterTrain(View view){
         if(filterActive!=null){
@@ -794,6 +800,23 @@ public class HomeActivity extends AppCompatActivity {
         }
         textViewActive.setTextColor(Color.rgb(56,56,56));
     }
+
+    //Consulta coordenada de um endereço
+    /**
+     * O método a seguir consulta as coordenadas de um endereço enviado
+     * utilizando a api geocoding do google
+     * https://developers.google.com/maps/documentation/geocoding/overview
+     *
+     * A requisição para a api é feita também com volley
+     * https://google.github.io/volley/
+     *
+     * Para manipulação do Json foi optado por usar o design DTO
+     * porque fica mais transparente oque está sendo buscado e recebido ao invés de
+     * ter que saber o nome de todas chaves em JSONObject.
+     *
+     * Para o casting de Json para DTO (Java class) foi usada a classe GSON
+     * https://sites.google.com/site/gson/gson-user-guide
+     * **/
     public synchronized CoordenationDTO getCoordenation(String address,int type){
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
@@ -836,7 +859,23 @@ public class HomeActivity extends AppCompatActivity {
             return null;
         }
     }
-
+    //Inicializa a localização atual
+    /**
+     * O método a seguir inicializa a localização atual com um raio não tão preciso.
+     * Utilizando a api geolocation
+     * https://developers.google.com/maps/documentation/geolocation/overview
+     *
+     * Aqui também é feita uma requisição para a api geocoding
+     * https://developers.google.com/maps/documentation/geocoding/overview
+     * para receber o nome da rua encontrado pela geolocation
+     *
+     * Para manipulação do Json foi optado por usar o design DTO
+     * porque fica mais transparente oque está sendo buscado e recebido ao invés de
+     * ter que saber o nome de todas chaves em JSONObject.
+     *
+     * Para o casting de Json para DTO (Java class) foi usada a classe GSON
+     * https://sites.google.com/site/gson/gson-user-guide
+     * **/
     public void initialLocalization(){
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
@@ -901,8 +940,5 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        return false;
-//    }
+
 }

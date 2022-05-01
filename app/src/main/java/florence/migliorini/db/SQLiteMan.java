@@ -12,6 +12,10 @@ import florence.migliorini.model.Favorite;
 import florence.migliorini.model.TravelDTO;
 
 public class SQLiteMan {
+    /**
+     * Classe centralizadora para o banco SQLite
+     * Padrão Singleton
+     * **/
     protected static SQLiteMan INSTANCE;
     public static SQLiteMan getInstance(Context context,String databaseTag){
         if(INSTANCE==null){
@@ -21,6 +25,7 @@ public class SQLiteMan {
             return INSTANCE;
         }
     }
+    //Construtor do singleton que inicia todas tabelas e databases
     protected SQLiteMan(Context context, String databaseTag){
         dbLogin = DbLogin.getInstance(context,databaseTag+"1",null,1);
         dbFavorite = DbFavorite.getInstance(context,databaseTag+"2",null,1);
@@ -30,14 +35,6 @@ public class SQLiteMan {
     private DbFavorite dbFavorite;
     private DbHistory dbHistoric;
 
-    /*public static Boolean login(String sEmail){
-        Boolean bool =dbLogin.login(sEmail);
-        return bool;
-    }
-    public static Boolean signUp(String name, String phone, String password){
-        Boolean bool =dbLogin.signUp(name,phone,password);
-        return bool;
-    }*/
     public void setUserConnected(String email){
         dbLogin.setUserConnected(email);
     }

@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import florence.migliorini.db.SQLiteMan;
 
 public class MenuActivity extends AppCompatActivity {
-
+    private Button buttonClose,buttonFav,buttonLoc,buttonHistory,buttonHome,bLogout;
 
 
     @Override
@@ -25,22 +25,15 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        final Button buttonClose = findViewById(R.id.buttonHideMenu);
-        final Button buttonFav = findViewById(R.id.btnFavTrips);
-        final Button buttonLoc = findViewById(R.id.btnRoutes);
-        //final Button buttonPlan = findViewById(R.id.btnPlanTrip);
-        final Button buttonHistory = findViewById(R.id.btnHistory);
-        final Button buttonHome = findViewById(R.id.btnGetTicket);
-        final Button bLogout = findViewById(R.id.btnLogout);
-       // name = findViewById(R.id.txtViewName);
-       // email = findViewById(R.id.txtViewEmail);
-
-//        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-//        if (signInAccount !=null){
-//            name.setText(signInAccount.getDisplayName());
-//            email.setText(signInAccount.getDisplayName());
-//        }
-
+        buttonClose = findViewById(R.id.buttonHideMenu);
+        buttonFav = findViewById(R.id.btnFavTrips);
+        buttonLoc = findViewById(R.id.btnRoutes);
+        buttonHistory = findViewById(R.id.btnHistory);
+        buttonHome = findViewById(R.id.btnGetTicket);
+        bLogout = findViewById(R.id.btnLogout);
+    }
+    //Configura os botões e suas ações
+    public void configureButtons(){
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,14 +58,6 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
-        /*buttonPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this, PlanActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });*/
         buttonHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +85,10 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
+    //Inicia uma intent para a tela home
     public void closeMenu(View view){
-
+        Intent intent = new Intent(MenuActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

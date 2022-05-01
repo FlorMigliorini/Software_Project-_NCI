@@ -45,7 +45,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="62dp"
-          android:layout_marginTop="76dp"
+          android:layout_marginTop="60dp"
           android:layout_marginEnd="62dp"
           android:drawableStart="@drawable/ic_email"
           android:drawablePadding="12dp"
@@ -54,7 +54,7 @@
           android:inputType="textEmailAddress"
           android:minHeight="48dp"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintHorizontal_bias="1.0"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -63,7 +63,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="62dp"
-          android:layout_marginTop="32dp"
+          android:layout_marginTop="24dp"
           android:layout_marginEnd="62dp"
           android:drawableStart="@drawable/ic_lock"
           android:drawablePadding="12dp"
@@ -72,6 +72,7 @@
           android:inputType="textPassword"
           android:minHeight="48dp"
           app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="1.0"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
 
@@ -79,14 +80,14 @@
           android:id="@+id/btn_Login"
           android:layout_width="106dp"
           android:layout_height="41dp"
-          android:layout_marginStart="24dp"
-          android:layout_marginTop="12dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
           android:background="@drawable/btn_design"
           android:text="@string/login"
           android:textColor="@color/white"
           android:textSize="20sp"
           app:layout_constraintStart_toStartOf="@+id/editTextTextPassword2"
-          app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+          app:layout_constraintTop_toBottomOf="@+id/alertTextLogin" />
 
       <com.google.android.gms.common.SignInButton
           android:id="@+id/sign_in_button"
@@ -107,30 +108,29 @@
           android:id="@+id/btn_signup"
           android:layout_width="75dp"
           android:layout_height="39dp"
-          android:layout_marginTop="12dp"
           android:background="@drawable/btn_design2"
           android:text="@string/sign_up"
           android:textColor="#006693"
           android:textSize="8dp"
           app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
           app:layout_constraintEnd_toEndOf="@+id/imageView"
-          app:layout_constraintHorizontal_bias="0.84"
+          app:layout_constraintHorizontal_bias="0.85"
           app:layout_constraintStart_toStartOf="@+id/sign_in_button"
-          app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2"
-          app:layout_constraintVertical_bias="0.0" />
+          app:layout_constraintTop_toBottomOf="@+id/alertTextLogin"
+          app:layout_constraintVertical_bias="0.327" />
 
       <Button
           android:id="@+id/button4"
           android:layout_width="73dp"
           android:layout_height="38dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="8dp"
+          android:layout_marginTop="16dp"
+          android:layout_marginEnd="12dp"
           android:background="@drawable/btn_design2"
           android:text="@string/info"
           android:textColor="#006693"
           android:textSize="8dp"
           app:layout_constraintEnd_toEndOf="@+id/sign_in_button"
-          app:layout_constraintTop_toBottomOf="@+id/textView2" />
+          app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
       <TextView
           android:id="@+id/textView2"
@@ -151,6 +151,18 @@
           app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress2"
           app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress2"
           app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+      <TextView
+          android:id="@+id/alertTextLogin"
+          android:layout_width="274dp"
+          android:layout_height="24dp"
+          android:layout_marginTop="4dp"
+          android:textColor="#DC143C"
+          android:textSize="13dp"
+          app:layout_constraintEnd_toEndOf="@+id/imageView"
+          app:layout_constraintHorizontal_bias="0.484"
+          app:layout_constraintStart_toStartOf="@+id/imageView"
+          app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

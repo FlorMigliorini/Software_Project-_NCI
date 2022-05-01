@@ -14,17 +14,18 @@
         android:background="@drawable/btn_design"
         android:text="@string/create_account"
         android:textColor="@color/white"
+        android:onClick="createAccountAction"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.143" />
+        app:layout_constraintVertical_bias="0.386" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="404dp"
-        android:layout_height="238dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,27 +33,28 @@
         app:layout_constraintVertical_bias="0.156">
 
         <EditText
-            android:id="@+id/register_name"
+            android:id="@+id/email"
             android:layout_width="256dp"
             android:layout_height="54dp"
             android:background="@drawable/input_design"
-            android:hint="@string/name"
+            android:hint="E-mail"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/madison"
             android:textColorHint="@color/cyan_blue_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.086" />
+            app:layout_constraintTop_toBottomOf="@+id/titleEmail"
+            app:layout_constraintVertical_bias="0.065" />
 
         <EditText
-            android:id="@+id/register_phone"
+            android:id="@+id/confirmMail"
             android:layout_width="254dp"
             android:layout_height="61dp"
             android:background="@drawable/input_design"
-            android:hint="@string/phone_number"
+            android:hint="Confirme o e-mail"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/madison"
@@ -60,22 +62,94 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_name"
-            app:layout_constraintVertical_bias="0.185" />
+            app:layout_constraintTop_toBottomOf="@+id/email"
+            app:layout_constraintVertical_bias="0.088" />
 
         <EditText
-            android:id="@+id/register_password"
+            android:id="@+id/confirmPassword"
+            android:layout_width="255dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_design"
+            android:hint="confirm password"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/madison"
+            android:textColorHint="@color/cyan_blue_dark"
+            app:layout_constraintBottom_toTopOf="@+id/alertPasswordRegister"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/password"
             android:layout_width="255dp"
             android:layout_height="55dp"
             android:background="@drawable/input_design"
-            android:hint="@string/Password"
+            android:hint="password"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/madison"
             android:textColorHint="@color/cyan_blue_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_phone" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <TextView
+            android:id="@+id/titleEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#1C1C1C"
+            android:text="Registre seu E-mail"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Registre senha"
+            android:textColor="#1C1C1C"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.051"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmMail" />
+
+        <TextView
+            android:id="@+id/alertPasswordRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="#DC143C"
+            android:textSize="13dp"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/alertEmailRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text=""
+            android:paddingLeft="5dp"
+            android:textColor="#DC143C"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.467"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmMail"
+            app:layout_constraintVertical_bias="0.461" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
