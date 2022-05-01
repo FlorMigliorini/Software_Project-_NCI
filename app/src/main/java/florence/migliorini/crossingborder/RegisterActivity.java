@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.email);
         etConfirmEmail = findViewById(R.id.confirmMail);
         etPassword = findViewById(R.id.password);
-        etConfirmEmail = findViewById(R.id.confirmPassword);
+        etConfirmPassword = findViewById(R.id.confirmPassword);
         btnCreateAcc = (Button) findViewById(R.id.btn_create_acc);
         alertMail = findViewById(R.id.alertEmailRegister);
         alertPassword = findViewById(R.id.alertPasswordRegister);
@@ -68,8 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     .setUserConnected(etEmail.getText().toString());
                             startHome();
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Falha ao cadastrar usuario.",
-                                    Toast.LENGTH_SHORT).show();
+                            alertPassword.setText("A sua senha deve seguir um formato de pelo menos 4 caracteres\n" +
+                                    "contendo letras numeros e caracteres especiais (.,_)");
                         }
                     }
                 });
@@ -82,8 +82,8 @@ public class RegisterActivity extends AppCompatActivity {
             alertMail.setText("Os e-mails digitados não correspondem");
             return false;
         }
-        if(!etEmail.getText().toString().matches("(\\w|[_.])+@(\\w)([.](\\w))+")
-                ||!etConfirmEmail.getText().toString().matches("(\\w|[_.])+@(\\w)([.](\\w))+")){
+        if(!email.matches("(\\w|[._])+@(\\w)+\\.(\\w)+")
+                ||!confirmEmail.matches("(\\w|[._])+@(\\w)+\\.(\\w)+")){
             alertMail.setText("O formato do email deve conter um domínio e não permite caracteres especiais diferentes de .,_");
             return false;
         }
@@ -91,15 +91,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
     //Validação de senha
     public Boolean validatePassword(){
-        String email = etPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
-        String confirmEmail=etConfirmPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
-        if(!email.equals(confirmEmail)){
+        String senha = etPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
+        String confirmSenha=etConfirmPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
+        if(!senha.equals(confirmSenha)){
             alertPassword.setText("As senhas digitadas não correspondem");
-            return false;
-        }
-        if(!etEmail.getText().toString().matches("(\\w|[_.])+@(\\w)([.](\\w))+")
-                ||!etConfirmEmail.getText().toString().matches("(\\w|[_.])+@(\\w)([.](\\w))+")){
-            alertPassword.setText("A sua senha deve conter pelo menos uma letra maiuscula e números");
             return false;
         }
         return true;

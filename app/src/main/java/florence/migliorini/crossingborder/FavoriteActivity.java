@@ -22,6 +22,9 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -210,12 +213,13 @@ public class FavoriteActivity extends AppCompatActivity {
                 }
             });
             ct.setOnLongClickListener(new View.OnLongClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public boolean onLongClick(View view) {
                     Intent intent = new Intent(FavoriteActivity.this, PaymentActivity.class);
                     intent.putExtra("titleTicket",tv.getDsTitleTicket());
                     intent.putExtra("locationName",tv.getLocation());
-                    intent.putExtra("locationTime",tv.getDtHourDeparture());
+                    intent.putExtra("locationTime",LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_TIME));
                     intent.putExtra("destinationName",tv.getDestiny());
                     intent.putExtra("destinationTime",tv.getDtHourTravel());
                     intent.putExtra("TimeTicket",tv.getDtDuration()
