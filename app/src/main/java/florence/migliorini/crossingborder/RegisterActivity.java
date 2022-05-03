@@ -82,8 +82,8 @@ public class RegisterActivity extends AppCompatActivity {
             alertMail.setText("Os e-mails digitados não correspondem");
             return false;
         }
-        if(!email.matches("(\\w|[._])+@(\\w)+\\.(\\w)+")
-                ||!confirmEmail.matches("(\\w|[._])+@(\\w)+\\.(\\w)+")){
+        if(!email.matches("(\\w|[._])+@((\\w)+\\.(\\w)+)+(\\.(\\w)+)*")
+                ||!confirmEmail.matches("(\\w|[._])+@((\\w)+\\.(\\w)+)+(\\.(\\w)+)*")){
             alertMail.setText("O formato do email deve conter um domínio e não permite caracteres especiais diferentes de .,_");
             return false;
         }
@@ -96,12 +96,20 @@ public class RegisterActivity extends AppCompatActivity {
         if(!senha.equals(confirmSenha)){
             alertPassword.setText("As senhas digitadas não correspondem");
             return false;
+        }else if(senha.length()<3){
+            alertPassword.setText("A senha deve ser maior que 3 caracteres");
+            return false;
         }
         return true;
     }
     //Inicia uma intent para a tela home
     private void startHome() {
         Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    public void closeRegister(View view){
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

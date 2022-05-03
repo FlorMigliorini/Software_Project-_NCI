@@ -364,8 +364,13 @@ public class HomeActivity extends AppCompatActivity {
                         price = String.valueOf(Double.parseDouble(price)*2);
                     }
                     price = String.valueOf(Double.parseDouble(price)*Integer.parseInt(numberPassangers));
-                    priceInt = Integer.parseInt(String.valueOf(price)
-                            .replaceAll("\\.",""));
+                    if(price.split("\\.")[0].length()>1){
+                        priceInt = Integer.parseInt(String.valueOf(price+"0")
+                                .replaceAll("\\.",""));
+                    }else{
+                        priceInt = Integer.parseInt(String.valueOf(price)
+                                .replaceAll("\\.",""));
+                    }
                     priceText.setText("€ "+Double.parseDouble(price));
                 }
                 column4.addView(priceText);

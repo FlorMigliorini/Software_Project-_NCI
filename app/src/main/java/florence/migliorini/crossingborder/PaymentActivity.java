@@ -97,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity {
                 this,
                 new GooglePayLauncher.Config(
                         GooglePayEnvironment.Test,
-                        "eur",
+                        "US",
                         "Widget Store"
                 ),
                 this::onGooglePayReady,

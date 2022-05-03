@@ -158,4 +158,44 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void  handleSignInResult(Task<GoogleSignInAccount> completedTask){
+        //Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG,CommonStatusCodes.getStatusCodeString(e.getStatusCode()));
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
+    public void onConnectionFailed(ConnectionResult connectionResult){
+        //An unresolvable error has occurred an Google Apis (including Sign-in) will not be available
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+    public void updateUI(GoogleSignInAccount account){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if(account != null){
+            Toast.makeText(this,"You Signed In successfully",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this,HomeActivity.class));
+
+        }else {
+            Toast.makeText(this,"You Didnt signed in",Toast.LENGTH_LONG).show();
+        }
+
+    }
 }
