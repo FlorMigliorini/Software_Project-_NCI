@@ -67,13 +67,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="57dp"
             android:layout_height="42dp"
+            android:onClick="menuButton"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            android:onClick="menuButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="SpeakableTextPresentCheck">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,7 +92,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnAllTypes"
-                android:layout_width="90dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/shape_arredounded_blue"
@@ -129,7 +130,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnTrainType"
-                android:layout_width="90dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/shape_arredounded"
@@ -167,7 +168,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnBusType"
-                android:layout_width="90dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/shape_arredounded"
@@ -205,7 +206,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnLuasType"
-                android:layout_width="90dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/shape_arredounded"
