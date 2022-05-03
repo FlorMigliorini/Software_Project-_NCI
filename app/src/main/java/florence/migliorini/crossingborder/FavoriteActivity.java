@@ -219,9 +219,10 @@ public class FavoriteActivity extends AppCompatActivity {
                     Intent intent = new Intent(FavoriteActivity.this, PaymentActivity.class);
                     intent.putExtra("titleTicket",tv.getDsTitleTicket());
                     intent.putExtra("locationName",tv.getLocation());
-                    intent.putExtra("locationTime",LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_TIME));
+                    intent.putExtra("locationTime",LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME));
                     intent.putExtra("destinationName",tv.getDestiny());
-                    intent.putExtra("destinationTime",tv.getDtHourTravel());
+                    LocalTime localTime = calcTimeDuration(tv.getDtDuration());
+                    intent.putExtra("destinationTime",localTime.format(DateTimeFormatter.ISO_LOCAL_TIME));
                     intent.putExtra("TimeTicket",tv.getDtDuration()
                             .replaceAll("\\shour[s]+\\s",".")
                             .replaceAll("\\smin[s]+","m"));
@@ -283,8 +284,8 @@ public class FavoriteActivity extends AppCompatActivity {
             txDestination.setText(tv.getDestiny());
             layoutParams = new ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             layoutParams.baselineToBottom = ct.getId();
-            layoutParams.baselineToTop = ct.getId();
-            layoutParams.startToEnd = imgArrow.getId();
+            layoutParams.topToBottom = txLocation.getId();
+            layoutParams.leftToRight = img.getId();
             layoutParams.leftMargin = 80;
             //layoutParams.startToStart = ct.getId();
             txDestination.setLayoutParams(layoutParams);
@@ -312,6 +313,20 @@ public class FavoriteActivity extends AppCompatActivity {
             lnListFavorites.addView(ct);
         }
     }
+    //Calcula o tempo de duração de uma viagem.
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LocalTime calcTimeDuration(String duration){
+        String hours = (duration.split("\\.").length>1)?duration.split("\\.")[0]:null;
+        String minutes = (duration.split("\\.").length>1)?duration.split("\\.")[1]:duration.split("\\.")[0];
+        minutes = (minutes.length()==1)?minutes.replace("m","")+"0":minutes.replace("m","");
+        LocalTime localTime = LocalTime.now();
+        if(hours!=null){
+            localTime = localTime.plusHours(Long.parseLong(hours));
+        }
+        localTime = localTime.plusMinutes(Long.parseLong(minutes));
+        return localTime;
+    }
+
     public void menuButton(View view) {
         Intent intent = new Intent(FavoriteActivity.this, MenuActivity.class);
         startActivity(intent);

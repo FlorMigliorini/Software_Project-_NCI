@@ -84,6 +84,22 @@ public class PaymentActivity extends AppCompatActivity {
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
         PaymentConfiguration.init(this, strpe.getPublishableKey());
         configPaymentWithGooglePlay();
+        configTransportIconType(in.getIntExtra("imgTypeTransport",0));
+    }
+    //Alteração do icone do ticket baseado na código do transporte por exemplo (1 = train etc...)
+    public void configTransportIconType(Integer type){
+        imgTypeTransport.setImageResource(castingCdTypeTransport(type));
+    }
+    public Integer castingCdTypeTransport(Integer cd){
+        switch (cd){
+            case 1:
+                return R.drawable.ic_baseline_train_24;
+            case 2:
+                return R.drawable.ic_baseline_directions_bus_24;
+            case 3:
+                return R.drawable.ic_baseline_subway_24;
+        }
+        return null;
     }
     //Configura o botão de pagamento com Google pay
     /**

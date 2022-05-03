@@ -41,12 +41,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.800">
+            app:layout_constraintVertical_bias="0.700">
 
             <LinearLayout
                 android:id="@+id/lnListFavorites"
@@ -85,10 +85,12 @@
             android:layout_marginTop="68dp"
             android:orientation="horizontal"
             android:padding="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockBtnAllTypes"
