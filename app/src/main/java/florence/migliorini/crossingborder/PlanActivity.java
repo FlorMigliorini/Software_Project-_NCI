@@ -56,7 +56,7 @@ public class PlanActivity extends AppCompatActivity {
         qrCodeCoded += in.getStringExtra("destinationTime");
         qrCodeCoded += in.getStringExtra("TimeTicket");
         qrCodeCoded += in.getStringExtra("numberPersons");
-
+        imgTypeTransport.setImageResource(castingCdTypeTransport(in.getIntExtra("imgTypeTransport",0)));
     }
 
     //Inicia a Activity e cria o QrCode
@@ -89,5 +89,16 @@ public class PlanActivity extends AppCompatActivity {
         Intent intent = new Intent(PlanActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+    public Integer castingCdTypeTransport(Integer cd){
+        switch (cd){
+            case 1:
+                return R.drawable.ic_baseline_train_24;
+            case 2:
+                return R.drawable.ic_baseline_directions_bus_24;
+            case 3:
+                return R.drawable.ic_baseline_subway_24;
+        }
+        return null;
     }
 }
