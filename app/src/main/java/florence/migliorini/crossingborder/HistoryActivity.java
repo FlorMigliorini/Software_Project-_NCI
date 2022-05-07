@@ -12,11 +12,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -37,6 +40,8 @@ public class HistoryActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        getWindow().setEnterTransition(new Slide());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         lnListHistoric = findViewById(R.id.lnListHistory);
@@ -46,11 +51,17 @@ public class HistoryActivity extends AppCompatActivity {
                 ,1,"3h","EUR 100"));
         SQLiteMan.addHistoric(new TravelDTO(null,"Rota 6","Rota 7",LocalDate.now()
                 ,3,"15h","EUR 20"));*/
-        listHistoric = SQLiteMan.getInstance(getApplicationContext(),"database")
-                .getListHistoric();
+        initializeListHistory();
         constructListFavorites(listHistoric);
-
     }
+
+    private void checkListHistory() {
+        if(listHistoric.size()==0){
+            ConstraintLayout block = findViewById(R.id.blockListHistory);
+            block.setBackgroundResource(R.drawable.msg_history);
+        }
+    }
+
     //Constroi a lista de histórico dinamicamente
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void constructListFavorites(List<TravelDTO> list){
@@ -187,7 +198,9 @@ public class HistoryActivity extends AppCompatActivity {
         if(historicSelected!=null){
             @SuppressLint("ResourceType") TextView tx = (TextView) historicSelected.findViewById(historicSelected.getId()+5);
             SQLiteMan.getInstance(getApplicationContext(),"database").removeHistoricById(Integer.parseInt(tx.getText()+""));
+            Toast.makeText(this,"Deleted successfully",Toast.LENGTH_LONG).show();
             lnListHistoric.removeView(historicSelected);
+            initializeListHistory();
         }
     }
     public void menuButton(View view) {
@@ -221,5 +234,15 @@ public class HistoryActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void initializeListHistory(){
+        try{
+            listHistoric = SQLiteMan.getInstance(getApplicationContext(),"database")
+                    .getListHistoric();
+            checkListHistory();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

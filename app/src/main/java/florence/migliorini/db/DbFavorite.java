@@ -136,7 +136,7 @@ public class DbFavorite extends SQLiteOpenHelper {
 
     public void removeFavorite(Integer id,String email){
         this.getReadableDatabase().execSQL("DELETE FROM TB_FAVORITE WHERE ID_FAVORITE = "+id
-        +"AND EMAIL_USER ='"+email+"'");
+        +" AND EMAIL_USER ='"+email+"'");
         this.getReadableDatabase().close();
     }
 

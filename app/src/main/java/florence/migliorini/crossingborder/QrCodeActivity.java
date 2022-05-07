@@ -17,7 +17,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 
-public class PlanActivity extends AppCompatActivity {
+public class QrCodeActivity extends AppCompatActivity {
     private Button btnBack;
     private String qrCodeCoded;
     private TextView titleTicket,locationName,locationTime,destinationName,destinationTime,TimeTicket,numberPersons,dateTicketPlan;
@@ -27,7 +27,7 @@ public class PlanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plan);
+        setContentView(R.layout.activity_qr_code);
         imgQr = findViewById(R.id.imgBlockQrCode);
         imgTypeTransport = findViewById(R.id.iconTypeTransport);
         titleTicket = findViewById(R.id.TitleTicket);
@@ -81,12 +81,12 @@ public class PlanActivity extends AppCompatActivity {
     }
 
     public void menuButton(View view) {
-        Intent intent = new Intent(PlanActivity.this, MenuActivity.class);
+        Intent intent = new Intent(QrCodeActivity.this, MenuActivity.class);
         startActivity(intent);
         finish();
     }
     public void backButton(View view) {
-        Intent intent = new Intent(PlanActivity.this, HomeActivity.class);
+        Intent intent = new Intent(QrCodeActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

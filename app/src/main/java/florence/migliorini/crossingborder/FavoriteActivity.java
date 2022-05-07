@@ -13,12 +13,17 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -53,6 +58,8 @@ public class FavoriteActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        getWindow().setEnterTransition(new Slide());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         lnListFavorites = findViewById(R.id.lnListFavorites);
@@ -61,13 +68,16 @@ public class FavoriteActivity extends AppCompatActivity {
         filterActive= findViewById(R.id.blockBtnAllTypes);
         iconFilterActive = findViewById(R.id.btnAllTypes);
         textViewActive = findViewById(R.id.txBtnAllTypes);
-        try {
-            listFavorites = SQLiteMan.getInstance(getApplicationContext(),"database").getListFavorites();
-            constructListFavorites(listFavorites);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        initializeList();
+        constructListFavorites(listFavorites);
 
+    }
+    private void noFavoritesCheck() {
+        if(listFavorites.size()==0){
+            ConstraintLayout block = findViewById(R.id.blockListFavorites);
+            block.removeAllViews();
+            block.setBackgroundResource(R.drawable.msg_favorites);
+        }
     }
     //Filtros
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -170,7 +180,9 @@ public class FavoriteActivity extends AppCompatActivity {
         if(favoriteSelected!=null){
             @SuppressLint("ResourceType") TextView tx = (TextView) favoriteSelected.findViewById(favoriteSelected.getId()+5);
             SQLiteMan.getInstance(getApplicationContext(),"database").removeFavoriteById(Integer.parseInt(tx.getText()+""));
+            Toast.makeText(this,"Trip deleted successfully",Toast.LENGTH_LONG).show();
             lnListFavorites.removeView(favoriteSelected);
+            initializeList();
         }
     }
     //Constroi a lista de favoritos dinamicamente.
@@ -358,5 +370,14 @@ public class FavoriteActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void initializeList(){
+        try{
+            listFavorites = SQLiteMan.getInstance(getApplicationContext(),"database").getListFavorites();
+            noFavoritesCheck();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

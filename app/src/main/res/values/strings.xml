@@ -50,5 +50,5 @@
 
     <!-- Maps -->
     <string name="title_activity_maps">MapsActivity</string>
-     <string name="enter_address">Enter Address</string>
+    <string name="enter_address">Enter Address</string>
 </resources>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.stripe.android.PaymentConfiguration;
@@ -22,10 +23,7 @@ import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 import florence.migliorini.db.SQLiteMan;
 import florence.migliorini.model.StripeKeyDTO;
@@ -185,7 +183,7 @@ public class PaymentActivity extends AppCompatActivity {
             showAlert("Erro","Ocorreu um erro inesperado ao tentar executar o pagamento");
             Log.e("Stripe", "Got error: ", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            Intent intent = new Intent(PaymentActivity.this,PlanActivity.class);
+            Intent intent = new Intent(PaymentActivity.this, SucessfullyPaymentActivity.class);
             intent.putExtra("titleTicket",titleTicket.getText());
             intent.putExtra("locationName",locationName.getText());
             intent.putExtra("locationTime",locationTime.getText());
@@ -202,6 +200,7 @@ public class PaymentActivity extends AppCompatActivity {
                     ,Integer.parseInt(numberPersons.getText().toString()));
             if(favoriteSelection == 1){
                 SQLiteMan.getInstance(getApplicationContext(),"database").addFavorite(travel);
+                Toast.makeText(this,"Trip saved successfully",Toast.LENGTH_LONG).show();
             }
             SQLiteMan.getInstance(getApplicationContext(),"database")
                     .addHistoric(travel);

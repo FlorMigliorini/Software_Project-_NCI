@@ -2,10 +2,15 @@ package florence.migliorini.crossingborder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +27,8 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        getWindow().setExitTransition(new Slide());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -47,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, FavoriteActivity.class);
-                startActivity(intent);
+                animTransition(intent);
                 finish();
             }
         });
@@ -63,7 +70,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, HistoryActivity.class);
-                startActivity(intent);
+                animTransition(intent);
                 finish();
             }
         });
@@ -91,5 +98,8 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(MenuActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+    public void animTransition(Intent in){
+        startActivity(in, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }

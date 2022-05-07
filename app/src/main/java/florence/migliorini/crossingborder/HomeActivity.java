@@ -479,7 +479,6 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //Montagem do URL BASE para todas as demais requisições.
-
                         String dateFormat="";
                         //Chave da api
                         String API_KEY = "AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";
@@ -524,7 +523,6 @@ public class HomeActivity extends AppCompatActivity {
                                             listRoutesTrain = modelMaps.getRoutes();
                                             filterTrain(findViewById(R.id.blockBtnTrainTypeHome));
                                         }
-                                    }else {
                                     }
                                 }
                             }, new Response.ErrorListener() {
@@ -554,7 +552,6 @@ public class HomeActivity extends AppCompatActivity {
                                             }
                                             linearFilters.setVisibility(View.VISIBLE);
                                         }
-                                    }else {
                                     }
                                 }
                             }, new Response.ErrorListener() {
@@ -584,12 +581,13 @@ public class HomeActivity extends AppCompatActivity {
                                             }
                                             linearFilters.setVisibility(View.VISIBLE);
                                         }
-                                    }else {
                                     }
+                                    checkListRoutes();
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    checkListRoutes();
                                 }
                             });
                             requestQueue.add(jsonRequestTrain);
@@ -619,6 +617,11 @@ public class HomeActivity extends AppCompatActivity {
         }else{
             btnAddFav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             favoriteSelection = 0;
+        }
+    }
+    public void checkListRoutes(){
+        if(listRoutesLuas==null && listRoutesTrain==null && listRoutesBus==null){
+            listRoutes.setBackgroundResource(R.drawable.msg_routes_found);
         }
     }
 

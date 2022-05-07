@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        checkUserConnected();
         configureGoogleSignInstance();
 
         bSignup.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                             .setUserConnected(etEmail.getText().toString());
                                     startHome();
                                 } else {
-                                    errorMsgTextView.setText("Confira o email e a senha e tente novamente");
+                                    errorMsgTextView.setText("Invalid Credentials");
                                 }
                             }
                         });
@@ -171,7 +172,6 @@ public class LoginActivity extends AppCompatActivity {
         //Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
             // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
@@ -191,11 +191,18 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(account != null){
             Toast.makeText(this,"You Signed In successfully",Toast.LENGTH_LONG).show();
+            SQLiteMan.getInstance(getApplicationContext(),"database")
+                    .setUserConnected(acct.getEmail());
             startActivity(new Intent(this,HomeActivity.class));
-
         }else {
             Toast.makeText(this,"You Didnt signed in",Toast.LENGTH_LONG).show();
         }
 
+    }
+    public void checkUserConnected(){
+        if(SQLiteMan.getInstance(getApplicationContext(),"database").getUserConnected()
+        !=null){
+            startHome();
+        }
     }
 }

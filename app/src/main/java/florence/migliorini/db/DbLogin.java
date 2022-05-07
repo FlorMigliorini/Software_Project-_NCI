@@ -46,8 +46,11 @@ public class DbLogin extends SQLiteOpenHelper {
 
     public String getUserConnected(){
         Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM USER",null);
-        cursor.moveToFirst();
-        String email = cursor.getString(0);
+        String email = null;
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+            email = cursor.getString(0);
+        }
         this.getReadableDatabase().close();
         return email;
     }

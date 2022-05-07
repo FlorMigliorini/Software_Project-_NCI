@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import florence.migliorini.db.SQLiteMan;
+
 public class MainActivity extends AppCompatActivity {
 
     private static int SPLASH_SCREEN = 5000;

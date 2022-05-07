@@ -60,24 +60,13 @@ import florence.migliorini.model.ResultsGeoDTO;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
-    Button btn_search, btn_clear;
     private EditText addressText;
-    Polyline currentPolyline;
-    LocationListener locationListener;
-    private LocationManager locationManager;
-    private final long MIN_TIME = 5;
-    private final long MIN_DIST = 5;
-    private LatLng latLng;
-    //private ActivityMapsBinding binding;
-    private GoogleApiClient googleApiClient;
-    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the layout file as the content view.
         setContentView(R.layout.activity_route);
-
         // Get a handle to the fragment and register the callback.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -137,23 +126,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.INTERNET
         });
-        /*fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(location.getLatitude(),
-                                            location.getLongitude()))
-                                    .title("map"));
-                        } else {
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(0,
-                                            0))
-                                    .title("map"));
-                        }
-                    }
-                });*/
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         try {
             String urlBase = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDfQVjDNvyjLXEj-6AqMHUaCK6ZTc45EeE";

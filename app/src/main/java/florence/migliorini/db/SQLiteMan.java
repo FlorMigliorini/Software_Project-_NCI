@@ -2,6 +2,7 @@ package florence.migliorini.db;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -42,7 +43,8 @@ public class SQLiteMan {
         dbLogin.logoutDb(getUserConnected());
     }
     public String getUserConnected(){
-        return dbLogin.getUserConnected();
+        String email = dbLogin.getUserConnected();
+        return email;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

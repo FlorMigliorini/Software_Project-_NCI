@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
+            android:id="@+id/blockListFavorites"
             android:layout_width="match_parent"
             android:layout_height="450dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -47,21 +47,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layout_constraintVertical_bias="0.400">
-
-            <LinearLayout
-                android:id="@+id/lnListFavorites"
+            <ScrollView
+                android:id="@+id/scrollViewLnListFavorites"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0">
-
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lnListFavorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    >
+                </LinearLayout>
+            </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
