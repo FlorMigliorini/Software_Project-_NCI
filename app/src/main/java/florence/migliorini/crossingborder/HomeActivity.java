@@ -354,7 +354,7 @@ public class HomeActivity extends AppCompatActivity {
                 String numberPassangers="1";
                 //Calculo do valor baseado em 0.10 por KM
                 if(route.getLegs().get(0).getDistance()!=null){
-                    price = route.getLegs().get(0).getDistance().getText().split(" ")[0];
+                    price = route.getLegs().get(0).getDistance().getText().split(" ")[0].replaceAll(",",".");
                     DecimalFormat formatPrice = new DecimalFormat("#.00");
                     numberPassangers = spinner.getSelectedItem().toString();
                     numberPassangers = numberPassangers.split(" ")[0];
@@ -622,6 +622,8 @@ public class HomeActivity extends AppCompatActivity {
     public void checkListRoutes(){
         if(listRoutesLuas==null && listRoutesTrain==null && listRoutesBus==null){
             listRoutes.setBackgroundResource(R.drawable.msg_routes_found);
+        }else{
+            listRoutes.setBackgroundDrawable(null);
         }
     }
 
