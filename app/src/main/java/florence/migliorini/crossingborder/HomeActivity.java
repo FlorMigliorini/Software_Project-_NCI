@@ -352,7 +352,7 @@ public class HomeActivity extends AppCompatActivity {
                 String price;
                 Integer priceInt = 100;
                 String numberPassangers="1";
-                //Calculo do valor baseado em 0.10 por KM
+                //Calculo do valor baseado em 0.20 por KM
                 if(route.getLegs().get(0).getDistance()!=null){
                     price = route.getLegs().get(0).getDistance().getText().split(" ")[0].replaceAll(",",".");
                     DecimalFormat formatPrice = new DecimalFormat("#.00");
