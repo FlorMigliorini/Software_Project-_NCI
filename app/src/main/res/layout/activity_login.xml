@@ -111,7 +111,7 @@
           android:background="@drawable/btn_design2"
           android:text="@string/sign_up"
           android:textColor="#006693"
-          android:textSize="8dp"
+          android:textSize="15dp"
           app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
           app:layout_constraintEnd_toEndOf="@+id/imageView"
           app:layout_constraintHorizontal_bias="0.85"

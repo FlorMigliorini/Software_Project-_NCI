@@ -68,8 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     .setUserConnected(etEmail.getText().toString());
                             startHome();
                         } else {
-                            alertPassword.setText("A sua senha deve seguir um formato de pelo menos 4 caracteres\n" +
-                                    "contendo letras numeros e caracteres especiais (.,_)");
+                            alertPassword.setText("Your password must be in a format of at least 4 characters\n" +
+                                    "containing letters, numbers and special characters (.,_)");
                         }
                     }
                 });
@@ -79,12 +79,12 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim().toLowerCase(Locale.ROOT);
         String confirmEmail=etConfirmEmail.getText().toString().trim().toLowerCase(Locale.ROOT);
         if(!email.equals(confirmEmail)){
-            alertMail.setText("Os e-mails digitados não correspondem");
+            alertMail.setText("Invalid Credentials");
             return false;
         }
         if(!email.matches("(\\w|[._])+@((\\w)+\\.(\\w)+)+(\\.(\\w)+)*")
                 ||!confirmEmail.matches("(\\w|[._])+@((\\w)+\\.(\\w)+)+(\\.(\\w)+)*")){
-            alertMail.setText("O formato do email deve conter um domínio e não permite caracteres especiais diferentes de .,_");
+            alertMail.setText("The email format must contain a domain and does not allow special characters other than .,_");
             return false;
         }
         return true;
@@ -94,10 +94,10 @@ public class RegisterActivity extends AppCompatActivity {
         String senha = etPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
         String confirmSenha=etConfirmPassword.getText().toString().trim().toLowerCase(Locale.ROOT);
         if(!senha.equals(confirmSenha)){
-            alertPassword.setText("As senhas digitadas não correspondem");
+            alertPassword.setText("The passwords entered do not match.");
             return false;
-        }else if(senha.length()<3){
-            alertPassword.setText("A senha deve ser maior que 3 caracteres");
+        }else if(senha.length()<6){
+            alertPassword.setText("Password must be longer than 6 characters");
             return false;
         }
         return true;
